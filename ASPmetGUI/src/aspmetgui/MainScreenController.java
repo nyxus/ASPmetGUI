@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -54,7 +55,7 @@ public class MainScreenController implements Initializable {
     private int populationSize = 10;
     private int stopTime = 120;
     private int stopNrGenerations = 100;
-    private int optimationNrParts = 0;
+    private int optimationNrParts = 3;
     
     private Marian marian;
     
@@ -107,7 +108,7 @@ public class MainScreenController implements Initializable {
     private GridPane gridPaneSettings;
 
     @FXML
-    private Pane paneOptimationParts;
+    private GridPane gridPaneOptimationParts;
 
     @FXML
     private LineChart lineChartMinMax;
@@ -137,6 +138,7 @@ public class MainScreenController implements Initializable {
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + mutationPercentage + " )");
         labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
         initializeCanvas();
+        setLabelOptimationParts();
     }
 
     public void initializeCanvas() {
@@ -452,8 +454,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     public void setLabelOptimationParts() {
-        paneOptimationParts = new Pane();
-        gridPaneSettings.add(paneOptimationParts, 1, 14);
+        gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
+        gridPaneOptimationParts = new GridPane();
+        gridPaneSettings.add(gridPaneOptimationParts, 1, 14);
+        
+        gridPaneOptimationParts.setAlignment(Pos.CENTER);
         
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
         labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
@@ -463,8 +468,13 @@ public class MainScreenController implements Initializable {
         arrayListOptimationParts.clear();
         
         for (int i = 0; i < optimationNrParts; i++) {
-            arrayListOptimationParts.add(new TextField());
-            paneOptimationParts.getChildren().add(arrayListOptimationParts.get(i));
+            TextField tf = new TextField();
+            tf.setPrefWidth(gridPaneSettings.getWidth());
+            tf.setText(i+1+"");
+            tf.setAlignment(Pos.CENTER);
+            
+            arrayListOptimationParts.add(tf);
+            gridPaneOptimationParts.addRow(14, arrayListOptimationParts.get(i));
         }
     }
 

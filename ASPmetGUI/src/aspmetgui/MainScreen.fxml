@@ -103,35 +103,41 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="1.0" minHeight="1.0" prefHeight="1.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="ALWAYS" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                  <Slider fx:id="sliderPopulationSize" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" minorTickCount="4" onDragDropped="#setLabelPopulationSize" onKeyReleased="#setLabelPopulationSize" onMouseDragged="#setLabelPopulationSize" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
+                  <Slider fx:id="sliderPopulationSize" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" minorTickCount="4" onDragDropped="#setLabelPopulationSize" onKeyReleased="#setLabelPopulationSize" onMouseDragged="#setLabelPopulationSize" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.vgrow="NEVER">
                      <GridPane.margin>
                         <Insets bottom="5.0" />
                      </GridPane.margin>
                   </Slider>
-                  <Label fx:id="labelPopulationSize" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onKeyPressed="#setLabelPopulationSize" text="Populationsize ( # )" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                  <Label fx:id="labelPopulationSize" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onKeyPressed="#setLabelPopulationSize" text="Populationsize ( # )" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.vgrow="NEVER">
                      <GridPane.margin>
-                        <Insets bottom="2.0" />
+                        <Insets />
                      </GridPane.margin>
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
                   </Label>
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="15">
+                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="21">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -144,22 +150,22 @@
                         <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Stop" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
                      </children>
                   </GridPane>
-                  <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
+                  <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="11">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
                   </Label>
-                  <Slider fx:id="sliderMutationPercentage" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="4" onKeyReleased="#setLabelMutationPercentage" onMouseDragged="#setLabelMutationPercentage" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                  <Slider fx:id="sliderMutationPercentage" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="4" onKeyReleased="#setLabelMutationPercentage" onMouseDragged="#setLabelMutationPercentage" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="13">
                      <GridPane.margin>
                         <Insets bottom="5.0" />
                      </GridPane.margin>
                   </Slider>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="problems" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="problems" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
+                  <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets bottom="5.0" />
                      </GridPane.margin>
@@ -170,12 +176,12 @@
                      </font>
                   </Label>
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
                   </Label>
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.vgrow="NEVER">
+                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="16" GridPane.vgrow="NEVER">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                         <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
@@ -205,27 +211,27 @@
                         <Slider fx:id="sliderStopNrGenerations" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopNrGenerations" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <ChoiceBox fx:id="choiceBoxProblems1" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ChoiceBox fx:id="choiceBoxProblems1" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="SELECTION OPTIMATION" GridPane.columnIndex="1" GridPane.rowIndex="12" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="SELECTION OPTIMATION" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
                   </Label>
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="13">
+                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="19">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <Slider fx:id="sliderOptimationNrParts" majorTickUnit="5.0" max="5.0" minorTickCount="4" onMouseDragged="#setLabelOptimationParts" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1" />
+                        <Slider fx:id="sliderOptimationNrParts" majorTickUnit="1.0" max="5.0" min="2.0" minorTickCount="0" onMouseDragged="#setLabelOptimationParts" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1" />
                         <Label fx:id="labelOptimationParts" text="NR OF  PARTS ( # )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
@@ -236,7 +242,24 @@
                         </Label>
                      </children>
                   </GridPane>
-                  <Pane fx:id="paneOptimationParts" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="20">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="15" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Pane>
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="18" GridPane.valignment="TOP" />
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="12" GridPane.valignment="TOP" />
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.valignment="TOP" />
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.valignment="TOP" />
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                </children>
                <BorderPane.margin>
                   <Insets />
