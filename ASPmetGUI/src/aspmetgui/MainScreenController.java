@@ -17,15 +17,19 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -205,6 +209,25 @@ public class MainScreenController implements Initializable {
 
         return file;
     }
+    
+    private ObservableList<XYChart.Series<String, Double>> getChartData() {
+      double aValue = 1.56;
+      double cValue = 1.06;
+      ObservableList<XYChart.Series<String, Double>> answer = FXCollections.observableArrayList();
+      Series<String, Double> aSeries = new Series<String, Double>();
+      Series<String, Double> cSeries = new Series<String, Double>();
+      aSeries.setName("a");
+      cSeries.setName("C");
+      
+      for (int i = 2011; i < 2021; i++) {
+          aSeries.getData().add(new XYChart.Data(Integer.toString(i), aValue));
+          aValue = aValue + Math.random() - .5;
+          cSeries.getData().add(new XYChart.Data(Integer.toString(i), cValue));
+          cValue = cValue + Math.random() - .5;
+      }
+      answer.addAll(aSeries, cSeries);
+      return answer;
+    }
 
     @FXML
        public void runMarian() {
@@ -213,7 +236,20 @@ public class MainScreenController implements Initializable {
 
         System.out.println("populationSize: " + populationSize);
         System.out.println("mutationPercentage: " + mutationPercentage);
+        
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        ObservableList<XYChart.Series<String, Double>> someData = getChartData();
+        lineChartMinMax.setData(someData);
+        
+        //Series<String, Double> cSeries = someData.get(0);
 
+        someData.get(0).getData().add(new XYChart.Data(Integer.toString(2022), 1));
+        
+        //someData.set(0, cSeries);
+        
+        lineChartMinMax.setData(someData);
+        
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         final Marian marianTask = new Marian(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()), populationSize, mutationPercentage);
                marian = marianTask;
