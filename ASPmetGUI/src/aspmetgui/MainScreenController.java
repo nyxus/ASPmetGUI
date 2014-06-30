@@ -38,22 +38,38 @@ import javafx.stage.Stage;
  * @author LAPTOPPT
  */
 public class MainScreenController implements Initializable {
+    private String console = "";
+    private Stage stage;
+    boolean toggleFullscreen = false;
+    private ASP application;
+    private int populationSize = 10;
+    private double mutationPercentage = 2.25;
+    private int stopTime = 120;
+    private int stopNrGenerations = 100;
+    private int optimationNrParts = 0;
+    private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
+    private Marian marian;
+    private String directory;
+    private ArrayList<String> filepaths = new ArrayList<>();
+    private Thread tr;
+
+    @FXML
+    Parent root;
 
     @FXML
     private Label labelPopulationSize;
-
     @FXML
     private Label labelMutationPercentage;
-
     @FXML
-    private Slider sliderPopulationSize;
+    private Label labelOptimationParts;
+
     @FXML
     private CheckBox checkboxStopTime;
     @FXML
     private CheckBox checkboxStopNrGenerations;
-    @FXML
-    private Label labelOptimationParts;
 
+    @FXML
+    private Slider sliderPopulationSize;
     @FXML
     private Slider sliderMutationPercentage;
     @FXML
@@ -69,8 +85,6 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button buttonStart;
 
-    private String console = "";
-
     @FXML
     private ChoiceBox choiceBoxProblems;
 
@@ -81,35 +95,16 @@ public class MainScreenController implements Initializable {
     private GridPane gridPaneSettings;
 
     @FXML
-    Parent root;
-    Stage stage;
-    boolean toggleFullscreen = false;
-    private ASP application;
-    private int populationSize = 10;
-    private double mutationPercentage = 2.25;
-    private int stopTime = 120;
-    private int stopNrGenerations = 100;
-    private int optimationNrParts = 0;
-    Marian marian;
-    private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
-
-    String directory;
-    ArrayList<String> filepaths = new ArrayList<>();
+    private LineChart lineChartMinMax;
+    @FXML
+    private LineChart lineChartFitness;
 
     @FXML
-    LineChart lineChartMinMax;
-    
-    @FXML
-    LineChart lineChartFitness;
-    
-    @FXML
-    Canvas canvasProblemGraphical;
+    private Canvas canvasProblemGraphical;
     
     @FXML
     private ProgressBar progressBar;
     
-    Thread tr;
-
     /**
      * Initializes the controller class.
      */
