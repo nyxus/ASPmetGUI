@@ -236,6 +236,7 @@
                         </Label>
                      </children>
                   </GridPane>
+                  <Pane fx:id="paneOptimationParts" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                </children>
                <BorderPane.margin>
                   <Insets />

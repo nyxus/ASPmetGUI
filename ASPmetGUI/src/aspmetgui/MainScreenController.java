@@ -32,6 +32,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -102,9 +103,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private GridPane gridPaneProblem;
-
     @FXML
     private GridPane gridPaneSettings;
+
+    @FXML
+    private Pane paneOptimationParts;
 
     @FXML
     private LineChart lineChartMinMax;
@@ -449,20 +452,20 @@ public class MainScreenController implements Initializable {
 
     @FXML
     public void setLabelOptimationParts() {
+        paneOptimationParts = new Pane();
+        gridPaneSettings.add(paneOptimationParts, 1, 14);
+        
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
+        labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
+
         int startrow = 14;
 
-
+        arrayListOptimationParts.clear();
+        
         for (int i = 0; i < optimationNrParts; i++) {
-            TextField tf = new TextField();
-            tf.setPrefWidth(10);
-            tf.setMaxWidth(30);
-            tf.setId("textFieldOptimationPart" + i);
-            arrayListOptimationParts.add(tf);
+            arrayListOptimationParts.add(new TextField());
+            paneOptimationParts.getChildren().add(arrayListOptimationParts.get(i));
         }
-            gridPaneSettings.getChildren().addAll(arrayListOptimationParts);
-
-        labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
     }
 
     @FXML
