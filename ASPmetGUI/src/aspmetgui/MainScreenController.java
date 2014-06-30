@@ -42,22 +42,46 @@ import javafx.stage.Stage;
  * @author LAPTOPPT
  */
 public class MainScreenController implements Initializable {
+    private Stage stage;
+    
+    boolean toggleFullscreen = false;
+    
+    private ASP application;
+    
+    private double mutationPercentage = 2.25;
+    
+    private int populationSize = 10;
+    private int stopTime = 120;
+    private int stopNrGenerations = 100;
+    private int optimationNrParts = 0;
+    
+    private Marian marian;
+    
+    private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
+    private ArrayList<String> filepaths = new ArrayList<>();
+    
+    private String console = "";
+    private String directory;
+    
+    private Thread tr;
+
+    @FXML
+    Parent root;
 
     @FXML
     private Label labelPopulationSize;
-
     @FXML
     private Label labelMutationPercentage;
-
     @FXML
-    private Slider sliderPopulationSize;
+    private Label labelOptimationParts;
+
     @FXML
     private CheckBox checkboxStopTime;
     @FXML
     private CheckBox checkboxStopNrGenerations;
-    @FXML
-    private Label labelOptimationParts;
 
+    @FXML
+    private Slider sliderPopulationSize;
     @FXML
     private Slider sliderMutationPercentage;
     @FXML
@@ -73,8 +97,6 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button buttonStart;
 
-    private String console = "";
-
     @FXML
     private ChoiceBox choiceBoxProblems;
 
@@ -85,35 +107,16 @@ public class MainScreenController implements Initializable {
     private GridPane gridPaneSettings;
 
     @FXML
-    Parent root;
-    Stage stage;
-    boolean toggleFullscreen = false;
-    private ASP application;
-    private int populationSize = 10;
-    private double mutationPercentage = 2.25;
-    private int stopTime = 120;
-    private int stopNrGenerations = 100;
-    private int optimationNrParts = 0;
-    Marian marian;
-    private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
-
-    String directory;
-    ArrayList<String> filepaths = new ArrayList<>();
+    private LineChart lineChartMinMax;
+    @FXML
+    private LineChart lineChartFitness;
 
     @FXML
-    LineChart lineChartMinMax;
-    
-    @FXML
-    LineChart lineChartFitness;
-    
-    @FXML
-    Canvas canvasProblemGraphical;
+    private Canvas canvasProblemGraphical;
     
     @FXML
     private ProgressBar progressBar;
     
-    Thread tr;
-
     /**
      * Initializes the controller class.
      */
@@ -154,9 +157,7 @@ public class MainScreenController implements Initializable {
         if (children == null) {
             a("Either dir does not exist or is not a directory");
         } else {
-            for (int i = 0; i < children.length; i++) {
-                String filename = children[i];
-
+            for (String filename : children) {
                 if (checkIfProblem(directory + "\\" + filename)) {
                     choiceBoxProblems.getItems().add(filename);
                     filepaths.add(directory + "\\" + filename);
@@ -176,9 +177,6 @@ public class MainScreenController implements Initializable {
     }
 
     public boolean checkIfProblem(String filepath) {
-        int problemSize = 0;
-        int compare = 0;
-        String splitarray[];
         String strLine = "";
 
         try {
@@ -196,7 +194,6 @@ public class MainScreenController implements Initializable {
             in.close();
         } catch (Exception e) {
             //Catch exception if any
-            System.out.println("checkIfProblemError: " + e.getMessage());
         }
         return isNumeric(strLine);
     }
@@ -262,7 +259,6 @@ public class MainScreenController implements Initializable {
             protected Integer call() throws Exception {
                 int iterations;
                 
-                
                 Population pop = marianTask.generatePopulationBetter(populationSize);
 
                 for (iterations = 0; iterations < totalIterations; iterations++) {
@@ -270,8 +266,6 @@ public class MainScreenController implements Initializable {
                         updateMessage("Cancelled");
                         break;
                     }
-                    
-                  
                     
                     System.out.println("Start crossover");
                     pop = marianTask.crossOver(pop);
@@ -334,11 +328,6 @@ public class MainScreenController implements Initializable {
                     double hoogte = height * gridSize;
                     int randomcolor;
                     
-                    //            x - x position of the upper left corner of the rectangle.
-                    //            y - y position of the upper left corner of the rectangle.
-                    //            w - width of the rectangle.
-                    //            h - height of the rectangle.
-
                     int min = 200;
                     int max = 250;
                     randomcolor = random.nextInt(max - min) + min;
@@ -365,9 +354,6 @@ public class MainScreenController implements Initializable {
                 return canvasProblemGraphical;
             }
         };
-
-
-        
         
         progressBar.progressProperty().unbind();
         progressBar.progressProperty().bind(Task.progressProperty());
