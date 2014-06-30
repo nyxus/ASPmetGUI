@@ -215,14 +215,15 @@ public class MainScreenController implements Initializable {
       Series<String, Double> cSeries = new Series<String, Double>();
       aSeries.setName("a");
       cSeries.setName("C");
-      
+      /*
       for (int i = 2011; i < 2021; i++) {
           aSeries.getData().add(new XYChart.Data(Integer.toString(i), aValue));
           aValue = aValue + Math.random() - .5;
           cSeries.getData().add(new XYChart.Data(Integer.toString(i), cValue));
           cValue = cValue + Math.random() - .5;
       }
-      answer.addAll(aSeries, cSeries);
+              */
+      answer.addAll(aSeries);
       return answer;
     }
 
@@ -234,18 +235,24 @@ public class MainScreenController implements Initializable {
         System.out.println("populationSize: " + populationSize);
         System.out.println("mutationPercentage: " + mutationPercentage);
         
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        ObservableList<XYChart.Series<String, Double>> someData = getChartData();
-        lineChartMinMax.setData(someData);
+        ObservableList<XYChart.Series<String, Double>> minMaxData = FXCollections.observableArrayList();
+        Series<String, Double> minSeries = new Series<String, Double>();
+        Series<String, Double> maxSeries = new Series<String, Double>();
+        minSeries.setName("Min");
+        maxSeries.setName("Max");
         
+        
+        //ObservableList<XYChart.Series<String, Double>> someData = getChartData();
+        lineChartMinMax.setData(minMaxData);
+        minMaxData.addAll(minSeries, maxSeries);
+
         //Series<String, Double> cSeries = someData.get(0);
 
-        someData.get(0).getData().add(new XYChart.Data(Integer.toString(2022), 1));
+        //someData.get(0).getData().add(new XYChart.Data(Integer.toString(2022), 1));
         
         //someData.set(0, cSeries);
         
-        lineChartMinMax.setData(someData);
+       // lineChartMinMax.setData(someData);
         
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         final Marian marianTask = new Marian(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()), populationSize, mutationPercentage);
@@ -254,35 +261,44 @@ public class MainScreenController implements Initializable {
         
        //  copyWorker = createWorker(file, populationSize, mutationPercentage);
         final int totalIterations = 100;
-        Task<Integer> Task = new Task<Integer>() {
+        Task<Double> Task = new Task<Double>() {
             @Override 
-            protected Integer call() throws Exception {
+            protected Double call() throws Exception {
                 int iterations;
-                
                 Population pop = marianTask.generatePopulationBetter(populationSize);
 
-                for (iterations = 0; iterations < totalIterations; iterations++) {
+                for (iterations = 0; iterations <= totalIterations; iterations++) {
                     if (isCancelled()) {
                         updateMessage("Cancelled");
                         break;
                     }
                     
-                    System.out.println("Start crossover");
+//                    System.out.println("Start crossover");
                     pop = marianTask.crossOver(pop);
-                    System.out.println("Start selection");
+//                    System.out.println("Start selection");
                     pop = marianTask.getSelectionPandG(pop, populationSize);
-                    System.out.println("Start mutation");
+//                    System.out.println("Start mutation");
                     pop = marianTask.pseudoMutation(pop);
-                      System.out.println( "new avg" + (1.0/(double)marianTask.getFirstMin().getCosts() ) / (1.0/(double)pop.getMin().getCosts())   );
-                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
-                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
-                    System.out.println("---------------------------------------------------------------");
-
+//                      System.out.println( "new avg" + (1.0/(double)marianTask.getFirstMin().getCosts() ) / (1.0/(double)pop.getMin().getCosts())   );
+//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
+//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
+//                    System.out.println("---------------------------------------------------------------");
+                    updateValue(pop.getMax().getFitness());
                     updateProgress(iterations, totalIterations);
+                    Thread.sleep(100);
                 }
-                return iterations;
+                return pop.getMax().getFitness();
             }
         };
+        
+         Task.valueProperty().addListener(new ChangeListener<Double>() {
+            int generationCounter = 0;
+            @Override
+            public void changed(ObservableValue<? extends Double> observable, Double oldValue, Double newValue) {
+                maxSeries.getData().add(new XYChart.Data(Integer.toString(generationCounter++), newValue));
+                System.out.println("gener: "+generationCounter +" output max: " + newValue);
+            }
+        });
         
         
         Task<Canvas> drawProblem = new Task<Canvas>() {
@@ -364,14 +380,7 @@ public class MainScreenController implements Initializable {
                 a(newValue);
             }
         });
-        
-        Task.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                System.out.println("output: " + newValue);
-            }
-        });
-        
+               
         drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
             @Override
             public void changed(ObservableValue<? extends Canvas> observable, Canvas oldValue, Canvas newValue) {
