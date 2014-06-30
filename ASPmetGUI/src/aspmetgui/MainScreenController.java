@@ -38,19 +38,27 @@ import javafx.stage.Stage;
  * @author LAPTOPPT
  */
 public class MainScreenController implements Initializable {
-    private String console = "";
     private Stage stage;
+    
     boolean toggleFullscreen = false;
+    
     private ASP application;
-    private int populationSize = 10;
+    
     private double mutationPercentage = 2.25;
+    
+    private int populationSize = 10;
     private int stopTime = 120;
     private int stopNrGenerations = 100;
     private int optimationNrParts = 0;
-    private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
+    
     private Marian marian;
-    private String directory;
+    
+    private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
     private ArrayList<String> filepaths = new ArrayList<>();
+    
+    private String console = "";
+    private String directory;
+    
     private Thread tr;
 
     @FXML
