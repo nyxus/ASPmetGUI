@@ -81,6 +81,8 @@ public class MainScreenController implements Initializable {
     private CheckBox checkboxStopTime;
     @FXML
     private CheckBox checkboxStopNrGenerations;
+    @FXML
+    private CheckBox checkboxStopInfinite;
 
     @FXML
     private Slider sliderPopulationSize;
@@ -459,6 +461,27 @@ public class MainScreenController implements Initializable {
         stopNrGenerations = (int) sliderStopNrGenerations.getValue();
 
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + stopNrGenerations + " )");
+    }
+    
+    @FXML
+    public void updateCheckBoxes(){
+        if(checkboxStopInfinite.isSelected()){
+            checkboxStopTime.setDisable(true);
+            checkboxStopNrGenerations.setDisable(true);
+            sliderStopTime.setDisable(true);
+            sliderStopNrGenerations.setDisable(true);
+        } else {
+            checkboxStopTime.setDisable(false);
+            checkboxStopNrGenerations.setDisable(false);
+            sliderStopTime.setDisable(false);
+            sliderStopNrGenerations.setDisable(false);
+        }
+        
+        if(checkboxStopTime.isSelected() || checkboxStopNrGenerations.isSelected()){
+            checkboxStopInfinite.setDisable(true);
+        } else {
+            checkboxStopInfinite.setDisable(false);
+        }
     }
 
     @FXML
