@@ -190,7 +190,6 @@ public class MainScreenController implements Initializable {
             in.close();
         } catch (Exception e) {
             //Catch exception if any
-            System.out.println("checkIfProblemError: " + e.getMessage());
         }
         return isNumeric(strLine);
     }
@@ -224,7 +223,6 @@ public class MainScreenController implements Initializable {
             protected Integer call() throws Exception {
                 int iterations;
                 
-                
                 Population pop = marianTask.generatePopulationBetter(populationSize);
 
                 for (iterations = 0; iterations < totalIterations; iterations++) {
@@ -232,8 +230,6 @@ public class MainScreenController implements Initializable {
                         updateMessage("Cancelled");
                         break;
                     }
-                    
-                  
                     
                     System.out.println("Start crossover");
                     pop = marianTask.crossOver(pop);
@@ -322,9 +318,6 @@ public class MainScreenController implements Initializable {
                 return canvasProblemGraphical;
             }
         };
-
-
-        
         
         progressBar.progressProperty().unbind();
         progressBar.progressProperty().bind(Task.progressProperty());
