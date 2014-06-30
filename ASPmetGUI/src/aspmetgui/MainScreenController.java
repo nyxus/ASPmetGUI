@@ -456,25 +456,23 @@ public class MainScreenController implements Initializable {
     public void setLabelOptimationParts() {
         gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
         gridPaneOptimationParts = new GridPane();
-        gridPaneSettings.add(gridPaneOptimationParts, 1, 14);
+        gridPaneSettings.add(gridPaneOptimationParts, 1, 20);
         
         gridPaneOptimationParts.setAlignment(Pos.CENTER);
         
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
         labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
 
-        int startrow = 14;
-
         arrayListOptimationParts.clear();
         
         for (int i = 0; i < optimationNrParts; i++) {
             TextField tf = new TextField();
-            tf.setPrefWidth(gridPaneSettings.getWidth());
+            tf.setPrefWidth(288);
             tf.setText(i+1+"");
             tf.setAlignment(Pos.CENTER);
             
             arrayListOptimationParts.add(tf);
-            gridPaneOptimationParts.addRow(14, arrayListOptimationParts.get(i));
+            gridPaneOptimationParts.addRow(20, arrayListOptimationParts.get(i));
         }
     }
 
