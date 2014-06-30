@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,6 +33,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -53,7 +55,7 @@ public class MainScreenController implements Initializable {
     private int populationSize = 10;
     private int stopTime = 120;
     private int stopNrGenerations = 100;
-    private int optimationNrParts = 0;
+    private int optimationNrParts = 3;
     
     private Marian marian;
     
@@ -102,9 +104,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private GridPane gridPaneProblem;
-
     @FXML
     private GridPane gridPaneSettings;
+
+    @FXML
+    private GridPane gridPaneOptimationParts;
 
     @FXML
     private LineChart lineChartMinMax;
@@ -134,6 +138,7 @@ public class MainScreenController implements Initializable {
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + mutationPercentage + " )");
         labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
         initializeCanvas();
+        setLabelOptimationParts();
     }
 
     public void initializeCanvas() {
@@ -458,20 +463,26 @@ public class MainScreenController implements Initializable {
 
     @FXML
     public void setLabelOptimationParts() {
+        gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
+        gridPaneOptimationParts = new GridPane();
+        gridPaneSettings.add(gridPaneOptimationParts, 1, 20);
+        
+        gridPaneOptimationParts.setAlignment(Pos.CENTER);
+        
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
-        int startrow = 14;
+        labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
 
-
+        arrayListOptimationParts.clear();
+        
         for (int i = 0; i < optimationNrParts; i++) {
             TextField tf = new TextField();
-            tf.setPrefWidth(10);
-            tf.setMaxWidth(30);
-            tf.setId("textFieldOptimationPart" + i);
+            tf.setPrefWidth(288);
+            tf.setText(i+1+"");
+            tf.setAlignment(Pos.CENTER);
+            
             arrayListOptimationParts.add(tf);
+            gridPaneOptimationParts.addRow(20, arrayListOptimationParts.get(i));
         }
-            gridPaneSettings.getChildren().addAll(arrayListOptimationParts);
-
-        labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
     }
 
     @FXML
