@@ -153,9 +153,7 @@ public class MainScreenController implements Initializable {
         if (children == null) {
             a("Either dir does not exist or is not a directory");
         } else {
-            for (int i = 0; i < children.length; i++) {
-                String filename = children[i];
-
+            for (String filename : children) {
                 if (checkIfProblem(directory + "\\" + filename)) {
                     choiceBoxProblems.getItems().add(filename);
                     filepaths.add(directory + "\\" + filename);
@@ -175,9 +173,6 @@ public class MainScreenController implements Initializable {
     }
 
     public boolean checkIfProblem(String filepath) {
-        int problemSize = 0;
-        int compare = 0;
-        String splitarray[];
         String strLine = "";
 
         try {
@@ -301,11 +296,6 @@ public class MainScreenController implements Initializable {
                     double hoogte = height * gridSize;
                     int randomcolor;
                     
-                    //            x - x position of the upper left corner of the rectangle.
-                    //            y - y position of the upper left corner of the rectangle.
-                    //            w - width of the rectangle.
-                    //            h - height of the rectangle.
-
                     int min = 200;
                     int max = 250;
                     randomcolor = random.nextInt(max - min) + min;
