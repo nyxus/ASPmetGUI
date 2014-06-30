@@ -1,0 +1,22 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 27, 2014, 5:37:49 PM
+    Author     : LAPTOPPT
+*/
+
+#root {
+    -fx-background-image: url("pattern.png");
+}
+
+.button {
+    -fx-background-radius: 2px;
+}
+
+#logo{
+    -fx-background-image: url("Icon.png");
+    -fx-background-size: 100px;
+}
