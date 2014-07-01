@@ -5,14 +5,19 @@ package aspmetgui;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -25,23 +30,25 @@ import javafx.stage.Stage;
  * @author LAPTOPPT
  */
 public class StartScreenController implements Initializable {
+
     @FXML
     Parent root;
     Stage stage;
     boolean toggleFullscreen = false;
     private ASP application;
+    final int BUFFER = 2048;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//     runGeneticProblem();   
+
     }
-    
+
     public void specifyDirectory() {
         DirectoryChooser chooser = new DirectoryChooser();
-        
+
         chooser.setTitle("Please choose the directory containing the problems");
         File file = chooser.showDialog(stage);
 
@@ -56,21 +63,8 @@ public class StartScreenController implements Initializable {
         }
         application.setFullscreen(toggleFullscreen);
     }
-    
-    public void runGeneticProblem(){
-        try {
-//            InputStream file = getClass().getResourceAsStream("GeneticProblem.exe");
-            
-//            Runtime.getRuntime().exec("c:", null, file);
-
-            Process process = new ProcessBuilder().start();
-        } catch (IOException ex) {
-            Logger.getLogger(StartScreenController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public void setApp(ASP application) {
         this.application = application;
     }
-
 }

@@ -41,6 +41,9 @@
                <font>
                   <Font name="BebasNeue" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="The console will show the output of the program" />
+               </tooltip>
             </Label>
             <Label text="Progress" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <padding>
@@ -49,6 +52,9 @@
                <font>
                   <Font name="BebasNeue" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Here you can see the progress of the running program" />
+               </tooltip>
             </Label>
          </children>
       </GridPane>
@@ -91,7 +97,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
@@ -107,6 +113,9 @@
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you can select the desired populationsize" />
+                     </tooltip>
                   </Label>
                   <GridPane GridPane.columnIndex="1" GridPane.rowIndex="21">
                     <columnConstraints>
@@ -125,6 +134,9 @@
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you can select the desired mutationpercentage" />
+                     </tooltip>
                   </Label>
                   <Slider fx:id="sliderMutationPercentage" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="4" onKeyReleased="#setLabelMutationPercentage" onMouseDragged="#setLabelMutationPercentage" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="13">
                      <GridPane.margin>
@@ -135,6 +147,9 @@
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you can select the found problems in the previously selected directory" />
+                     </tooltip>
                   </Label>
                   <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
                      <GridPane.margin>
@@ -145,12 +160,18 @@
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you can configure how the selected algorithm should run" />
+                     </tooltip>
                   </Label>
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you can select what the stoppingconditions should be for the algorithm to stop" />
+                     </tooltip>
                   </Label>
                   <GridPane GridPane.columnIndex="1" GridPane.rowIndex="16" GridPane.vgrow="NEVER">
                      <columnConstraints>
@@ -190,11 +211,17 @@
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you can select our implementation of Marian or the optimized Marian algorithm created by us" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="SELECTION OPTIMATION" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Because the random function is not very random, we have created a function to fix this" />
+                     </tooltip>
                   </Label>
                   <GridPane GridPane.columnIndex="1" GridPane.rowIndex="19">
                      <columnConstraints>
@@ -348,6 +375,9 @@
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Here you will see the fysical blocksetup created by the program GeneticProblem" />
+                     </tooltip>
                   </Label>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="1" />
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.rowIndex="1" />
@@ -376,6 +406,7 @@
             <Menu mnemonicParsing="false" text="Screen">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#toggleFullscreen" text="Fullscreen" />
+                  <MenuItem mnemonicParsing="false" onAction="#toggleBlockNr" text="Show blocknumbers" />
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
