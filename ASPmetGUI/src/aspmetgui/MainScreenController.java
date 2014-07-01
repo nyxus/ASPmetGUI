@@ -53,7 +53,8 @@ public class MainScreenController implements Initializable {
 
     private Stage stage;
 
-    boolean toggleFullscreen = false;
+    private boolean toggleFullscreen = false;
+    private boolean toggleBlockNr = true;
 
     private ASP application;
 
@@ -63,6 +64,7 @@ public class MainScreenController implements Initializable {
     private int stopTime = 120;
     private int stopNrGenerations = 100;
     private int optimationNrParts = 4;
+    
 
     private Marian marian;
 
@@ -322,8 +324,8 @@ public class MainScreenController implements Initializable {
                 double canvasHeight = gc.getCanvas().getHeight();
 
                 ArrayList<Block> blockCollection = marian.getBlockCollection();
-                gc.clearRect(0, 0, canvasWidth, canvasHeight);
-                gc.setFill(Color.GREEN);
+                gc.setFill(Color.WHITE);
+                gc.fillRect(0, 0, canvasWidth, canvasHeight);
                 gc.fill();
                 gc.setStroke(Color.BLUE);
 
@@ -369,8 +371,11 @@ public class MainScreenController implements Initializable {
 
                     gc.setStroke(Color.WHITE);
                     gc.stroke();
-                    gc.setFill(Color.BLACK);
-                    gc.fillText(Integer.toString(id), x + breedte / 2, y + hoogte / 2);
+                    
+                    if(toggleBlockNr){
+                        gc.setFill(Color.BLACK);
+                        gc.fillText(Integer.toString(id), x + breedte / 2, y + hoogte / 2);
+                    }
 
                     updateMessage("Progress: " + block.getID() + "-" + blockCollection.size());
                     //updateValue(canvasProblemGraphical);
@@ -537,6 +542,14 @@ public class MainScreenController implements Initializable {
         calculateRemaining();
     }
 
+    public void toggleBlockNr() {
+        if (toggleBlockNr) {
+            toggleBlockNr = false;
+        } else {
+            toggleBlockNr = true;
+        }
+    }
+    
     public void toggleFullscreen() {
         if (toggleFullscreen) {
             toggleFullscreen = false;
