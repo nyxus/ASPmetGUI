@@ -961,11 +961,6 @@ public class Marian {
     }
     
     public Population getSelectionPandG(Population oldPop, int newPopSize){
-        System.out.println("Ermagerd? I HAS THE RATIO?!!!");
-        for(int i = 0; i < collection.length; i++){
-            System.out.println(collection[i]);
-        }
-
         ArrayList<Double> ratio = new ArrayList<>(Arrays.asList(this.collection));
 
         return getSelecetion(oldPop, newPopSize, ratio);

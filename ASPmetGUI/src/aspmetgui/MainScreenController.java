@@ -511,7 +511,7 @@ public class MainScreenController implements Initializable {
         gridPaneOptimationParts.setAlignment(Pos.CENTER);
 
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
-        labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
+        labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
         
 
         arrayListOptimationParts.clear();
@@ -528,6 +528,18 @@ public class MainScreenController implements Initializable {
             //Setting an action for the Clear button
             tf.setOnKeyReleased(new EventHandler<KeyEvent>() {
                 @Override
+                public void handle(KeyEvent event) {
+                    calculateRemaining();
+                }
+            });
+            //Setting an action for the Clear button
+            tf.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                public void handle(KeyEvent event) {
+                    calculateRemaining();
+                }
+            });
+            //Setting an action for the Clear button
+            tf.setOnKeyTyped(new EventHandler<KeyEvent>() {
                 public void handle(KeyEvent event) {
                     calculateRemaining();
                 }
@@ -565,13 +577,13 @@ public class MainScreenController implements Initializable {
 
         DecimalFormat df = new DecimalFormat("0.00");
         for (int i = 0; i < arrayListOptimationParts.size(); i++) {
+                arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
             if(isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))){
                 temp = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
 
                 remaining += temp;                
-                    arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
             } else {
-                    arrayListOptimationParts.get(i).getStyleClass().add("wrong-textfield");
+                arrayListOptimationParts.get(i).getStyleClass().add("wrong-textfield");
             }
         }
 
