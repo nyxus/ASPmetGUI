@@ -53,35 +53,6 @@
          </children>
       </GridPane>
    </bottom>
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#loadProblem" text="Load problem" />
-                  <MenuItem mnemonicParsing="false" onAction="#stopProgram" text="Close" />
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Screen">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#toggleFullscreen" text="Fullscreen" />
-               </items>
-            </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-         <contextMenu>
-            <ContextMenu>
-              <items>
-                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-              </items>
-            </ContextMenu>
-         </contextMenu>
-      </MenuBar>
-   </top>
    <right>
       <GridPane>
          <columnConstraints>
@@ -394,4 +365,25 @@
          </BorderPane.margin>
       </GridPane>
    </left>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#stopProgram" text="Close" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Screen">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#toggleFullscreen" text="Fullscreen" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>
