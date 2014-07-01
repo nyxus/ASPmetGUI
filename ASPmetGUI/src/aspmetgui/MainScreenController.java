@@ -12,7 +12,9 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -20,6 +22,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -32,6 +36,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -44,27 +50,28 @@ import javafx.stage.Stage;
  * @author LAPTOPPT
  */
 public class MainScreenController implements Initializable {
+
     private Stage stage;
-    
+
     boolean toggleFullscreen = false;
-    
+
     private ASP application;
-    
+
     private double mutationPercentage = 2.25;
-    
+
     private int populationSize = 10;
     private int stopTime = 120;
     private int stopNrGenerations = 100;
-    private int optimationNrParts = 3;
-    
+    private int optimationNrParts = 4;
+
     private Marian marian;
-    
+
     private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
     private ArrayList<String> filepaths = new ArrayList<>();
-    
+
     private String console = "";
     private String directory;
-    
+
     private Thread tr;
 
     @FXML
@@ -76,6 +83,8 @@ public class MainScreenController implements Initializable {
     private Label labelMutationPercentage;
     @FXML
     private Label labelOptimationParts;
+    @FXML
+    private Label labelOptimationRemaining;
 
     @FXML
     private CheckBox checkboxStopTime;
@@ -119,10 +128,10 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private Canvas canvasProblemGraphical;
-    
+
     @FXML
     private ProgressBar progressBar;
-    
+
     /**
      * Initializes the controller class.
      */
@@ -174,7 +183,7 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    public static boolean isNumeric(String str) {
+    public boolean isNumeric(String str) {
         try {
             double d = Double.parseDouble(str);
         } catch (NumberFormatException nfe) {
@@ -213,63 +222,57 @@ public class MainScreenController implements Initializable {
 
         return file;
     }
-    
+
     private ObservableList<XYChart.Series<String, Double>> getChartData() {
-      double aValue = 1.56;
-      double cValue = 1.06;
-      ObservableList<XYChart.Series<String, Double>> answer = FXCollections.observableArrayList();
-      Series<String, Double> aSeries = new Series<String, Double>();
-      Series<String, Double> cSeries = new Series<String, Double>();
-      aSeries.setName("a");
-      cSeries.setName("C");
-      /*
-      for (int i = 2011; i < 2021; i++) {
-          aSeries.getData().add(new XYChart.Data(Integer.toString(i), aValue));
-          aValue = aValue + Math.random() - .5;
-          cSeries.getData().add(new XYChart.Data(Integer.toString(i), cValue));
-          cValue = cValue + Math.random() - .5;
-      }
-              */
-      answer.addAll(aSeries);
-      return answer;
+        double aValue = 1.56;
+        double cValue = 1.06;
+        ObservableList<XYChart.Series<String, Double>> answer = FXCollections.observableArrayList();
+        Series<String, Double> aSeries = new Series<String, Double>();
+        Series<String, Double> cSeries = new Series<String, Double>();
+        aSeries.setName("a");
+        cSeries.setName("C");
+        /*
+         for (int i = 2011; i < 2021; i++) {
+         aSeries.getData().add(new XYChart.Data(Integer.toString(i), aValue));
+         aValue = aValue + Math.random() - .5;
+         cSeries.getData().add(new XYChart.Data(Integer.toString(i), cValue));
+         cValue = cValue + Math.random() - .5;
+         }
+         */
+        answer.addAll(aSeries);
+        return answer;
     }
 
     @FXML
-       public void runMarian() {
+    public void runMarian() {
         populationSize = (int) sliderPopulationSize.getValue();
         mutationPercentage = (double) sliderMutationPercentage.getValue();
 
         System.out.println("populationSize: " + populationSize);
         System.out.println("mutationPercentage: " + mutationPercentage);
-        
+
         ObservableList<XYChart.Series<String, Double>> minMaxData = FXCollections.observableArrayList();
         Series<String, Double> minSeries = new Series<String, Double>();
         Series<String, Double> maxSeries = new Series<String, Double>();
         minSeries.setName("Min");
         maxSeries.setName("Max");
-        
-        
+
         //ObservableList<XYChart.Series<String, Double>> someData = getChartData();
         lineChartMinMax.setData(minMaxData);
         minMaxData.addAll(minSeries, maxSeries);
 
         //Series<String, Double> cSeries = someData.get(0);
-
         //someData.get(0).getData().add(new XYChart.Data(Integer.toString(2022), 1));
-        
         //someData.set(0, cSeries);
-        
-       // lineChartMinMax.setData(someData);
-        
+        // lineChartMinMax.setData(someData);
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         final Marian marianTask = new Marian(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()), populationSize, mutationPercentage);
-               marian = marianTask;
- 
-        
-       //  copyWorker = createWorker(file, populationSize, mutationPercentage);
+        marian = marianTask;
+
+        //  copyWorker = createWorker(file, populationSize, mutationPercentage);
         final int totalIterations = 100;
         Task<Double> Task = new Task<Double>() {
-            @Override 
+            @Override
             protected Double call() throws Exception {
                 int iterations;
                 Population pop = marianTask.generatePopulationBetter(populationSize);
@@ -279,10 +282,12 @@ public class MainScreenController implements Initializable {
                         updateMessage("Cancelled");
                         break;
                     }
-                    
+
 //                    System.out.println("Start crossover");
                     pop = marianTask.crossOver(pop);
 //                    System.out.println("Start selection");
+                    getOptimizedSelectionMarian();
+                    marianTask.setOptimizedSelectionRatio(getOptimizedSelectionMarian());
                     pop = marianTask.getSelectionPandG(pop, populationSize);
 //                    System.out.println("Start mutation");
                     pop = marianTask.pseudoMutation(pop);
@@ -297,27 +302,26 @@ public class MainScreenController implements Initializable {
                 return pop.getMax().getFitness();
             }
         };
-        
-         Task.valueProperty().addListener(new ChangeListener<Double>() {
+
+        Task.valueProperty().addListener(new ChangeListener<Double>() {
             int generationCounter = 0;
+
             @Override
             public void changed(ObservableValue<? extends Double> observable, Double oldValue, Double newValue) {
                 maxSeries.getData().add(new XYChart.Data(Integer.toString(generationCounter++), newValue));
-                System.out.println("gener: "+generationCounter +" output max: " + newValue);
+                System.out.println("gener: " + generationCounter + " output max: " + newValue);
             }
         });
-        
-        
+
         Task<Canvas> drawProblem = new Task<Canvas>() {
-            @Override 
+            @Override
             protected Canvas call() throws Exception {
                 System.out.println("Drawing problem building");
-                canvasProblemGraphical = new Canvas(canvasProblemGraphical.getWidth(),canvasProblemGraphical.getHeight());
-                
+                canvasProblemGraphical = new Canvas(canvasProblemGraphical.getWidth(), canvasProblemGraphical.getHeight());
+
                 GraphicsContext gc = canvasProblemGraphical.getGraphicsContext2D();
                 double canvasWidth = gc.getCanvas().getWidth();
                 double canvasHeight = gc.getCanvas().getHeight();
-
 
                 ArrayList<Block> blockCollection = marian.getBlockCollection();
                 gc.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -335,7 +339,7 @@ public class MainScreenController implements Initializable {
                 Random random = new Random();
 
                 double gridSize = (canvasWidth / (marian.getLength()));
-                
+
                 for (Block block : blockCollection) {
                     minx = block.getMinX();
                     maxx = block.getMaxX();
@@ -350,44 +354,43 @@ public class MainScreenController implements Initializable {
                     double breedte = width * gridSize;
                     double hoogte = height * gridSize;
                     int randomcolor;
-                    
+
                     int min = 200;
                     int max = 250;
                     randomcolor = random.nextInt(max - min) + min;
 
                     gc.setFill(Color.rgb(randomcolor, randomcolor, randomcolor));
-                    gc.fillRect(x, y, breedte-1, hoogte-1);
-                    
+                    gc.fillRect(x, y, breedte - 1, hoogte - 1);
+
                     gc.setStroke(Color.WHITE);
                     gc.setLineWidth(1);
-                    gc.strokeLine(x, y, x+breedte, y);
-                    gc.strokeLine(x, y, x, y+hoogte);
-                    gc.strokeLine(x, y+hoogte, x+breedte, y+hoogte);
-                    gc.strokeLine(x+breedte, y, x+breedte, y+hoogte);
-                    
+                    gc.strokeLine(x, y, x + breedte, y);
+                    gc.strokeLine(x, y, x, y + hoogte);
+                    gc.strokeLine(x, y + hoogte, x + breedte, y + hoogte);
+                    gc.strokeLine(x + breedte, y, x + breedte, y + hoogte);
+
                     gc.setStroke(Color.WHITE);
                     gc.stroke();
                     gc.setFill(Color.BLACK);
                     gc.fillText(Integer.toString(id), x + breedte / 2, y + hoogte / 2);
-        
-                    updateMessage("Progress: " + block.getID() + "-"+blockCollection.size());
+
+                    updateMessage("Progress: " + block.getID() + "-" + blockCollection.size());
                     //updateValue(canvasProblemGraphical);
-                    
+
                 }
                 return canvasProblemGraphical;
             }
         };
-        
+
         progressBar.progressProperty().unbind();
         progressBar.progressProperty().bind(Task.progressProperty());
-        
-        
+
         Task.messageProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 a(newValue);
             }
         });
-               
+
         drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
             @Override
             public void changed(ObservableValue<? extends Canvas> observable, Canvas oldValue, Canvas newValue) {
@@ -395,32 +398,47 @@ public class MainScreenController implements Initializable {
                 System.out.println("Drawing problem");
             }
         });
-        
+
         drawProblem.messageProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 a(newValue);
             }
         });
-        
+
         this.tr = new Thread(Task);
         tr.setDaemon(true);
         tr.start();
-        
+
         Thread drawTask = new Thread(drawProblem);
         drawTask.setDaemon(true);
         drawTask.start();
-        
 
-        
-        
         //a("File "+file.getAbsolutePath()+" loaded.");
         //marian = new Marian(file.getAbsolutePath(), populationSize, mutationPercentage);
-       // marian.start();
-        
-        
-
-
+        // marian.start();
         a("done! o.O");
+    }
+
+    public Double[] getOptimizedSelectionMarian() {
+        Double[] collection = new Double[arrayListOptimationParts.size()];
+        double count = 0;
+
+        for (int i = 0; i < arrayListOptimationParts.size(); i++) {
+            Double retrievedDouble = Double.parseDouble(arrayListOptimationParts.get(i).getText());
+
+            count += retrievedDouble;
+
+            collection[i] = retrievedDouble;
+        }
+        a(count + "Hmmm count?");
+
+        if (count != 1) {
+            a("IT NEEEDS TO BE ONEEEE!!");
+        } else {
+            a("goood job.. its one ;D");
+        }
+
+        return collection;
     }
 
     public void stopOperation() {
@@ -462,10 +480,10 @@ public class MainScreenController implements Initializable {
 
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + stopNrGenerations + " )");
     }
-    
+
     @FXML
-    public void updateCheckBoxes(){
-        if(checkboxStopInfinite.isSelected()){
+    public void updateCheckBoxes() {
+        if (checkboxStopInfinite.isSelected()) {
             checkboxStopTime.setDisable(true);
             checkboxStopNrGenerations.setDisable(true);
             sliderStopTime.setDisable(true);
@@ -476,8 +494,8 @@ public class MainScreenController implements Initializable {
             sliderStopTime.setDisable(false);
             sliderStopNrGenerations.setDisable(false);
         }
-        
-        if(checkboxStopTime.isSelected() || checkboxStopNrGenerations.isSelected()){
+
+        if (checkboxStopTime.isSelected() || checkboxStopNrGenerations.isSelected()) {
             checkboxStopInfinite.setDisable(true);
         } else {
             checkboxStopInfinite.setDisable(false);
@@ -489,23 +507,37 @@ public class MainScreenController implements Initializable {
         gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
         gridPaneOptimationParts = new GridPane();
         gridPaneSettings.add(gridPaneOptimationParts, 1, 20);
-        
+
         gridPaneOptimationParts.setAlignment(Pos.CENTER);
-        
+
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
         labelOptimationParts.setText("Nr Of Parts( " + optimationNrParts + " )");
+        
 
         arrayListOptimationParts.clear();
-        
+        double part =  (1 / Double.parseDouble(""+optimationNrParts));
+
         for (int i = 0; i < optimationNrParts; i++) {
+            DecimalFormat df = new DecimalFormat("0.00");   
             TextField tf = new TextField();
             tf.setPrefWidth(288);
-            tf.setText(i+1+"");
-            tf.setAlignment(Pos.CENTER);
+            tf.setText(df.format(part)+"");
             
+            tf.setAlignment(Pos.CENTER);
+
+            //Setting an action for the Clear button
+            tf.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    calculateRemaining();
+                }
+            });
+
             arrayListOptimationParts.add(tf);
             gridPaneOptimationParts.addRow(20, arrayListOptimationParts.get(i));
         }
+
+        calculateRemaining();
     }
 
     @FXML
@@ -516,6 +548,36 @@ public class MainScreenController implements Initializable {
             toggleFullscreen = true;
         }
         application.setFullscreen(toggleFullscreen);
+    }
+    
+    boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    public void calculateRemaining() {
+        double remaining = 0;
+        double temp;
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        for (int i = 0; i < arrayListOptimationParts.size(); i++) {
+            if(isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))){
+                temp = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
+
+                remaining += temp;                
+                    arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
+            } else {
+                    arrayListOptimationParts.get(i).getStyleClass().add("wrong-textfield");
+            }
+        }
+
+        remaining = 1 - remaining;
+        
+        labelOptimationRemaining.setText("Remaining ( " + df.format(remaining) + " )");
     }
 
     @FXML
