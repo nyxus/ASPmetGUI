@@ -214,7 +214,6 @@ public class MainScreenController implements Initializable {
         return isNumeric(strLine);
     }
 
-    @FXML
     public File loadProblem() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Please open a problem");
@@ -243,7 +242,6 @@ public class MainScreenController implements Initializable {
         return answer;
     }
 
-    @FXML
     public void runMarian() {
         populationSize = (int) sliderPopulationSize.getValue();
         mutationPercentage = (double) sliderMutationPercentage.getValue();
@@ -430,13 +428,6 @@ public class MainScreenController implements Initializable {
 
             collection[i] = retrievedDouble;
         }
-        a(count + "Hmmm count?");
-
-        if (count != 1) {
-            a("IT NEEEDS TO BE ONEEEE!!");
-        } else {
-            a("goood job.. its one ;D");
-        }
 
         return collection;
     }
@@ -452,14 +443,12 @@ public class MainScreenController implements Initializable {
         textAreaConsole.setText(console);
     }
 
-    @FXML
     public void setLabelPopulationSize() {
         populationSize = (int) sliderPopulationSize.getValue();
 
         labelPopulationSize.setText("Populationsize ( " + populationSize + " )");
     }
 
-    @FXML
     public void setLabelMutationPercentage() {
         mutationPercentage = (double) sliderMutationPercentage.getValue();
         DecimalFormat df = new DecimalFormat("0.00");
@@ -467,21 +456,18 @@ public class MainScreenController implements Initializable {
         labelMutationPercentage.setText("Mutationpercentage ( " + df.format(mutationPercentage) + "% )");
     }
 
-    @FXML
     public void setLabelStopTime() {
         stopTime = (int) sliderStopTime.getValue();
 
         checkboxStopTime.setText("TIME ( " + stopTime + "SEC )");
     }
 
-    @FXML
     public void setLabelStopNrGenerations() {
         stopNrGenerations = (int) sliderStopNrGenerations.getValue();
 
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + stopNrGenerations + " )");
     }
 
-    @FXML
     public void updateCheckBoxes() {
         if (checkboxStopInfinite.isSelected()) {
             checkboxStopTime.setDisable(true);
@@ -502,7 +488,6 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    @FXML
     public void setLabelOptimationParts() {
         gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
         gridPaneOptimationParts = new GridPane();
@@ -552,7 +537,6 @@ public class MainScreenController implements Initializable {
         calculateRemaining();
     }
 
-    @FXML
     public void toggleFullscreen() {
         if (toggleFullscreen) {
             toggleFullscreen = false;
@@ -592,7 +576,6 @@ public class MainScreenController implements Initializable {
         labelOptimationRemaining.setText("Remaining ( " + df.format(remaining) + " )");
     }
 
-    @FXML
     public void stopProgram() {
         System.exit(0);
     }
