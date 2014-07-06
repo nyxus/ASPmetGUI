@@ -448,7 +448,7 @@ public class MainScreenController implements Initializable {
         double count = 0;
 
         for (int i = 0; i < arrayListOptimationParts.size(); i++) {
-            Double retrievedDouble = Double.parseDouble(arrayListOptimationParts.get(i).getText());
+            Double retrievedDouble = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
 
             count += retrievedDouble;
 
