@@ -459,7 +459,7 @@ public class MainScreenController implements Initializable {
     }
 
     public void stopOperation() {
-        //tr.stop();
+        tr.
         a("Application stopped.");
     }
 
