@@ -72,7 +72,6 @@ public class ASP extends Application {
         } 
         Scene scene = new Scene(page);
         Font.loadFont(ASP.class.getResource("BebasNeue.otf").toExternalForm(), 10);
-        Font.loadFont(ASP.class.getResource("Prosto Sans Bold.otf").toExternalForm(), 10);
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();

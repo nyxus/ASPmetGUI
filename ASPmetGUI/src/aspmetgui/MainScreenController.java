@@ -259,105 +259,15 @@ public class MainScreenController implements Initializable {
         System.out.println("mutationPercentage: " + mutationPercentage);
         
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
-        final Marian marianTask = new Marian(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()), populationSize, mutationPercentage);
+        String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
+        final Marian marianTask = new Marian(filename, populationSize, mutationPercentage,getOptimizedSelectionMarian(), Math.round(sliderStopNrGenerations.getValue()) );
         marian = marianTask;
         
-         ArrayList<ObservableList<XYChart.Series<String, Double>>> answer = new ArrayList<>();
-    
-
-         ObservableList<XYChart.Series<String, Double>> piet = FXCollections.observableArrayList();
-         answer.add(piet);
-         
-         
-         
-         
-         
-
-        //  copyWorker = createWorker(file, populationSize, mutationPercentage);;
-         
-         
-         
-         
-
-        //  copyWorker = createWorker(file, populationSize, mutationPercentage);
+        // set marianTask paramters 
         final Double[] collection = getOptimizedSelectionMarian();
         final long totalIterations =  Math.round(sliderStopNrGenerations.getValue());
-        Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > Task = new Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
-           
-            private ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
-                    
-           /*         
-                 new ReadOnlyObjectWrapper<>(this, "partialResults",
-                         FXCollections.observableArrayList(new ArrayList()));
-
-            public final ArrayList< ReadOnlyObjectWrapper<ObservableList<XYChart.Series<String, Double>>> > getPartialResults() { return partialResults; }
-            
-            public final ArrayList< ReadOnlyObjectProperty<ObservableList<XYChart.Series<String, Double>>> > partialResultsProperty(int index) {
-                return partialResults.get(index).getReadOnlyProperty();
-            }
-            
-            */
-            @Override
-            protected ArrayList<ObservableList<XYChart.Series<String, Double>>>  call() throws Exception {
-                int iterations;
-                Series<String, Double> minCostSeries = new Series<String, Double>();
-                Series<String, Double> maxCostSeries = new Series<String, Double>();
-                Series<String, Double> maxSeries = new Series<String, Double>();
-                Series<String, Double> AvgFitnessSeries = new Series<String, Double>();
-                minCostSeries.setName("Min Costs");
-                maxCostSeries.setName("Max Costs");
-                maxSeries.setName("Max Fitness");
-                AvgFitnessSeries.setName("Average Fitness");
-                Population pop = marianTask.generatePopulationBetter(populationSize);
-                partialResults.add(0 ,FXCollections.observableArrayList(new ArrayList()));
-                partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
-                partialResults.get(0).addAll(maxSeries, AvgFitnessSeries);
-                partialResults.get(1).addAll(minCostSeries, maxCostSeries);
-                
-                for (iterations = 0; iterations <= totalIterations; iterations++) {
-                    if (Thread.currentThread().isInterrupted()) {
-                        updateProgress(totalIterations, totalIterations);
-                        System.out.println("Stop task");
-                        return  partialResults;
-                        
-                    }
-
-//                   System.out.println("Start crossover");
-                    pop = marianTask.crossOver(pop);
-//                    System.out.println("Start selection");
-                    marianTask.setOptimizedSelectionRatio(collection);
-                    pop = marianTask.getSelectionPandG(pop, populationSize);
-//                    System.out.println("Start mutation");
-                    pop = marianTask.pseudoMutation(pop);
-//                    System.out.println( "new avg" + (1.0/(double)marianTask.getFirstMin().getCosts() ) / (1.0/(double)pop.getMin().getCosts())   );
-//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
-//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
-//                    System.out.println("---------------------------------------------------------------");
-                    System.out.println("Min:" + ((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts()) );
-                    System.out.println("Set for send: " + iterations);
-                    final double max = pop.getMax().getFitness();
-//                    final double min = (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10;
-                    final double minCosts = pop.getMin().getCosts();
-                    final double maxCosts = pop.getMax().getCosts();
-                    final double avg =  pop.getAverageFittness();
-                    final int gen = iterations;
-                    Platform.runLater(new Runnable() {
-                        @Override public void run() {
-                            partialResults.get(0).get(0).getData().add(new XYChart.Data(Integer.toString(gen), max));
-                            partialResults.get(0).get(1).getData().add(new XYChart.Data(Integer.toString(gen), avg));
-                            partialResults.get(1).get(0).getData().add(new XYChart.Data(Integer.toString(gen), minCosts));
-                            partialResults.get(1).get(1).getData().add(new XYChart.Data(Integer.toString(gen), maxCosts));
-                            updateValue(partialResults);
-                        }
-                    });
-                    updateProgress(iterations, totalIterations);
-                }
-                return partialResults;
-            }
-        };
-        
-       
-        Task.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
+    
+        marianTask.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
             int generationCounter = 0;
 
             @Override
@@ -365,7 +275,7 @@ public class MainScreenController implements Initializable {
                     
                 lineChartMinMax.setData(newValue.get(0));
                 lineChartFitness.setData(newValue.get(1));
-                
+
             }
         });
         
@@ -442,9 +352,9 @@ public class MainScreenController implements Initializable {
         };
 
         progressBar.progressProperty().unbind();
-        progressBar.progressProperty().bind(Task.progressProperty());
+        progressBar.progressProperty().bind(marianTask.progressProperty());
 
-        Task.messageProperty().addListener(new ChangeListener<String>() {
+        marianTask.messageProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 a(newValue);
             }
@@ -464,7 +374,7 @@ public class MainScreenController implements Initializable {
             }
         });
 
-        this.tr = new Thread(Task);
+        this.tr = new Thread(marianTask);
         tr.setDaemon(true);
         tr.start();
 

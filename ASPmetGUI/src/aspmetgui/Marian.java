@@ -11,9 +11,14 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
 import java.util.Random;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.scene.chart.XYChart;
 
 
-public class Marian {
+public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > {
 
     private Block floor = new Block(0, 1, 1, 0, 0);
 
@@ -35,7 +40,9 @@ public class Marian {
     private double mutationPercentage = 2.25;
     private int populationSize;
     private Double[] collection;
+    long totalIterations;
 
+     private ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
 
     /**
      * Create a problem to solve with the algorithm of Marian
@@ -44,8 +51,10 @@ public class Marian {
      * id minX maxX minY maxY
      * @param populationSize the size of a population
      */
-    public Marian(String filename, int populationSize, double mutation) {
+    public Marian(String filename, int populationSize, double mutation, Double[] collection, long totalIterations ) {
         problemSize = getProblemSize(filename);
+        this.collection = collection;
+        this.totalIterations = totalIterations;
         this.populationSize = populationSize;
         this.mutationPercentage = mutation;
         System.out.println("ProblemSize = " + problemSize);
@@ -988,14 +997,63 @@ public class Marian {
         return pop;
     }
     
-    public Population generations(Population pop, int popSize){
-        pop = this.crossOver(pop);
-        pop = this.getSelectionPandG(pop, popSize);
-        pop = this.pseudoMutation(pop);
-        return pop;
-    }
+    @Override
+    protected ArrayList<ObservableList<XYChart.Series<String, Double>>>  call() throws Exception {
+        int iterations;
+        XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
+        XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
+        XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
+        XYChart.Series<String, Double> AvgFitnessSeries = new XYChart.Series<String, Double>();
+        minCostSeries.setName("Min Costs");
+        maxCostSeries.setName("Max Costs");
+        maxFitnessSeries.setName("Max Fitness");
+        AvgFitnessSeries.setName("Average Fitness");
+        Population pop = this.generatePopulationBetter(populationSize);
+        partialResults.add(0 ,FXCollections.observableArrayList(new ArrayList()));
+        partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
+        partialResults.get(0).addAll(maxFitnessSeries, AvgFitnessSeries);
+        partialResults.get(1).addAll(maxCostSeries, minCostSeries);
 
+        for (iterations = 0; iterations <= totalIterations; iterations++) {
+            if (Thread.currentThread().isInterrupted()) {
+                updateProgress(totalIterations, totalIterations);
+                System.out.println("Stop task");
+                return  partialResults;
 
+            }
+
+//                   System.out.println("Start crossover");
+            pop = this.crossOver(pop);
+//                    System.out.println("Start selection");
+            this.setOptimizedSelectionRatio(collection);
+            pop = this.getSelectionPandG(pop, populationSize);
+//                    System.out.println("Start mutation");
+            pop = this.pseudoMutation(pop);
+//                    System.out.println( "new avg" + (1.0/(double)marianTask.getFirstMin().getCosts() ) / (1.0/(double)pop.getMin().getCosts())   );
+//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
+//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
+//                    System.out.println("---------------------------------------------------------------");
+            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
+            System.out.println("Set for send: " + iterations);
+            final double max = pop.getMax().getFitness();
+//                    final double min = (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10;
+            final double minCosts = pop.getMin().getCosts();
+            final double maxCosts = pop.getMax().getCosts();
+            final double avg =  pop.getAverageFittness();
+            final int gen = iterations;
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    partialResults.get(0).get(0).getData().add(new XYChart.Data(Integer.toString(gen), max));
+                    partialResults.get(0).get(1).getData().add(new XYChart.Data(Integer.toString(gen), avg));
+                    partialResults.get(1).get(0).getData().add(new XYChart.Data(Integer.toString(gen), maxCosts));
+                    partialResults.get(1).get(1).getData().add(new XYChart.Data(Integer.toString(gen), minCosts));
+                    updateValue(partialResults);
+                }
+            });
+            updateProgress(iterations, totalIterations);
+        }
+        return partialResults;
+    };
     //getFloor
     //  Beschrijving: getFloor returned de floor.
     //  Input: -
@@ -1066,12 +1124,6 @@ public class Marian {
     //  Gemaakt door: Gerco Versloot 
     public void setFysicalMatrix(Block[][] fysicalMatrix) {
         this.fysicalMatrix = fysicalMatrix;
-    }
-
-    public void run() {
-        Population pop = generatePopulationBetter(populationSize);
-        this.run(pop, populationSize);
-        
     }
     
     public Chromosome getFirstMin() {
