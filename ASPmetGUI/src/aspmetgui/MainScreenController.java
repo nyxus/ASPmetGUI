@@ -260,7 +260,7 @@ public class MainScreenController implements Initializable {
 
         //  copyWorker = createWorker(file, populationSize, mutationPercentage);
         final Double[] collection = getOptimizedSelectionMarian();
-        final int totalIterations = 100;
+        final long totalIterations =  Math.round(sliderStopNrGenerations.getValue());
         Task< ObservableList<XYChart.Series<String, Double>> > Task = new Task< ObservableList<XYChart.Series<String, Double>> >() {
            
             private ReadOnlyObjectWrapper<ObservableList<XYChart.Series<String, Double>>> partialResults =
