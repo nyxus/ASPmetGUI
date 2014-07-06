@@ -12,8 +12,32 @@ and open the template in the editor.
     -fx-background-image: url("pattern.png");
 }
 
-.button {
-    -fx-background-radius: 2px;
+.Title{
+    -fx-font: 22px "BebasNeue";
+}
+
+.SubTitle{
+    -fx-font: 14px "BebasNeue";
+}
+
+.InfoText{
+    -fx-font: 17px "BebasNeue";    
+}
+
+.TabTitle{
+    -fx-font: 13px "BebasNeue";    
+}
+
+.ButtonText{
+    -fx-font: 14px "BebasNeue";    
+}
+
+.MenuBar{
+    -fx-font: 13px "BebasNeue";    
+}
+
+.ConsoleText{
+    -fx-font: 13px "BebasNeue";    
 }
 
 #logo{

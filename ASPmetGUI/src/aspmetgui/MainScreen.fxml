@@ -24,7 +24,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <TextArea fx:id="textAreaConsole" editable="false" focusTraversable="false" prefHeight="90.0" prefWidth="303.0" BorderPane.alignment="CENTER" GridPane.rowIndex="1">
+            <TextArea fx:id="textAreaConsole" editable="false" focusTraversable="false" prefHeight="90.0" prefWidth="303.0" styleClass="ConsoleText" BorderPane.alignment="CENTER" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
@@ -106,7 +106,7 @@
                         <Insets bottom="5.0" />
                      </GridPane.margin>
                   </Slider>
-                  <Label fx:id="labelPopulationSize" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onKeyPressed="#setLabelPopulationSize" text="Populationsize ( # )" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.vgrow="NEVER">
+                  <Label fx:id="labelPopulationSize" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onKeyPressed="#setLabelPopulationSize" styleClass="SubTitle" text="Populationsize ( # )" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.vgrow="NEVER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -130,7 +130,7 @@
                         <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#stopOperation" text="Stop" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
                      </children>
                   </GridPane>
-                  <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="11">
+                  <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="11">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -143,7 +143,7 @@
                         <Insets bottom="5.0" />
                      </GridPane.margin>
                   </Slider>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="problem" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="problem" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -156,7 +156,7 @@
                         <Insets bottom="5.0" />
                      </GridPane.margin>
                   </ChoiceBox>
-                  <Label text="SETTINGS" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                  <Label styleClass="Title" text="SETTINGS" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
@@ -165,7 +165,7 @@
                      </tooltip>
                   </Label>
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -206,7 +206,7 @@
                         <Slider fx:id="sliderStopNrGenerations" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopNrGenerations" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -214,7 +214,7 @@
                         <Tooltip text="Here you can select our implementation of Marian or the optimized Marian algorithm created by us" />
                      </tooltip>
                   </Label>
-                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="SELECTION optimization " GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="SELECTION optimization " GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -335,7 +335,7 @@
                <children>
                   <TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
                      <tabs>
-                        <Tab text="Min / Max Marian">
+                        <Tab styleClass="TabTitle" text="Min / Max Marian">
                            <content>
                               <LineChart fx:id="lineChartMinMax">
                                 <xAxis>
@@ -347,7 +347,7 @@
                               </LineChart>
                            </content>
                         </Tab>
-                        <Tab text="Fitness">
+                        <Tab styleClass="TabTitle" text="Fitness">
                            <content>
                               <LineChart fx:id="lineChartFitness">
                                 <xAxis>
@@ -359,7 +359,7 @@
                               </LineChart>
                            </content>
                         </Tab>
-                        <Tab text="Min / Max Marian optimized">
+                        <Tab styleClass="TabTitle" text="Min / Max Marian optimized">
                            <content>
                               <LineChart fx:id="lineChartMinMaxOptimized">
                                  <xAxis>
@@ -371,7 +371,7 @@
                               </LineChart>
                            </content>
                         </Tab>
-                        <Tab text="Fitness optimized">
+                        <Tab styleClass="TabTitle" text="Fitness optimized">
                            <content>
                               <LineChart fx:id="lineChartFitnessOptimized">
                                  <xAxis>
@@ -385,7 +385,7 @@
                         </Tab>
                      </tabs>
                   </TabPane>
-                  <Label alignment="TOP_LEFT" text="GRAPHS" GridPane.halignment="CENTER">
+                  <Label alignment="TOP_LEFT" styleClass="Title" text="GRAPHS" GridPane.halignment="CENTER">
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
@@ -424,7 +424,7 @@
               </rowConstraints>
                <children>
                   <Canvas fx:id="canvasProblemGraphical" height="400.0" width="400.0" GridPane.rowIndex="2" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" text="Problem" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES">
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" styleClass="Title" text="Problem" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES">
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
@@ -449,7 +449,7 @@
       </GridPane>
    </left>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar styleClass="MenuBar" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>

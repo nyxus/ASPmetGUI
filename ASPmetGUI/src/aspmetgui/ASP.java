@@ -16,6 +16,7 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -70,6 +71,8 @@ public class ASP extends Application {
             in.close();
         } 
         Scene scene = new Scene(page);
+        Font.loadFont(ASP.class.getResource("BebasNeue.otf").toExternalForm(), 10);
+        Font.loadFont(ASP.class.getResource("Prosto Sans Bold.otf").toExternalForm(), 10);
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();

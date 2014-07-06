@@ -13,7 +13,7 @@
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@CSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aspmetgui.StartScreenController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar styleClass="MenuBar" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -63,7 +63,7 @@
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                </rowConstraints>
                <children>
-                  <Label alignment="TOP_LEFT" text="Welcome" GridPane.halignment="CENTER">
+                  <Label alignment="TOP_LEFT" styleClass="Title" text="Welcome" GridPane.halignment="CENTER">
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
@@ -89,7 +89,7 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" onAction="#extractFileAndRun" text="CREATE problems" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                              <Button mnemonicParsing="false" onAction="#extractFileAndRun" styleClass="ButtonText" text="CREATE problems" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                                  <font>
                                     <Font name="BebasNeue" size="13.0" />
                                  </font>
@@ -97,7 +97,7 @@
                                     <Insets right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#specifyDirectory" text="SPECIFY DIRECTORY" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                              <Button mnemonicParsing="false" onAction="#specifyDirectory" styleClass="ButtonText" text="SPECIFY DIRECTORY" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                  <font>
                                     <Font name="BebasNeue" size="13.0" />
                                  </font>
@@ -116,7 +116,7 @@
                               <RowConstraints minHeight="150.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Marian implementation of the automated sequence planning problem created by Gerco Versloot and Peter Tielbeek. To start using this application we first want to know in wich directory the created problems are stored (Problems created with the application called GeneticProblem)." textAlignment="CENTER" wrappingWidth="400.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                              <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="InfoText" text="Welcome to the Marian implementation of the automated sequence planning problem created by Gerco Versloot and Peter Tielbeek. To start using this application we first want to know in wich directory the created problems are stored (Problems created with the application called GeneticProblem)." textAlignment="CENTER" wrappingWidth="400.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                  <font>
                                     <Font name="BebasNeue" size="17.0" />
                                  </font>
