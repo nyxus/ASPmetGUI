@@ -424,8 +424,10 @@ public class MainScreenController implements Initializable {
                             gc.setFont(Font.font("BebasNeue", 15));
                             if (text.length() == 1) {
                                 gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2) + 5);
-                            } else {
+                            } else if(text.length() == 2){
                                 gc.fillText(Integer.toString(id), (x + breedte / 2)- 6, (y + hoogte / 2) + 5);                                
+                            } else {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2)- 10, (y + hoogte / 2) + 5);                                                                
                             }
                         } else {
                             gc.setFont(Font.font("BebasNeue", 8));
