@@ -44,6 +44,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -67,7 +68,6 @@ public class MainScreenController implements Initializable {
     private int stopTime = 120;
     private int stopNrGenerations = 100;
     private int optimationNrParts = 4;
-    
 
     private Marian marian;
 
@@ -257,48 +257,37 @@ public class MainScreenController implements Initializable {
 
         System.out.println("populationSize: " + populationSize);
         System.out.println("mutationPercentage: " + mutationPercentage);
-        
+
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         final Marian marianTask = new Marian(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()), populationSize, mutationPercentage);
         marian = marianTask;
-        
-         ArrayList<ObservableList<XYChart.Series<String, Double>>> answer = new ArrayList<>();
-    
 
-         ObservableList<XYChart.Series<String, Double>> piet = FXCollections.observableArrayList();
-         answer.add(piet);
-         
-         
-         
-         
-         
+        ArrayList<ObservableList<XYChart.Series<String, Double>>> answer = new ArrayList<>();
+
+        ObservableList<XYChart.Series<String, Double>> piet = FXCollections.observableArrayList();
+        answer.add(piet);
 
         //  copyWorker = createWorker(file, populationSize, mutationPercentage);;
-         
-         
-         
-         
-
         //  copyWorker = createWorker(file, populationSize, mutationPercentage);
         final Double[] collection = getOptimizedSelectionMarian();
-        final long totalIterations =  Math.round(sliderStopNrGenerations.getValue());
-        Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > Task = new Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
-           
-            private ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
-                    
-           /*         
-                 new ReadOnlyObjectWrapper<>(this, "partialResults",
-                         FXCollections.observableArrayList(new ArrayList()));
+        final long totalIterations = Math.round(sliderStopNrGenerations.getValue());
+        Task< ArrayList<ObservableList<XYChart.Series<String, Double>>>> Task = new Task< ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
 
-            public final ArrayList< ReadOnlyObjectWrapper<ObservableList<XYChart.Series<String, Double>>> > getPartialResults() { return partialResults; }
+            private ArrayList< ObservableList<XYChart.Series<String, Double>>> partialResults = new ArrayList<>();
+
+            /*         
+             new ReadOnlyObjectWrapper<>(this, "partialResults",
+             FXCollections.observableArrayList(new ArrayList()));
+
+             public final ArrayList< ReadOnlyObjectWrapper<ObservableList<XYChart.Series<String, Double>>> > getPartialResults() { return partialResults; }
             
-            public final ArrayList< ReadOnlyObjectProperty<ObservableList<XYChart.Series<String, Double>>> > partialResultsProperty(int index) {
-                return partialResults.get(index).getReadOnlyProperty();
-            }
+             public final ArrayList< ReadOnlyObjectProperty<ObservableList<XYChart.Series<String, Double>>> > partialResultsProperty(int index) {
+             return partialResults.get(index).getReadOnlyProperty();
+             }
             
-            */
+             */
             @Override
-            protected ArrayList<ObservableList<XYChart.Series<String, Double>>>  call() throws Exception {
+            protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
                 int iterations;
                 Series<String, Double> minCostSeries = new Series<String, Double>();
                 Series<String, Double> maxCostSeries = new Series<String, Double>();
@@ -309,17 +298,17 @@ public class MainScreenController implements Initializable {
                 maxSeries.setName("Max Fitness");
                 AvgFitnessSeries.setName("Average Fitness");
                 Population pop = marianTask.generatePopulationBetter(populationSize);
-                partialResults.add(0 ,FXCollections.observableArrayList(new ArrayList()));
-                partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
+                partialResults.add(0, FXCollections.observableArrayList(new ArrayList()));
+                partialResults.add(1, FXCollections.observableArrayList(new ArrayList()));
                 partialResults.get(0).addAll(maxSeries, AvgFitnessSeries);
                 partialResults.get(1).addAll(minCostSeries, maxCostSeries);
-                
+
                 for (iterations = 0; iterations <= totalIterations; iterations++) {
                     if (Thread.currentThread().isInterrupted()) {
                         updateProgress(totalIterations, totalIterations);
                         System.out.println("Stop task");
-                        return  partialResults;
-                        
+                        return partialResults;
+
                     }
 
 //                   System.out.println("Start crossover");
@@ -333,16 +322,17 @@ public class MainScreenController implements Initializable {
 //                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
 //                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
 //                    System.out.println("---------------------------------------------------------------");
-                    System.out.println("Min:" + ((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts()) );
+                    System.out.println("Min:" + ((double) marianTask.getFirstMin().getCosts() / (double) pop.getMin().getCosts()));
                     System.out.println("Set for send: " + iterations);
                     final double max = pop.getMax().getFitness();
 //                    final double min = (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10;
                     final double minCosts = pop.getMin().getCosts();
                     final double maxCosts = pop.getMax().getCosts();
-                    final double avg =  pop.getAverageFittness();
+                    final double avg = pop.getAverageFittness();
                     final int gen = iterations;
                     Platform.runLater(new Runnable() {
-                        @Override public void run() {
+                        @Override
+                        public void run() {
                             partialResults.get(0).get(0).getData().add(new XYChart.Data(Integer.toString(gen), max));
                             partialResults.get(0).get(1).getData().add(new XYChart.Data(Integer.toString(gen), avg));
                             partialResults.get(1).get(0).getData().add(new XYChart.Data(Integer.toString(gen), minCosts));
@@ -355,20 +345,19 @@ public class MainScreenController implements Initializable {
                 return partialResults;
             }
         };
-        
-       
-        Task.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
+
+        Task.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
             int generationCounter = 0;
 
             @Override
-            public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>> > observable, ArrayList<ObservableList<XYChart.Series<String, Double>>>  oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>>  newValue) {
-                    
+            public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
+
                 lineChartMinMax.setData(newValue.get(0));
                 lineChartFitness.setData(newValue.get(1));
-                
+
             }
         });
-        
+
         Task<Canvas> drawProblem = new Task<Canvas>() {
             @Override
             protected Canvas call() throws Exception {
@@ -427,10 +416,27 @@ public class MainScreenController implements Initializable {
 
                     gc.setStroke(Color.WHITE);
                     gc.stroke();
-                    
-                    if(toggleBlockNr){
+
+                    if (toggleBlockNr) {
                         gc.setFill(Color.BLACK);
-                        gc.fillText(Integer.toString(id), x + breedte / 2, y + hoogte / 2);
+                        String text = id + "";
+                        if (marian.getFysicalMatrix().length < 20) {
+                            gc.setFont(Font.font("BebasNeue", 15));
+                            if (text.length() == 1) {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2) + 5);
+                            } else {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2)- 6, (y + hoogte / 2) + 5);                                
+                            }
+                        } else {
+                            gc.setFont(Font.font("BebasNeue", 8));
+                            if (text.length() == 1) {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2)+3);
+                            } else if (text.length() == 2) {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2)+3);
+                            } else {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 5, (y + hoogte / 2)+3);
+                            }
+                        }
                     }
 
                     updateMessage("Progress: " + block.getID() + "-" + blockCollection.size());
@@ -495,7 +501,7 @@ public class MainScreenController implements Initializable {
 
     public void stopOperation() {
         tr.interrupt();
-        
+
         a("Application stopped.");
     }
 
@@ -559,17 +565,16 @@ public class MainScreenController implements Initializable {
 
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
         labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
-        
 
         arrayListOptimationParts.clear();
-        double part =  (1 / Double.parseDouble(""+optimationNrParts));
+        double part = (1 / Double.parseDouble("" + optimationNrParts));
 
         for (int i = 0; i < optimationNrParts; i++) {
-            DecimalFormat df = new DecimalFormat("0.00");   
+            DecimalFormat df = new DecimalFormat("0.00");
             TextField tf = new TextField();
             tf.setPrefWidth(288);
-            tf.setText(df.format(part)+"");
-            
+            tf.setText(df.format(part) + "");
+
             tf.setAlignment(Pos.CENTER);
 
             //Setting an action for the Clear button
@@ -606,7 +611,7 @@ public class MainScreenController implements Initializable {
             toggleBlockNr = true;
         }
     }
-    
+
     public void toggleFullscreen() {
         if (toggleFullscreen) {
             toggleFullscreen = false;
@@ -615,7 +620,7 @@ public class MainScreenController implements Initializable {
         }
         application.setFullscreen(toggleFullscreen);
     }
-    
+
     boolean isDouble(String str) {
         try {
             Double.parseDouble(str);
@@ -624,25 +629,25 @@ public class MainScreenController implements Initializable {
             return false;
         }
     }
-    
+
     public void calculateRemaining() {
         double remaining = 0;
         double temp;
 
         DecimalFormat df = new DecimalFormat("0.00");
         for (int i = 0; i < arrayListOptimationParts.size(); i++) {
-                arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
-            if(isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))){
+            arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
+            if (isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))) {
                 temp = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
 
-                remaining += temp;                
+                remaining += temp;
             } else {
                 arrayListOptimationParts.get(i).getStyleClass().add("wrong-textfield");
             }
         }
 
         remaining = 1 - remaining;
-        
+
         labelOptimationRemaining.setText("Remaining ( " + df.format(remaining) + " )");
     }
 
