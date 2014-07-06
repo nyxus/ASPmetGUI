@@ -44,6 +44,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -67,7 +68,6 @@ public class MainScreenController implements Initializable {
     private int stopTime = 120;
     private int stopNrGenerations = 100;
     private int optimationNrParts = 4;
-    
 
     private Marian marian;
 
@@ -257,7 +257,7 @@ public class MainScreenController implements Initializable {
 
         System.out.println("populationSize: " + populationSize);
         System.out.println("mutationPercentage: " + mutationPercentage);
-        
+
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
         final Marian marianTask = new Marian(filename, populationSize, mutationPercentage,getOptimizedSelectionMarian(), Math.round(sliderStopNrGenerations.getValue()) );
@@ -271,14 +271,14 @@ public class MainScreenController implements Initializable {
             int generationCounter = 0;
 
             @Override
-            public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>> > observable, ArrayList<ObservableList<XYChart.Series<String, Double>>>  oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>>  newValue) {
-                    
+            public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
+
                 lineChartMinMax.setData(newValue.get(0));
                 lineChartFitness.setData(newValue.get(1));
 
             }
         });
-        
+
         Task<Canvas> drawProblem = new Task<Canvas>() {
             @Override
             protected Canvas call() throws Exception {
@@ -337,10 +337,29 @@ public class MainScreenController implements Initializable {
 
                     gc.setStroke(Color.WHITE);
                     gc.stroke();
-                    
-                    if(toggleBlockNr){
+
+                    if (toggleBlockNr) {
                         gc.setFill(Color.BLACK);
-                        gc.fillText(Integer.toString(id), x + breedte / 2, y + hoogte / 2);
+                        String text = id + "";
+                        if (marian.getFysicalMatrix().length < 20) {
+                            gc.setFont(Font.font("BebasNeue", 15));
+                            if (text.length() == 1) {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2) + 5);
+                            } else if(text.length() == 2){
+                                gc.fillText(Integer.toString(id), (x + breedte / 2)- 6, (y + hoogte / 2) + 5);                                
+                            } else {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2)- 10, (y + hoogte / 2) + 5);                                                                
+                            }
+                        } else {
+                            gc.setFont(Font.font("BebasNeue", 8));
+                            if (text.length() == 1) {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2)+3);
+                            } else if (text.length() == 2) {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2)+3);
+                            } else {
+                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 5, (y + hoogte / 2)+3);
+                            }
+                        }
                     }
 
                     updateMessage("Progress: " + block.getID() + "-" + blockCollection.size());
@@ -405,7 +424,7 @@ public class MainScreenController implements Initializable {
 
     public void stopOperation() {
         tr.interrupt();
-        
+
         a("Application stopped.");
     }
 
@@ -469,17 +488,16 @@ public class MainScreenController implements Initializable {
 
         optimationNrParts = (int) sliderOptimationNrParts.getValue();
         labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
-        
 
         arrayListOptimationParts.clear();
-        double part =  (1 / Double.parseDouble(""+optimationNrParts));
+        double part = (1 / Double.parseDouble("" + optimationNrParts));
 
         for (int i = 0; i < optimationNrParts; i++) {
-            DecimalFormat df = new DecimalFormat("0.00");   
+            DecimalFormat df = new DecimalFormat("0.00");
             TextField tf = new TextField();
             tf.setPrefWidth(288);
-            tf.setText(df.format(part)+"");
-            
+            tf.setText(df.format(part) + "");
+
             tf.setAlignment(Pos.CENTER);
 
             //Setting an action for the Clear button
@@ -516,7 +534,7 @@ public class MainScreenController implements Initializable {
             toggleBlockNr = true;
         }
     }
-    
+
     public void toggleFullscreen() {
         if (toggleFullscreen) {
             toggleFullscreen = false;
@@ -525,7 +543,7 @@ public class MainScreenController implements Initializable {
         }
         application.setFullscreen(toggleFullscreen);
     }
-    
+
     boolean isDouble(String str) {
         try {
             Double.parseDouble(str);
@@ -534,25 +552,25 @@ public class MainScreenController implements Initializable {
             return false;
         }
     }
-    
+
     public void calculateRemaining() {
         double remaining = 0;
         double temp;
 
         DecimalFormat df = new DecimalFormat("0.00");
         for (int i = 0; i < arrayListOptimationParts.size(); i++) {
-                arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
-            if(isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))){
+            arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
+            if (isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))) {
                 temp = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
 
-                remaining += temp;                
+                remaining += temp;
             } else {
                 arrayListOptimationParts.get(i).getStyleClass().add("wrong-textfield");
             }
         }
 
         remaining = 1 - remaining;
-        
+
         labelOptimationRemaining.setText("Remaining ( " + df.format(remaining) + " )");
     }
 
