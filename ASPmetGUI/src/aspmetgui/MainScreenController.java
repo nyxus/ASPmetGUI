@@ -263,10 +263,6 @@ public class MainScreenController implements Initializable {
         final Marian marianTask = new Marian(filename, populationSize, mutationPercentage,getOptimizedSelectionMarian(), Math.round(sliderStopNrGenerations.getValue()) );
         marian = marianTask;
         
-        // set marianTask paramters 
-        final Double[] collection = getOptimizedSelectionMarian();
-        final long totalIterations =  Math.round(sliderStopNrGenerations.getValue());
-    
         marianTask.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
             int generationCounter = 0;
 
@@ -278,98 +274,7 @@ public class MainScreenController implements Initializable {
 
             }
         });
-
-        Task<Canvas> drawProblem = new Task<Canvas>() {
-            @Override
-            protected Canvas call() throws Exception {
-                System.out.println("Drawing problem building");
-                canvasProblemGraphical = new Canvas(canvasProblemGraphical.getWidth(), canvasProblemGraphical.getHeight());
-
-                GraphicsContext gc = canvasProblemGraphical.getGraphicsContext2D();
-                double canvasWidth = gc.getCanvas().getWidth();
-                double canvasHeight = gc.getCanvas().getHeight();
-
-                ArrayList<Block> blockCollection = marian.getBlockCollection();
-                gc.setFill(Color.WHITE);
-                gc.fillRect(0, 0, canvasWidth, canvasHeight);
-                gc.fill();
-                gc.setStroke(Color.BLUE);
-
-                int id;
-                double minx;
-                double maxx;
-                double miny;
-                double maxy;
-                double height;
-                double width;
-                Random random = new Random();
-
-                double gridSize = (canvasWidth / (marian.getLength()));
-
-                for (Block block : blockCollection) {
-                    minx = block.getMinX();
-                    maxx = block.getMaxX();
-                    miny = block.getMinY();
-                    maxy = block.getMaxY();
-                    width = block.getWidth();
-                    height = block.getHeight();
-                    id = block.getID();
-
-                    double x = minx * gridSize;
-                    double y = canvasHeight - height * gridSize - (miny * gridSize);
-                    double breedte = width * gridSize;
-                    double hoogte = height * gridSize;
-                    int randomcolor;
-
-                    int min = 200;
-                    int max = 250;
-                    randomcolor = random.nextInt(max - min) + min;
-
-                    gc.setFill(Color.rgb(randomcolor, randomcolor, randomcolor));
-                    gc.fillRect(x, y, breedte - 1, hoogte - 1);
-
-                    gc.setStroke(Color.WHITE);
-                    gc.setLineWidth(1);
-                    gc.strokeLine(x, y, x + breedte, y);
-                    gc.strokeLine(x, y, x, y + hoogte);
-                    gc.strokeLine(x, y + hoogte, x + breedte, y + hoogte);
-                    gc.strokeLine(x + breedte, y, x + breedte, y + hoogte);
-
-                    gc.setStroke(Color.WHITE);
-                    gc.stroke();
-
-                    if (toggleBlockNr) {
-                        gc.setFill(Color.BLACK);
-                        String text = id + "";
-                        if (marian.getFysicalMatrix().length < 20) {
-                            gc.setFont(Font.font("BebasNeue", 15));
-                            if (text.length() == 1) {
-                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2) + 5);
-                            } else if(text.length() == 2){
-                                gc.fillText(Integer.toString(id), (x + breedte / 2)- 6, (y + hoogte / 2) + 5);                                
-                            } else {
-                                gc.fillText(Integer.toString(id), (x + breedte / 2)- 10, (y + hoogte / 2) + 5);                                                                
-                            }
-                        } else {
-                            gc.setFont(Font.font("BebasNeue", 8));
-                            if (text.length() == 1) {
-                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2)+3);
-                            } else if (text.length() == 2) {
-                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 4, (y + hoogte / 2)+3);
-                            } else {
-                                gc.fillText(Integer.toString(id), (x + breedte / 2) - 5, (y + hoogte / 2)+3);
-                            }
-                        }
-                    }
-
-                    updateMessage("Progress: " + block.getID() + "-" + blockCollection.size());
-                    //updateValue(canvasProblemGraphical);
-
-                }
-                return canvasProblemGraphical;
-            }
-        };
-
+        
         progressBar.progressProperty().unbind();
         progressBar.progressProperty().bind(marianTask.progressProperty());
 
@@ -378,6 +283,9 @@ public class MainScreenController implements Initializable {
                 a(newValue);
             }
         });
+
+
+        Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
         drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
             @Override
