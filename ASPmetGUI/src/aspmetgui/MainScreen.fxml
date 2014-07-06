@@ -214,7 +214,7 @@
                         <Tooltip text="Here you can select our implementation of Marian or the optimized Marian algorithm created by us" />
                      </tooltip>
                   </Label>
-                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="SELECTION OPTIMATION" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="SELECTION optimization " GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -278,7 +278,7 @@
                               <Insets bottom="5.0" />
                            </GridPane.margin>
                         </CheckBox>
-                        <CheckBox mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimation" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <CheckBox mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimization " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
                            </font>

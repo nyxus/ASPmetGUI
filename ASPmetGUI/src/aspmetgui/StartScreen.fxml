@@ -94,7 +94,7 @@
                                     <Font name="BebasNeue" size="13.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets top="5.0" />
+                                    <Insets right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Button>
                               <Button mnemonicParsing="false" onAction="#specifyDirectory" text="SPECIFY DIRECTORY" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
