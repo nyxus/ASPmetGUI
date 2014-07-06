@@ -79,22 +79,22 @@
               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="1.0" minHeight="1.0" prefHeight="1.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                <RowConstraints minHeight="20.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
                   <RowConstraints minHeight="-Infinity" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="ALWAYS" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="20.0" prefHeight="0.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" vgrow="NEVER" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
@@ -143,7 +143,7 @@
                         <Insets bottom="5.0" />
                      </GridPane.margin>
                   </Slider>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="problems" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="problem" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -151,7 +151,7 @@
                         <Tooltip text="Here you can select the found problems in the previously selected directory" />
                      </tooltip>
                   </Label>
-                  <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
+                  <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets bottom="5.0" />
                      </GridPane.margin>
@@ -206,8 +206,7 @@
                         <Slider fx:id="sliderStopNrGenerations" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopNrGenerations" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <ChoiceBox fx:id="choiceBoxProblems1" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -267,8 +266,38 @@
                   <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="18" GridPane.valignment="TOP" />
                   <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="12" GridPane.valignment="TOP" />
                   <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.valignment="TOP" />
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.valignment="TOP" />
                   <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.valignment="TOP" />
+                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
+                     <children>
+                        <CheckBox mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                           <font>
+                              <Font name="BebasNeue" size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" />
+                           </GridPane.margin>
+                        </CheckBox>
+                        <CheckBox mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimation" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                           <font>
+                              <Font name="BebasNeue" size="14.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Empty Tooltip" />
+                           </tooltip>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" />
+                           </GridPane.margin>
+                        </CheckBox>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                     </rowConstraints>
+                  </GridPane>
                </children>
                <BorderPane.margin>
                   <Insets />
