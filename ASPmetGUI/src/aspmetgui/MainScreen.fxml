@@ -335,7 +335,7 @@
                <children>
                   <TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
                      <tabs>
-                        <Tab text="Min / Max">
+                        <Tab text="Min / Max Marian">
                            <content>
                               <LineChart fx:id="lineChartMinMax">
                                 <xAxis>
@@ -356,6 +356,30 @@
                                 <yAxis>
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
+                              </LineChart>
+                           </content>
+                        </Tab>
+                        <Tab text="Min / Max Marian optimized">
+                           <content>
+                              <LineChart fx:id="lineChartMinMaxOptimized">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </LineChart>
+                           </content>
+                        </Tab>
+                        <Tab text="Fitness optimized">
+                           <content>
+                              <LineChart fx:id="lineChartFitnessOptimized">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
                               </LineChart>
                            </content>
                         </Tab>

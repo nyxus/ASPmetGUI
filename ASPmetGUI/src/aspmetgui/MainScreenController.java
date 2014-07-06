@@ -129,7 +129,11 @@ public class MainScreenController implements Initializable {
     @FXML
     private LineChart lineChartMinMax;
     @FXML
+    private LineChart lineChartMinMaxOptimized;
+    @FXML
     private LineChart lineChartFitness;
+    @FXML
+    private LineChart lineChartFitnessOptimized;
 
     @FXML
     private Canvas canvasProblemGraphical;
