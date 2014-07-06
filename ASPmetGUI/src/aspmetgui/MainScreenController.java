@@ -286,9 +286,10 @@ public class MainScreenController implements Initializable {
                  partialResults.get().addAll(minSeries, maxSeries, AvgFitnessSeries);
                 
                 for (iterations = 0; iterations <= totalIterations; iterations++) {
-                    if (isCancelled()) {
-                        updateMessage("Cancelled");
-                        break;
+                    if (Thread.currentThread().isInterrupted()) {
+                        System.out.println("Stop task");
+                        return  partialResults.get();
+                        
                     }
 
 //                   System.out.println("Start crossover");
@@ -459,7 +460,8 @@ public class MainScreenController implements Initializable {
     }
 
     public void stopOperation() {
-        //tr.stop();
+        tr.interrupt();
+        
         a("Application stopped.");
     }
 

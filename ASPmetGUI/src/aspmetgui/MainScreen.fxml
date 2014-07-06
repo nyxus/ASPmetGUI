@@ -127,7 +127,7 @@
                     </rowConstraints>
                      <children>
                         <Button fx:id="buttonStart" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#runMarian" text="Start" textAlignment="CENTER" GridPane.valignment="BOTTOM" />
-                        <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Stop" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
+                        <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#stopOperation" text="Stop" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
                      </children>
                   </GridPane>
                   <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="11">
