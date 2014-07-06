@@ -134,6 +134,15 @@ public class MainScreenController implements Initializable {
     private LineChart lineChartFitness;
     @FXML
     private LineChart lineChartFitnessOptimized;
+    
+    @FXML
+    private Tab tabMinMaxMarian;
+    @FXML
+    private Tab tabFitness;
+    @FXML
+    private Tab tabMinMaxMarianOptimized;
+    @FXML
+    private Tab tabFitnessOptimized;
 
     @FXML
     private Canvas canvasProblemGraphical;

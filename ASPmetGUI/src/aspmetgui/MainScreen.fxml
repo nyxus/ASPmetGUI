@@ -165,7 +165,7 @@
                      </tooltip>
                   </Label>
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -189,7 +189,7 @@
                               <Font name="BebasNeue" size="14.0" />
                            </font>
                         </CheckBox>
-                        <CheckBox fx:id="checkboxStopNrGenerations" mnemonicParsing="false" onAction="#updateCheckBoxes" text="NR of generations ( # )" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <CheckBox fx:id="checkboxStopNrGenerations" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Nr of generations ( # )" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
                            </font>
@@ -214,7 +214,7 @@
                         <Tooltip text="Here you can select our implementation of Marian or the optimized Marian algorithm created by us" />
                      </tooltip>
                   </Label>
-                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="SELECTION optimization " GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
+                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Selection optimization " GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="BebasNeue" size="14.0" />
                      </font>
@@ -232,7 +232,7 @@
                      </rowConstraints>
                      <children>
                         <Slider fx:id="sliderOptimationNrParts" majorTickUnit="1.0" max="5.0" min="2.0" minorTickCount="0" onMouseDragged="#setLabelOptimationParts" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1" />
-                        <Label fx:id="labelOptimationParts" text="NR OF  PARTS ( # )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                        <Label fx:id="labelOptimationParts" text="Nr of parts ( # )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
                            </font>
@@ -240,7 +240,7 @@
                               <Insets left="26.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="labelOptimationRemaining" text="remaining ( # )" GridPane.halignment="LEFT">
+                        <Label fx:id="labelOptimationRemaining" text="Remaining ( # )" GridPane.halignment="LEFT">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
                            </font>
@@ -335,7 +335,7 @@
                <children>
                   <TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
                      <tabs>
-                        <Tab styleClass="TabTitle" text="Min / Max Marian">
+                        <Tab fx:id="tabMinMaxMarian" styleClass="TabTitle" text="Min / Max Marian">
                            <content>
                               <LineChart fx:id="lineChartMinMax">
                                 <xAxis>
@@ -347,7 +347,7 @@
                               </LineChart>
                            </content>
                         </Tab>
-                        <Tab styleClass="TabTitle" text="Fitness">
+                        <Tab fx:id="tabFitness" styleClass="TabTitle" text="Fitness">
                            <content>
                               <LineChart fx:id="lineChartFitness">
                                 <xAxis>
@@ -359,7 +359,7 @@
                               </LineChart>
                            </content>
                         </Tab>
-                        <Tab styleClass="TabTitle" text="Min / Max Marian optimized">
+                        <Tab fx:id="tabMinMaxMarianOptimized" styleClass="TabTitle" text="Min / Max Marian optimized">
                            <content>
                               <LineChart fx:id="lineChartMinMaxOptimized">
                                  <xAxis>
@@ -371,7 +371,7 @@
                               </LineChart>
                            </content>
                         </Tab>
-                        <Tab styleClass="TabTitle" text="Fitness optimized">
+                        <Tab fx:id="tabFitnessOptimized" styleClass="TabTitle" text="Fitness optimized">
                            <content>
                               <LineChart fx:id="lineChartFitnessOptimized">
                                  <xAxis>
@@ -424,7 +424,7 @@
               </rowConstraints>
                <children>
                   <Canvas fx:id="canvasProblemGraphical" height="400.0" width="400.0" GridPane.rowIndex="2" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" styleClass="Title" text="Problem" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES">
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" styleClass="Title" text="PROBLEM" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES">
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
