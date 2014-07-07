@@ -270,7 +270,7 @@
                   <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.valignment="TOP" />
                   <GridPane GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
                      <children>
-                        <CheckBox mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                        <CheckBox fx:id="checkboxMarian" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
                            </font>
@@ -278,7 +278,7 @@
                               <Insets bottom="5.0" />
                            </GridPane.margin>
                         </CheckBox>
-                        <CheckBox mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimization " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <CheckBox fx:id="checkboxMarianWithOptimization" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimization " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                            <font>
                               <Font name="BebasNeue" size="14.0" />
                            </font>

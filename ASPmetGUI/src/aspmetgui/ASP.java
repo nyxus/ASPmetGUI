@@ -13,10 +13,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -25,6 +27,8 @@ import javafx.stage.Stage;
  */
 public class ASP extends Application {
     private Stage stage;
+    private Boolean fullscreen = false;
+    
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -34,10 +38,16 @@ public class ASP extends Application {
         System.out.println(ASP.class.getResource("Icon.png").getPath());
         
         stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon.png")));
+         
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+        //set Stage boundaries to visible bounds of the main screen
+        stage.setX(primaryScreenBounds.getMinX());
+        stage.setY(primaryScreenBounds.getMinY());
+        stage.setWidth(primaryScreenBounds.getWidth());
+        stage.setHeight(primaryScreenBounds.getHeight());
         stage.show();
-        
     }
-    
         
     public void loadStartScreen() {
         try {
@@ -48,6 +58,14 @@ public class ASP extends Application {
         }
     }
     
+    public void toggleFullscreen(){
+        if(this.fullscreen){
+            this.fullscreen = false;
+        } else {
+            this.fullscreen = true;
+        }
+        this.stage.setFullScreen(fullscreen);
+    }
         
     public void loadMainScreen(String directory) {
         try {
@@ -72,8 +90,10 @@ public class ASP extends Application {
         } 
         Scene scene = new Scene(page);
         Font.loadFont(ASP.class.getResource("BebasNeue.otf").toExternalForm(), 10);
+        
         stage.setScene(scene);
-        stage.sizeToScene();
+        stage.setFullScreen(fullscreen);            
+        
         return (Initializable) loader.getController();
     }
 
@@ -83,10 +103,6 @@ public class ASP extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }
-    
-    public void setFullscreen(Boolean fullscreen){
-        stage.setFullScreen(fullscreen);
     }
     
 }
