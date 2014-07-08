@@ -5,6 +5,7 @@
  */
 package aspmetgui;
 
+import static aspmetgui.Marian.MarianOrignal;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -259,40 +260,71 @@ public class MainScreenController implements Initializable {
         answer.addAll(aSeries);
         return answer;
     }
-
-    public void runMarian() {
-        populationSize = (int) sliderPopulationSize.getValue();
-        mutationPercentage = (double) sliderMutationPercentage.getValue();
-
-        System.out.println("populationSize: " + populationSize);
-        System.out.println("mutationPercentage: " + mutationPercentage);
-
-        a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
-        String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
-        final Marian marianTask = new Marian(filename, populationSize, mutationPercentage,getOptimizedSelectionMarian(), Math.round(sliderStopNrGenerations.getValue()) );
-        marian = marianTask;
+    /**
+     * Setup for a marian task
+     * @param filename String file directory
+     * @param populationSize Interger size of the population
+     * @param mutation double mutation rate of the algoritm 
+     * @param setAlgoritm int Marian origial: Marian.MarianOrignal, marian optimised: Marian.MarianOptimised
+     * @param stopConditions boolean[3] Stop conditions flag, [0] = generations, [1] = time, [2] = infinite 
+     * @param nrOfGenerations 
+     * @param runTime
+     * @param minMaxChart
+     * @param fitnessChart
+     * @return 
+     */
+    private Marian setupMarian(
+            String filename,
+            int populationSize,
+            double mutation,
+            int setAlgoritm,
+            StopConditionsMarian stopConditions,
+            Double[] OptimilisationRatios,
+            LineChart minMaxChart,
+            LineChart fitnessChart
+    ){
+        Marian marian = new Marian(filename, populationSize, mutation, setAlgoritm, stopConditions, OptimilisationRatios);
         
-        marianTask.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
-            int generationCounter = 0;
-
+        marian.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
             @Override
             public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
-
-                lineChartMinMax.setData(newValue.get(0));
-                lineChartFitness.setData(newValue.get(1));
-
+                minMaxChart.setData(newValue.get(0));
+                fitnessChart.setData(newValue.get(1));
             }
         });
         
-        progressBar.progressProperty().unbind();
-        progressBar.progressProperty().bind(marianTask.progressProperty());
-
-        marianTask.messageProperty().addListener(new ChangeListener<String>() {
+        marian.messageProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 a(newValue);
             }
         });
+        
+        return marian;
+    }
 
+    public void runMarian() {
+        populationSize = (int) sliderPopulationSize.getValue();
+        int nrOfGenerations = (int) Math.round(sliderStopNrGenerations.getValue());
+        long runTime = Math.round(sliderStopTime.getValue()) * 1000;
+        System.out.println("time:" + runTime);
+        mutationPercentage = (double) sliderMutationPercentage.getValue();
+
+        System.out.println("populationSize: " + populationSize);
+        System.out.println("mutationPercentage: " + mutationPercentage);
+        
+        a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
+        String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
+        
+        
+        StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
+        
+        marian = setupMarian(filename, populationSize, mutationPercentage, Marian.MarianOptimised, stopConditions, getOptimizedSelectionMarian(), lineChartMinMax, lineChartFitness);
+        
+        Population newPop = marian.generatePopulationBetter(populationSize);
+        marian.setUsePopulation(newPop);
+       
+        progressBar.progressProperty().unbind();
+        progressBar.progressProperty().bind(marian.progressProperty());
 
         Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
@@ -310,7 +342,7 @@ public class MainScreenController implements Initializable {
             }
         });
 
-        this.tr = new Thread(marianTask);
+        this.tr = new Thread(marian);
         tr.setDaemon(true);
         tr.start();
 
@@ -318,10 +350,6 @@ public class MainScreenController implements Initializable {
         drawTask.setDaemon(true);
         drawTask.start();
 
-        //a("File "+file.getAbsolutePath()+" loaded.");
-        //marian = new Marian(file.getAbsolutePath(), populationSize, mutationPercentage);
-        // marian.start();
-        a("done! o.O");
     }
 
     public Double[] getOptimizedSelectionMarian() {
@@ -366,7 +394,6 @@ public class MainScreenController implements Initializable {
 
     public void setLabelStopTime() {
         stopTime = (int) sliderStopTime.getValue();
-
         checkboxStopTime.setText("TIME ( " + stopTime + "SEC )");
     }
 
