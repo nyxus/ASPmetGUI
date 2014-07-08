@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -1063,10 +1064,20 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
             final int gen = generations;
             Platform.runLater(new Runnable() {
                 @Override public void run() {
-                    partialResults.get(0).get(0).getData().add(new XYChart.Data(Integer.toString(gen), max));
-                    partialResults.get(0).get(1).getData().add(new XYChart.Data(Integer.toString(gen), avg));
-                    partialResults.get(1).get(0).getData().add(new XYChart.Data(Integer.toString(gen), maxCosts));
-                    partialResults.get(1).get(1).getData().add(new XYChart.Data(Integer.toString(gen), minCosts));
+                    DecimalFormat dfFitness = new DecimalFormat("0000");
+                    DecimalFormat dfCost = new DecimalFormat("0.0000");
+                    final XYChart.Data<String, Double> maxNode = new XYChart.Data(Integer.toString(gen), max); 
+                    final XYChart.Data<String, Double> avgFitnessNode = new XYChart.Data(Integer.toString(gen), avg); 
+                    final XYChart.Data<String, Double> maxCostNode = new XYChart.Data(Integer.toString(gen), maxCosts); 
+                    final XYChart.Data<String, Double> minCostNode = new XYChart.Data(Integer.toString(gen), minCosts); 
+                    maxNode.setNode(new HoverNode(gen, dfCost.format(max)));
+                    avgFitnessNode.setNode(new HoverNode(gen, dfCost.format(avg)));
+                    maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
+                    minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
+                    partialResults.get(0).get(0).getData().add(maxNode);
+                    partialResults.get(0).get(1).getData().add(avgFitnessNode);
+                    partialResults.get(1).get(0).getData().add(maxCostNode);
+                    partialResults.get(1).get(1).getData().add(minCostNode);
                     updateValue(partialResults);
                 }
             });

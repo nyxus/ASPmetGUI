@@ -91,12 +91,7 @@ public class StartScreenController implements Initializable {
     }
 
     public void toggleFullscreen() {
-        if (toggleFullscreen) {
-            toggleFullscreen = false;
-        } else {
-            toggleFullscreen = true;
-        }
-        application.setFullscreen(toggleFullscreen);
+        application.toggleFullscreen();
     }
 
     public void setApp(ASP application) {

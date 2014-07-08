@@ -98,6 +98,11 @@ public class MainScreenController implements Initializable {
     private CheckBox checkboxStopNrGenerations;
     @FXML
     private CheckBox checkboxStopInfinite;
+    @FXML
+    private CheckBox checkboxMarian;
+    @FXML
+    private CheckBox checkboxMarianWithOptimization;
+    
 
     @FXML
     private Slider sliderPopulationSize;
@@ -480,12 +485,7 @@ public class MainScreenController implements Initializable {
     }
 
     public void toggleFullscreen() {
-        if (toggleFullscreen) {
-            toggleFullscreen = false;
-        } else {
-            toggleFullscreen = true;
-        }
-        application.setFullscreen(toggleFullscreen);
+        application.toggleFullscreen();
     }
 
     boolean isDouble(String str) {
