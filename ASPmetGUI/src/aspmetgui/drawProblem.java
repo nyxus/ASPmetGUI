@@ -110,8 +110,6 @@ public class drawProblem extends Task<Canvas> {
                     }
                 }
             }
-
-            updateMessage("Progress: " + block.getID() + "-" + blockCollection.size());
             updateValue(canvasProblemGraphical);
 
         }

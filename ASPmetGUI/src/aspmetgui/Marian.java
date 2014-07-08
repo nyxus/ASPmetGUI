@@ -1,5 +1,6 @@
 package aspmetgui;
 
+import aspmetgui.Exceptions.AlgorithmNotSet;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -34,15 +35,21 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
 
     private Chromosome firstMin;
 
-    
-
     private int problemSize;
     private double mutationPercentage = 2.25;
     private int populationSize;
-    private Double[] collection;
-    long totalIterations;
+    private Double[] OptimilisationRatios;
 
-     private ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
+    private long maxGererations;
+    private long maxRunTime;
+    private int Algorithm;
+    
+    public final static int MarianOptimised = 0; 
+    public final static int MarianOrignal = 1; 
+    StopConditionsMarian stopCondition;
+    private Population usePopulation = null;
+    
+    private ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
 
     /**
      * Create a problem to solve with the algorithm of Marian
@@ -51,12 +58,13 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
      * id minX maxX minY maxY
      * @param populationSize the size of a population
      */
-    public Marian(String filename, int populationSize, double mutation, Double[] collection, long totalIterations ) {
+    public Marian(String filename, int populationSize, double mutation, int setAlgoritm, StopConditionsMarian stopCondition, Double[] OptimilisationRatios) {
         problemSize = getProblemSize(filename);
-        this.collection = collection;
-        this.totalIterations = totalIterations;
         this.populationSize = populationSize;
         this.mutationPercentage = mutation;
+        this.Algorithm = setAlgoritm;
+        this.stopCondition = stopCondition;
+        this.OptimilisationRatios = OptimilisationRatios;
         System.out.println("ProblemSize = " + problemSize);
 
         floor = new Block(0, 0, problemSize, 0, 0);
@@ -970,13 +978,13 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     }
     
     public Population getSelectionPandG(Population oldPop, int newPopSize){
-        ArrayList<Double> ratio = new ArrayList<>(Arrays.asList(this.collection));
+        ArrayList<Double> ratio = new ArrayList<>(Arrays.asList(this.OptimilisationRatios));
 
         return getSelecetion(oldPop, newPopSize, ratio);
     }
     
     public void setOptimizedSelectionRatio(Double[] collection){
-        this.collection = collection;
+        this.OptimilisationRatios = collection;
     }
     
     
@@ -999,7 +1007,8 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     
     @Override
     protected ArrayList<ObservableList<XYChart.Series<String, Double>>>  call() throws Exception {
-        int iterations;
+        int generations = 0;
+        long maxRunTime = getMaxRunTime() + System.currentTimeMillis(); 
         XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
         XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
         XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
@@ -1007,40 +1016,51 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
         minCostSeries.setName("Min Costs");
         maxCostSeries.setName("Max Costs");
         maxFitnessSeries.setName("Max Fitness");
-        AvgFitnessSeries.setName("Average Fitness");
-        Population pop = this.generatePopulationBetter(populationSize);
+        AvgFitnessSeries.setName("Average Fitness"); 
         partialResults.add(0 ,FXCollections.observableArrayList(new ArrayList()));
         partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
         partialResults.get(0).addAll(maxFitnessSeries, AvgFitnessSeries);
         partialResults.get(1).addAll(maxCostSeries, minCostSeries);
-
-        for (iterations = 0; iterations <= totalIterations; iterations++) {
+        this.setOptimizedSelectionRatio(OptimilisationRatios);
+        
+        Population pop;
+        
+        if(this.usePopulation == null){
+            pop = this.generatePopulationBetter(populationSize);
+        }else{
+            pop = usePopulation;
+        }
+        System.out.println("popsize"+ pop.getSize());
+        stopCondition.Start();
+        while(!stopCondition.isStop(generations)){
             if (Thread.currentThread().isInterrupted()) {
-                updateProgress(totalIterations, totalIterations);
+                updateProgress(1, 1);
                 System.out.println("Stop task");
                 return  partialResults;
-
             }
 
-//                   System.out.println("Start crossover");
             pop = this.crossOver(pop);
-//                    System.out.println("Start selection");
-            this.setOptimizedSelectionRatio(collection);
-            pop = this.getSelectionPandG(pop, populationSize);
-//                    System.out.println("Start mutation");
+           
+            switch(this.Algorithm){
+                case MarianOrignal:
+                    
+                    pop = this.getSelectionMarian(pop, populationSize);
+                    break;
+                case MarianOptimised:
+                    pop = this.getSelectionPandG(pop, populationSize);
+                    break;
+                default:
+                    
+                    throw new AlgorithmNotSet();
+            }
+            
             pop = this.pseudoMutation(pop);
-//                    System.out.println( "new avg" + (1.0/(double)marianTask.getFirstMin().getCosts() ) / (1.0/(double)pop.getMin().getCosts())   );
-//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
-//                    System.out.println("Gener " + iterations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
-//                    System.out.println("---------------------------------------------------------------");
-            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
-            System.out.println("Set for send: " + iterations);
+//            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
             final double max = pop.getMax().getFitness();
-//                    final double min = (1.0-(1.0/((double)marianTask.getFirstMin().getCosts()/(double)pop.getMin().getCosts())))*10;
             final double minCosts = pop.getMin().getCosts();
             final double maxCosts = pop.getMax().getCosts();
             final double avg =  pop.getAverageFittness();
-            final int gen = iterations;
+            final int gen = generations;
             Platform.runLater(new Runnable() {
                 @Override public void run() {
                     partialResults.get(0).get(0).getData().add(new XYChart.Data(Integer.toString(gen), max));
@@ -1050,7 +1070,13 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
                     updateValue(partialResults);
                 }
             });
-            updateProgress(iterations, totalIterations);
+            if (this.stopCondition.isEnableStopTime()) {
+                updateProgress(((System.currentTimeMillis() - stopCondition.getStartTime())/1000), (stopCondition.getRunTime()/1000));
+            }else if(this.stopCondition.isEnableStopGenerations()){
+                updateProgress(generations, maxGererations);
+            }
+            
+            generations++;
         }
         return partialResults;
     };
@@ -1133,6 +1159,38 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     
     public int getLength(){
         return fysicalMatrix[0].length;
+    }
+    
+    public Population getUsePopulation() {
+        return usePopulation;
+    }
+
+    public void setUsePopulation(Population usePopulation) {
+        this.usePopulation = usePopulation;
+    }
+    
+    public long getMaxGererations() {
+        return maxGererations;
+    }
+
+    public void setMaxGererations(long maxGererations) {
+        this.maxGererations = maxGererations;
+    }
+
+    public long getMaxRunTime() {
+        return maxRunTime;
+    }
+
+    public void setMaxRunTime(long maxRunTime) {
+        this.maxRunTime = maxRunTime;
+    }
+    
+    public Double[] getOptimilisationRatios() {
+        return OptimilisationRatios;
+    }
+
+    public void setOptimilisationRatios(Double[] OptimilisationRatios) {
+        this.OptimilisationRatios = OptimilisationRatios;
     }
 
 }
