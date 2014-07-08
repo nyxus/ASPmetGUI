@@ -289,8 +289,8 @@ public class MainScreenController implements Initializable {
         marian.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
             @Override
             public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
-                minMaxChart.setData(newValue.get(0));
-                fitnessChart.setData(newValue.get(1));
+                fitnessChart.setData(newValue.get(0));
+                minMaxChart.setData(newValue.get(1));
             }
         });
         
