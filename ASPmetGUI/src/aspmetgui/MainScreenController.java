@@ -12,20 +12,13 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,18 +26,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -64,7 +53,7 @@ public class MainScreenController implements Initializable {
 
     private double mutationPercentage = 2.25;
 
-    private int populationSize = 10;
+    private int populationSize = 150;
     private int stopTime = 120;
     private int stopNrGenerations = 100;
     private int optimationNrParts = 4;
@@ -101,7 +90,6 @@ public class MainScreenController implements Initializable {
     private CheckBox checkboxMarian;
     @FXML
     private CheckBox checkboxMarianWithOptimization;
-    
 
     @FXML
     private Slider sliderPopulationSize;
@@ -139,7 +127,7 @@ public class MainScreenController implements Initializable {
     private LineChart lineChartFitness;
     @FXML
     private LineChart lineChartFitnessOptimized;
-    
+
     @FXML
     private Tab tabMinMaxMarian;
     @FXML
@@ -172,6 +160,14 @@ public class MainScreenController implements Initializable {
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + mutationPercentage + " )");
         labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
         initializeCanvas();
+
+//        final NumberAxis xAxis = new NumberAxis();
+//        final NumberAxis yAxis = new NumberAxis(-1000,1000,10);
+//        xAxis.setAutoRanging(false);
+//        yAxis.setAutoRanging(false);
+//        lineChartMinMax = new LineChart[Number,Number](xAxis, yAxis);
+//        tabMinMaxMarian.setContent(lineChartMinMax);
+
         setLabelOptimationParts();
     }
 
@@ -274,21 +270,20 @@ public class MainScreenController implements Initializable {
 
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
-        final Marian marianTask = new Marian(filename, populationSize, mutationPercentage,getOptimizedSelectionMarian(), Math.round(sliderStopNrGenerations.getValue()) );
+        final Marian marianTask = new Marian(filename, populationSize, mutationPercentage, getOptimizedSelectionMarian(), Math.round(sliderStopNrGenerations.getValue()));
         marian = marianTask;
-        
-        marianTask.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
+
+        marianTask.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
             int generationCounter = 0;
 
             @Override
             public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
-
                 lineChartMinMax.setData(newValue.get(0));
                 lineChartFitness.setData(newValue.get(1));
 
             }
         });
-        
+
         progressBar.progressProperty().unbind();
         progressBar.progressProperty().bind(marianTask.progressProperty());
 
@@ -297,7 +292,6 @@ public class MainScreenController implements Initializable {
                 a(newValue);
             }
         });
-
 
         Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
