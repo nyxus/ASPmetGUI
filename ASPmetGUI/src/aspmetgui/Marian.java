@@ -20,10 +20,10 @@ import javafx.concurrent.Task;
 import javafx.scene.chart.XYChart;
 
 
-public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > {
+public class Marian {
 
     private Block floor = new Block(0, 1, 1, 0, 0);
-
+   
     //Population is een ArrayList van Chromosomen. 
     //BlockCollection bevat alle blocks van een probleem.
     private ArrayList<Block> blockCollection = new ArrayList<>();
@@ -41,16 +41,18 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     private int populationSize;
     private Double[] OptimilisationRatios;
 
-    private long maxGererations;
     private long maxRunTime;
-    private int Algorithm;
+
     
     public final static int MarianOptimised = 0; 
     public final static int MarianOrignal = 1; 
-    StopConditionsMarian stopCondition;
+    private StopConditionsMarian stopCondition;
+    
     private Population usePopulation = null;
     
-    private ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
+    private Process process;
+
+   
 
     /**
      * Create a problem to solve with the algorithm of Marian
@@ -63,7 +65,7 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
         problemSize = getProblemSize(filename);
         this.populationSize = populationSize;
         this.mutationPercentage = mutation;
-        this.Algorithm = setAlgoritm;
+
         this.stopCondition = stopCondition;
         this.OptimilisationRatios = OptimilisationRatios;
         System.out.println("ProblemSize = " + problemSize);
@@ -508,20 +510,7 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
         return possibleBlocks;
     }
     
-    
-
-    //crossover --> is niet de werkelijke crossover, ik heb een verdubelaar gemaakt van een populatie, had ik even nodig :p
-    public Population crossover(Population parents, int amountChilds) {
-        for (int i = 0; i < amountChilds; i++) {
-            parents.addChromosome(parents.getList().get(i));
-        }
-        return parents;
-    }
-
     public Population crossOver(Population population) {
-        //System.out.println("- Crossover - ");
-        //System.out.println("    "+population.toString());
-        
         ArrayList<Chromosome> temppopulation = new ArrayList<>(population.getList());
         ArrayList<Chromosome> parents = new ArrayList<>();
         Population childPopulation = new Population();
@@ -554,102 +543,38 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
 
         
         for(int i = 0; i < parents.size(); i = i + 2){
-            //System.out.println("Parent 1: "+parents.get(i).ToString());
-            //System.out.println("Parent 2: "+parents.get(i+1).ToString());
-            
-            //C2
-            //For the first pair of parent chromosomes randomly select the cut point (gene 2 to n-1)
-            // random.nextInt(max - min) + min
+            Chromosome frstParrent = parents.get(i);
+            Chromosome scndParrent = parents.get(i+1);
             min = 2;
             max = getBlockCollection().size() - 1;
             
             cutpoint = random.nextInt(max - min) + min;
-            //System.out.println("Cutpoint: " + cutpoint);
             
             //Fill left locusses
-            for(int j = 0; j < cutpoint; j++){
-               parent1LeftLocus.add(parents.get(i).getSequence().get(j));
-               parent2LeftLocus.add(parents.get(i+1).getSequence().get(j));
-            }
-            
-            //Fill right locusses
-            for(int j = cutpoint; j < getBlockCollection().size(); j++){
-                parent1RightLocus.add(parents.get(i).getSequence().get(j));
-                parent2RightLocus.add(parents.get(i+1).getSequence().get(j));
-            }
-            
-            //Print locusses
-            //System.out.print("Parent 1 Left Locus: ");
-            for(int j = 0; j < parent1LeftLocus.size(); j++){
-                //System.out.print(parent1LeftLocus.get(j).getID() + ", ");
-            }
-            //System.out.println();
-            
-            //System.out.print("Parent 2 Left Locus: ");
-            for(int j = 0; j < parent2LeftLocus.size(); j++){
-                //System.out.print(parent2LeftLocus.get(j).getID() + ", ");
-            }
-            //System.out.println();
-            
-            //System.out.print("Parent 1 Right Locus: ");
-            for(int j = 0; j < parent1RightLocus.size(); j++){
-                //System.out.print(parent1RightLocus.get(j).getID() + ", ");
-            }
-            //System.out.println();
-            
-            //System.out.print("Parent 2 Right Locus: ");
-            for(int j = 0; j < parent2RightLocus.size(); j++){
-                //System.out.print(parent2RightLocus.get(j).getID() + ", ");
-            }
-            //System.out.println();
-            
-            
-            //System.out.println();
-            //System.out.println("Guided search parent 1");
-            //System.out.println();
+            parent1LeftLocus.addAll(frstParrent.GetSelection(0, cutpoint));
+            parent2LeftLocus.addAll(scndParrent.GetSelection(0, cutpoint));
 
-            //C3
-            //For the first parent chromosome
-            //C4
-            //For first locus at the right hand side of the cut point
-            //Determine, by guided search, the candidate vertices for the gene;
-            //If the gene in the corresponding locus from the other parent is amongst candidates, THEN choose it, ELSE place any other candidate gene;
+            
+            parent1RightLocus.addAll(frstParrent.GetSelection(cutpoint+1, frstParrent.size()));
+            parent2RightLocus.addAll(scndParrent.GetSelection(cutpoint+1, scndParrent.size()));
             
             for(int j = 0; j < parent2RightLocus.size(); j++){
                 //Check for candidates
                 possibleBlocks = getPossibleBlocksBetter2(parent1LeftLocus);
                 
-                //System.out.print("Parent1LeftLocus: ");
-                for(int k = 0; k < parent1LeftLocus.size(); k++){
-                    //System.out.print(parent1LeftLocus.get(k).getID() + ", ");
-                }
-                //System.out.println();
-                //System.out.print("Parent2RightLocus: ");
-                for(int k = 0; k < parent2RightLocus.size(); k++){
-                    //System.out.print(parent2RightLocus.get(k).getID()+", ");
-                }
-                //System.out.println();
-                //System.out.print("Possible blocks: ");
-                for(int k = 0; k < possibleBlocks.size(); k++){
-                    //System.out.print(possibleBlocks.get(k).getID()+", ");
-                }
-                //System.out.println();
                 
                 //Check if there are possible blocks
                 if(possibleBlocks.size() > 0){
-                    //System.out.println();
                     
                     if(possibleBlocks.contains(parent2RightLocus.get(0))){
                         //The gene is amongst the candidates so add it to the left locus of parent 1
                         parent1LeftLocus.add(parent2RightLocus.get(0));
-                        //System.out.println("Gene "+parent2RightLocus.get(0).getID()+" is amongst the candidates "+parent2RightLocus.get(0).getID()+" is placed");
                         parent2RightLocus.remove(0);
                         j--;
                     } else {
                         //Choose random candidate
-                        selection = random.nextInt(possibleBlocks.size());
-                        //System.out.println("Gene "+parent2RightLocus.get(0).getID()+" is not amongst the candidates random block "+possibleBlocks.get(selection).getID()+" is placed");
-                        for(int k = 0; k < possibleBlocks.size(); k++){
+                       selection = random.nextInt(possibleBlocks.size());
+                       for(int k = 0; k < possibleBlocks.size(); k++){
                             if(selection == k){
                                 parent1LeftLocus.add(possibleBlocks.get(k));                            
                             }
@@ -659,49 +584,23 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
                     } 
                 } 
             }
-            //System.out.println();
-            //System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
-
-            
-            //System.out.println();
-            //System.out.println("Guided search parent 2");
-            //System.out.println();
-            
             
             for(int j = 0; j < parent1RightLocus.size(); j++){
                 //Check for candidates
                 possibleBlocks = getPossibleBlocksBetter2(parent2LeftLocus);
                 
-                //System.out.print("Parent2LeftLocus: ");
-                for(int k = 0; k < parent2LeftLocus.size(); k++){
-                    //System.out.print(parent2LeftLocus.get(k).getID() + ", ");
-                }
-                //System.out.println();
-                //System.out.print("Parent1RightLocus: ");
-                for(int k = 0; k < parent1RightLocus.size(); k++){
-                    //System.out.print(parent1RightLocus.get(k).getID()+", ");
-                }
-                //System.out.println();
-                //System.out.print("Possible blocks: ");
-                for(int k = 0; k < possibleBlocks.size(); k++){
-                    //System.out.print(possibleBlocks.get(k).getID()+", ");
-                }
-                //System.out.println();
-                
                 //Check if there are possible blocks
                 if(possibleBlocks.size() > 0){
-                    //System.out.println();
+
                     
                     if(possibleBlocks.contains(parent1RightLocus.get(0))){
                         //The gene is amongst the candidates so add it to the left locus of parent 1
                         parent2LeftLocus.add(parent1RightLocus.get(0));
-                        //System.out.println("Gene "+parent1RightLocus.get(0).getID()+" is amongst the candidates "+parent1RightLocus.get(0).getID()+" is placed");
                         parent1RightLocus.remove(0);
                         j--;
                     } else {
                         //Choose random candidate
                         selection = random.nextInt(possibleBlocks.size());
-                        //System.out.println("Gene "+parent1RightLocus.get(0).getID()+" is not amongst the candidates random block "+possibleBlocks.get(selection).getID()+" is placed");
                         for(int k = 0; k < possibleBlocks.size(); k++){
                             if(selection == k){
                                 parent2LeftLocus.add(possibleBlocks.get(k));                            
@@ -713,29 +612,6 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
                 }
             }
 
-            //System.out.println();
-            //System.out.print("Parent1 before crossover: ");
-            for(int k = 0; k < parents.get(i).getSequence().size(); k++){
-                //System.out.print(parents.get(i).getSequence().get(k).getID() + ", ");
-            }
-            //System.out.println();
-            //System.out.print("Parent1 Child:          : ");
-            for(int k = 0; k < parent1LeftLocus.size(); k++){
-                //System.out.print(parent1LeftLocus.get(k).getID() + ", ");
-            }
-            //System.out.println();
-            //System.out.print("Parent2 before crossover: ");
-            for(int k = 0; k < parents.get(i+1).getSequence().size(); k++){
-                //System.out.print(parents.get(i+1).getSequence().get(k).getID() + ", ");
-            }
-            //System.out.println();
-            //System.out.print("Parent2 Child:          : ");
-            for(int k = 0; k < parent2LeftLocus.size(); k++){
-                //System.out.print(parent2LeftLocus.get(k).getID() + ", ");
-            }
-            //System.out.println();
-            //System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
-            
             
             //Fill the population with the newly created childs
             population.addChromosome(new Chromosome(population.getSize(), parent1LeftLocus));
@@ -746,19 +622,9 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
             parent2LeftLocus.clear();
             parent1RightLocus.clear();
             parent2RightLocus.clear();
-            //System.out.println();
+           
         }
-        
-        //C5
-        //Repeat step C4 for all loci to the end of the chromosome
-        //C6 
-        //Repeat seteps C4-5 for the second parent chromosome
-        //C7
-        //Repeat steps C2 - C6 for the remaining pairs of parent chromosomes
-        //A population of feasible offspring (Children) chromosomes;     
-        //System.out.println("New population of children!");
-        //System.out.println(population.toString());
-        
+
         return population;
     }
 
@@ -987,110 +853,129 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     public void setOptimizedSelectionRatio(Double[] collection){
         this.OptimilisationRatios = collection;
     }
-    
-    
-    public Population run(Population pop, int popSize){
-        int gernerations = 0;
-        while(pop.getMax() != pop.getMin()){
-           System.out.println("Start crossover");
-           pop = this.crossOver(pop);
-           System.out.println("Start selection");
-           pop = this.getSelectionPandG(pop, popSize);
-           System.out.println("Start mutation");
-           pop = this.pseudoMutation(pop);
-           System.out.println("Gener " + gernerations + ": Max: " + pop.getMax().getCosts() + "  Min: " + pop.getMin().getCosts());
-           System.out.println("Gener " + gernerations + ": Max: " + pop.getMax().getFitness() + "  Min(from first): " + (1.0-(1.0/((double)firstMin.getCosts()/(double)pop.getMin().getCosts())))*10 + "  AVG: " + pop.getAverageFittness() );
-           gernerations++;
-           System.out.println("---------------------------------------------------------------");
+
+    public Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > getTask(int algoritm){
+        System.out.println("Create task, alg: " + algoritm);
+        ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
+        //final Marian  = this;
+        
+        
+        if (stopCondition.isEnableStopTime()) {
+            process = new Marian.Process(stopCondition.getRunTime()/1000);
+        }else if(stopCondition.isEnableStopGenerations()){
+            process = new Marian.Process(stopCondition.getNrOfGenerations());
         }
-        return pop;
+
+        
+        Task < ArrayList<ObservableList<XYChart.Series<String, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
+            @Override
+            protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
+                System.out.println("Start task, alg: " + algoritm);
+                XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
+                XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
+                XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
+                XYChart.Series<String, Double> AvgFitnessSeries = new XYChart.Series<String, Double>();
+                String lineNameAdditon = "";
+                if(algoritm == Marian.MarianOptimised){
+                    lineNameAdditon += ", Optimised";
+                }
+                minCostSeries.setName("Min Costs"+ lineNameAdditon);
+                maxCostSeries.setName("Max Costs"+ lineNameAdditon);
+                maxFitnessSeries.setName("Max Fitness"+ lineNameAdditon);
+                AvgFitnessSeries.setName("Average Fitness"+ lineNameAdditon); 
+                
+                // set 
+                partialResults.add(0 ,FXCollections.observableArrayList(new ArrayList()));
+                partialResults.get(0).addAll(maxFitnessSeries, AvgFitnessSeries);
+                
+                partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
+                partialResults.get(1).addAll(maxCostSeries, minCostSeries);
+                setOptimizedSelectionRatio(OptimilisationRatios);
+                int generations = 0;
+            
+                Population pop;
+
+                if(usePopulation == null){
+                    System.out.println("Generatate new pop");
+                    pop = generatePopulationBetter(populationSize);
+                }else{
+                    System.out.println("Select pop");
+                    pop = usePopulation;
+                }
+                stopCondition.Start();
+                
+                while(!stopCondition.isStop(generations)){
+                    System.out.println("start loop      algorm: "+ algoritm + "      generation:" + generations);
+                    if (Thread.currentThread().isInterrupted()) {
+
+                        updateProgress(1, 1);
+                        System.out.println("Stop task");
+                        return  partialResults;
+                    }
+                    
+        //            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
+                    double max = pop.getMax().getFitness();
+                    double minCosts = pop.getMin().getCosts();
+                    double maxCosts = pop.getMax().getCosts();
+                    double avg =  pop.getAverageFittness();
+                    int gen = generations;
+                                        
+                    Platform.runLater(new Runnable() {
+                             
+                        @Override public void run() {
+                            DecimalFormat dfFitness = new DecimalFormat("0000");
+                            DecimalFormat dfCost = new DecimalFormat("0.0000");
+                            XYChart.Data<String, Double> maxNode = new XYChart.Data(Integer.toString(gen), max); 
+                            XYChart.Data<String, Double> avgFitnessNode = new XYChart.Data(Integer.toString(gen), avg); 
+                            XYChart.Data<String, Double> maxCostNode = new XYChart.Data(Integer.toString(gen), maxCosts); 
+                            XYChart.Data<String, Double> minCostNode = new XYChart.Data(Integer.toString(gen), minCosts); 
+                            maxNode.setNode(new HoverNode(gen, dfCost.format(max)));
+                            avgFitnessNode.setNode(new HoverNode(gen, dfCost.format(avg)));
+                            maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
+                            minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
+                            partialResults.get(0).get(0).getData().add(maxNode);
+                            partialResults.get(0).get(1).getData().add(avgFitnessNode);
+                            partialResults.get(1).get(0).getData().add(maxCostNode);
+                            partialResults.get(1).get(1).getData().add(minCostNode);
+                            updateValue(partialResults);
+                        }
+                    });
+                    
+                    if (stopCondition.isEnableStopTime()) {
+                        process.setProcess( ((System.currentTimeMillis() - stopCondition.getStartTime())/1000) );
+                        
+                        updateProgress(((System.currentTimeMillis() - stopCondition.getStartTime())/1000), (stopCondition.getRunTime()/1000));
+                    }else if(stopCondition.isEnableStopGenerations()){
+                        process.setProcess( generations );
+                        updateProgress(generations, stopCondition.getNrOfGenerations());
+                    }
+                     pop = crossOver(pop);
+                    System.out.println("after check      algorm: "+ algoritm + "      generation:" + generations);
+
+
+                    switch(algoritm){
+                        case MarianOrignal:
+                            pop = getSelectionMarian(pop, populationSize);
+                            break;
+                        case MarianOptimised:
+                            pop = getSelectionPandG(pop, populationSize);
+                            break;
+                        default:
+                            throw new AlgorithmNotSet();
+                    }
+                    System.out.println("after select      algorm: "+ algoritm + "     generation:" + generations);
+
+                    pop = pseudoMutation(pop); 
+                        
+                    generations++;
+                }
+                return partialResults;
+            }
+        };
+                
+         return marianTask;
     }
     
-    @Override
-    protected ArrayList<ObservableList<XYChart.Series<String, Double>>>  call() throws Exception {
-        int generations = 0;
-        long maxRunTime = getMaxRunTime() + System.currentTimeMillis(); 
-        XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
-        XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
-        XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
-        XYChart.Series<String, Double> AvgFitnessSeries = new XYChart.Series<String, Double>();
-        minCostSeries.setName("Min Costs");
-        maxCostSeries.setName("Max Costs");
-        maxFitnessSeries.setName("Max Fitness");
-        AvgFitnessSeries.setName("Average Fitness"); 
-        partialResults.add(0 ,FXCollections.observableArrayList(new ArrayList()));
-        partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
-        partialResults.get(0).addAll(maxFitnessSeries, AvgFitnessSeries);
-        partialResults.get(1).addAll(maxCostSeries, minCostSeries);
-        this.setOptimizedSelectionRatio(OptimilisationRatios);
-        
-        Population pop;
-        
-        if(this.usePopulation == null){
-            pop = this.generatePopulationBetter(populationSize);
-        }else{
-            pop = usePopulation;
-        }
-        System.out.println("popsize"+ pop.getSize());
-        stopCondition.Start();
-        while(!stopCondition.isStop(generations)){
-            if (Thread.currentThread().isInterrupted()) {
-                updateProgress(1, 1);
-                System.out.println("Stop task");
-                return  partialResults;
-            }
-
-            pop = this.crossOver(pop);
-           
-            switch(this.Algorithm){
-                case MarianOrignal:
-                    
-                    pop = this.getSelectionMarian(pop, populationSize);
-                    break;
-                case MarianOptimised:
-                    pop = this.getSelectionPandG(pop, populationSize);
-                    break;
-                default:
-                    
-                    throw new AlgorithmNotSet();
-            }
-            
-            pop = this.pseudoMutation(pop);
-//            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
-            final double max = pop.getMax().getFitness();
-            final double minCosts = pop.getMin().getCosts();
-            final double maxCosts = pop.getMax().getCosts();
-            final double avg =  pop.getAverageFittness();
-            final int gen = generations;
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                    DecimalFormat dfFitness = new DecimalFormat("0000");
-                    DecimalFormat dfCost = new DecimalFormat("0.0000");
-                    final XYChart.Data<String, Double> maxNode = new XYChart.Data(Integer.toString(gen), max); 
-                    final XYChart.Data<String, Double> avgFitnessNode = new XYChart.Data(Integer.toString(gen), avg); 
-                    final XYChart.Data<String, Double> maxCostNode = new XYChart.Data(Integer.toString(gen), maxCosts); 
-                    final XYChart.Data<String, Double> minCostNode = new XYChart.Data(Integer.toString(gen), minCosts); 
-                    maxNode.setNode(new HoverNode(gen, dfCost.format(max)));
-                    avgFitnessNode.setNode(new HoverNode(gen, dfCost.format(avg)));
-                    maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
-                    minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
-                    partialResults.get(0).get(0).getData().add(maxNode);
-                    partialResults.get(0).get(1).getData().add(avgFitnessNode);
-                    partialResults.get(1).get(0).getData().add(maxCostNode);
-                    partialResults.get(1).get(1).getData().add(minCostNode);
-                    updateValue(partialResults);
-                }
-            });
-            if (this.stopCondition.isEnableStopTime()) {
-                updateProgress(((System.currentTimeMillis() - stopCondition.getStartTime())/1000), (stopCondition.getRunTime()/1000));
-            }else if(this.stopCondition.isEnableStopGenerations()){
-                updateProgress(generations, maxGererations);
-            }
-            
-            generations++;
-        }
-        return partialResults;
-    };
     //getFloor
     //  Beschrijving: getFloor returned de floor.
     //  Input: -
@@ -1179,14 +1064,6 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     public void setUsePopulation(Population usePopulation) {
         this.usePopulation = usePopulation;
     }
-    
-    public long getMaxGererations() {
-        return maxGererations;
-    }
-
-    public void setMaxGererations(long maxGererations) {
-        this.maxGererations = maxGererations;
-    }
 
     public long getMaxRunTime() {
         return maxRunTime;
@@ -1203,5 +1080,39 @@ public class Marian extends Task< ArrayList<ObservableList<XYChart.Series<String
     public void setOptimilisationRatios(Double[] OptimilisationRatios) {
         this.OptimilisationRatios = OptimilisationRatios;
     }
+    
+      public StopConditionsMarian getStopCondition() {
+        return stopCondition;
+    }
+      
+    public Process getProcess() {
+          return process;
+      }
+      
+    class Process{
+        private double process;
 
+        private double totalWork;
+         
+         public Process(double totalWork){
+             this.totalWork = totalWork;
+         }
+         
+        public double getProcess() {
+            return process;
+        }
+
+        public void setProcess(double process) {
+            this.process = process;
+        }
+
+        public double getTotalWork() {
+            return totalWork;
+        }
+
+        public void setTotalWork(double totalWork) {
+            this.totalWork = totalWork;
+        }
+ 
+     }  
 }

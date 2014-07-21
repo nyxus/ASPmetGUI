@@ -133,6 +133,10 @@ public class Chromosome  implements Comparable<Chromosome> {
     public Block getPrevBlock() {
         return prevBlock;
     }
+    
+    public int size(){
+        return this.sequence.size();
+    }
 
 
 }

@@ -13,6 +13,8 @@ package aspmetgui;
 public class StopConditionsMarian {
     
     private int nrOfGenerations;
+
+    
     private long runTime;
     private long stopTime;
     private long startTime;
@@ -59,8 +61,14 @@ public class StopConditionsMarian {
     }
     
     public boolean isStop(int currentGeneration){
-        if(enableStopTime && stopTime < System.currentTimeMillis()){ return true; }
-        if(enableStopGenerations && currentGeneration >= nrOfGenerations){ return true; }
+        if(enableStopTime && stopTime < System.currentTimeMillis()){
+            System.out.println("STOP NOW");
+            return true; 
+        }
+        if(enableStopGenerations && currentGeneration >= nrOfGenerations){
+            System.out.println("STOP NOW");
+            return true; 
+        }
         return false;
     }
     
@@ -78,6 +86,10 @@ public class StopConditionsMarian {
     
     public long getStartTime() {
         return startTime;
+    }
+    
+    public int getNrOfGenerations() {
+        return nrOfGenerations;
     }
 
     

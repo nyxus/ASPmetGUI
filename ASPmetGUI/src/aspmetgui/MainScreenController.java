@@ -5,7 +5,6 @@
  */
 package aspmetgui;
 
-import static aspmetgui.Marian.MarianOrignal;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -15,6 +14,8 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -59,7 +60,6 @@ public class MainScreenController implements Initializable {
     private int stopNrGenerations = 100;
     private int optimationNrParts = 4;
 
-    private Marian marian;
 
     private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
     private ArrayList<String> filepaths = new ArrayList<>();
@@ -67,7 +67,7 @@ public class MainScreenController implements Initializable {
     private String console = "";
     private String directory;
 
-    private Thread tr;
+    private Thread taskManagerThread;
 
     @FXML
     Parent root;
@@ -143,6 +143,14 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private ProgressBar progressBar;
+
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
 
     /**
      * Initializes the controller class.
@@ -284,8 +292,9 @@ public class MainScreenController implements Initializable {
             LineChart minMaxChart,
             LineChart fitnessChart
     ){
-        Marian marian = new Marian(filename, populationSize, mutation, setAlgoritm, stopConditions, OptimilisationRatios);
         
+        Marian marian = new Marian(filename, populationSize, mutation, setAlgoritm, stopConditions, OptimilisationRatios);
+        /*
         marian.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
             @Override
             public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
@@ -299,7 +308,7 @@ public class MainScreenController implements Initializable {
                 a(newValue);
             }
         });
-        
+        */
         return marian;
     }
 
@@ -319,14 +328,33 @@ public class MainScreenController implements Initializable {
         
         StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
         
-        marian = setupMarian(filename, populationSize, mutationPercentage, Marian.MarianOptimised, stopConditions, getOptimizedSelectionMarian(), lineChartMinMax, lineChartFitness);
-        
+        Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
         Population newPop = marian.generatePopulationBetter(populationSize);
         marian.setUsePopulation(newPop);
-       
+        
+        lineChartFitness.getData().clear();
+        lineChartFitnessOptimized.getData().clear();
+        lineChartMinMax.getData().clear();
+        lineChartMinMaxOptimized.getData().clear();
+        
+        ArrayList<Integer> runs = new ArrayList<>();
+        
+        if(this.checkboxMarian.isSelected()){
+            runs.add(Marian.MarianOrignal);
+        }
+        if(this.checkboxMarianWithOptimization.isSelected()){
+            runs.add(Marian.MarianOptimised);
+        }
+        
+        TaskManager taskManager = new TaskManager(marian,  this, runs , lineChartMinMax, lineChartMinMaxOptimized, lineChartFitness, lineChartFitnessOptimized);
+        
         progressBar.progressProperty().unbind();
-        progressBar.progressProperty().bind(marian.progressProperty());
-
+        progressBar.progressProperty().bind(taskManager.progressProperty());
+        
+        taskManagerThread = new Thread(taskManager);
+        taskManagerThread.setDaemon(true);
+        taskManagerThread.start();
+              
         Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
         drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
@@ -342,10 +370,6 @@ public class MainScreenController implements Initializable {
                 a(newValue);
             }
         });
-
-        this.tr = new Thread(marian);
-        tr.setDaemon(true);
-        tr.start();
 
         Thread drawTask = new Thread(drawProblem);
         drawTask.setDaemon(true);
@@ -369,7 +393,7 @@ public class MainScreenController implements Initializable {
     }
 
     public void stopOperation() {
-        tr.interrupt();
+        taskManagerThread.interrupt();
 
         a("Application stopped.");
     }
