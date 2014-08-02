@@ -5,6 +5,9 @@
  */
 package aspmetgui;
 
+import aspmetgui.Exceptions.AlgorithmNotSet;
+import static aspmetgui.Marian.MarianOptimised;
+import static aspmetgui.Marian.MarianOrignal;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -13,21 +16,30 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -59,6 +71,7 @@ public class MainScreenController implements Initializable {
     private int stopTime = 120;
     private int stopNrGenerations = 100;
     private int optimationNrParts = 4;
+    private int cycles = 5;
 
 
     private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
@@ -68,6 +81,10 @@ public class MainScreenController implements Initializable {
     private String directory;
 
     private Thread taskManagerThread;
+    private int amountMarianRuns = 0;
+    private ObservableList<XYChart.Series<String, Integer>> runList;
+    private Series<String, Integer> runOriginal;
+    private Series<String, Integer> runOptimised;
 
     @FXML
     Parent root;
@@ -102,6 +119,8 @@ public class MainScreenController implements Initializable {
     private Slider sliderStopNrGenerations;
     @FXML
     private Slider sliderOptimationNrParts;
+    @FXML
+    private Slider sliderCycles;
 
     @FXML
     private TextArea textAreaConsole;
@@ -122,10 +141,13 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private LineChart lineChartMinMax;
+    
     @FXML
-    private LineChart lineChartMinMaxOptimized;
+    private LineChart lineChartCompare;
+    
     @FXML
     private LineChart lineChartFitness;
+    
     @FXML
     private LineChart lineChartFitnessOptimized;
 
@@ -162,19 +184,31 @@ public class MainScreenController implements Initializable {
         sliderStopTime.setValue(stopTime);
         sliderStopNrGenerations.setValue(stopNrGenerations);
         sliderOptimationNrParts.setValue(optimationNrParts);
+        sliderCycles.setValue(cycles);
 
         labelPopulationSize.setText("Populationsize ( " + populationSize + " )");
         labelMutationPercentage.setText("Mutationpercentage ( " + mutationPercentage + "% )");
         checkboxStopTime.setText("Time ( " + stopTime + "SEC )");
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + mutationPercentage + " )");
         labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
+        
+        /*
+        this.runList = lineChartCompare.getData();
+        this.runOriginal = new Series<>();
+        this.runOptimised = new Series<>();
+        this.runOriginal.setName("Marian original");
+        this.runOptimised.setName("Marian optimised"); 
+        this.runList.addAll(runOriginal, runOptimised);
+        this.lineChartCompare.setData(runList);
+        */
         initializeCanvas();
+        
 
 //        final NumberAxis xAxis = new NumberAxis();
 //        final NumberAxis yAxis = new NumberAxis(-1000,1000,10);
 //        xAxis.setAutoRanging(false);
 //        yAxis.setAutoRanging(false);
-//        lineChartMinMax = new LineChart[Number,Number](xAxis, yAxis);
+//         lineChartMinMax = new LineChart[5,50](xAxis, yAxis);
 //        tabMinMaxMarian.setContent(lineChartMinMax);
 
         setLabelOptimationParts();
@@ -250,111 +284,71 @@ public class MainScreenController implements Initializable {
         return file;
     }
 
-    private ObservableList<XYChart.Series<String, Double>> getChartData() {
-        double aValue = 1.56;
-        double cValue = 1.06;
-        ObservableList<XYChart.Series<String, Double>> answer = FXCollections.observableArrayList();
-        Series<String, Double> aSeries = new Series<String, Double>();
-        Series<String, Double> cSeries = new Series<String, Double>();
-        aSeries.setName("a");
-        cSeries.setName("C");
-        /*
-         for (int i = 2011; i < 2021; i++) {
-         aSeries.getData().add(new XYChart.Data(Integer.toString(i), aValue));
-         aValue = aValue + Math.random() - .5;
-         cSeries.getData().add(new XYChart.Data(Integer.toString(i), cValue));
-         cValue = cValue + Math.random() - .5;
-         }
-         */
-        answer.addAll(aSeries);
-        return answer;
-    }
-    /**
-     * Setup for a marian task
-     * @param filename String file directory
-     * @param populationSize Interger size of the population
-     * @param mutation double mutation rate of the algoritm 
-     * @param setAlgoritm int Marian origial: Marian.MarianOrignal, marian optimised: Marian.MarianOptimised
-     * @param stopConditions boolean[3] Stop conditions flag, [0] = generations, [1] = time, [2] = infinite 
-     * @param nrOfGenerations 
-     * @param runTime
-     * @param minMaxChart
-     * @param fitnessChart
-     * @return 
-     */
-    private Marian setupMarian(
-            String filename,
-            int populationSize,
-            double mutation,
-            int setAlgoritm,
-            StopConditionsMarian stopConditions,
-            Double[] OptimilisationRatios,
-            LineChart minMaxChart,
-            LineChart fitnessChart
-    ){
-        
-        Marian marian = new Marian(filename, populationSize, mutation, setAlgoritm, stopConditions, OptimilisationRatios);
-        /*
-        marian.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>> >() {
-            @Override
-            public void changed(ObservableValue<? extends ArrayList<ObservableList<XYChart.Series<String, Double>>>> observable, ArrayList<ObservableList<XYChart.Series<String, Double>>> oldValue, ArrayList<ObservableList<XYChart.Series<String, Double>>> newValue) {
-                fitnessChart.setData(newValue.get(0));
-                minMaxChart.setData(newValue.get(1));
-            }
-        });
-        
-        marian.messageProperty().addListener(new ChangeListener<String>() {
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                a(newValue);
-            }
-        });
-        */
-        return marian;
-    }
-
+ 
     public void runMarian() {
+        
         populationSize = (int) sliderPopulationSize.getValue();
         int nrOfGenerations = (int) Math.round(sliderStopNrGenerations.getValue());
         long runTime = Math.round(sliderStopTime.getValue()) * 1000;
         System.out.println("time:" + runTime);
         mutationPercentage = (double) sliderMutationPercentage.getValue();
-
         System.out.println("populationSize: " + populationSize);
         System.out.println("mutationPercentage: " + mutationPercentage);
-        
+
         a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
         String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
-        
-        
+
+
         StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
-        
+
         Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
         Population newPop = marian.generatePopulationBetter(populationSize);
         marian.setUsePopulation(newPop);
-        
+
         lineChartFitness.getData().clear();
-        lineChartFitnessOptimized.getData().clear();
+//        lineChartFitnessOptimized.getData().clear();
         lineChartMinMax.getData().clear();
-        lineChartMinMaxOptimized.getData().clear();
-        
-        ArrayList<Integer> runs = new ArrayList<>();
-        
+        //lineChartCompare.getData().clear();
+                        
+        ArrayList<Integer> Algorithms = new ArrayList<>();
+
         if(this.checkboxMarian.isSelected()){
-            runs.add(Marian.MarianOrignal);
+            System.out.println("    MarianOrignal selected");
+            Algorithms.add(Marian.MarianOrignal);
         }
         if(this.checkboxMarianWithOptimization.isSelected()){
-            runs.add(Marian.MarianOptimised);
+            System.out.println("    MarianOptimised selected");
+            Algorithms.add(Marian.MarianOptimised);
         }
         
-        TaskManager taskManager = new TaskManager(marian,  this, runs , lineChartMinMax, lineChartMinMaxOptimized, lineChartFitness, lineChartFitnessOptimized);
+        
+        
+        TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness, lineChartCompare);
+        
+        taskManager.valueProperty().addListener(new ChangeListener<TaskManager.TaskUpdate>() {
+            @Override
+            public void changed(ObservableValue<? extends TaskManager.TaskUpdate> observable, TaskManager.TaskUpdate oldValue, TaskManager.TaskUpdate newValue) {
+                System.out.println("RESIVE UPDATE");
+                switch(newValue.getUpdateType()){
+                    case TaskManager.TaskUpdate.TaskNotInialised:
+                        break;
+                    case Marian.MarianOrignal:
+                    case Marian.MarianOptimised:
+                    case TaskManager.TaskUpdate.TaskEnd:
+                        ObservableList compare = lineChartCompare.getData();
+                        compare.addAll(newValue.getList().get(0), newValue.getList().get(1));
+                        break;
+                }
+            }
+        });
         
         progressBar.progressProperty().unbind();
         progressBar.progressProperty().bind(taskManager.progressProperty());
-        
+
         taskManagerThread = new Thread(taskManager);
         taskManagerThread.setDaemon(true);
         taskManagerThread.start();
-              
+
         Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
         drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
@@ -390,6 +384,14 @@ public class MainScreenController implements Initializable {
         }
 
         return collection;
+    }
+    
+    public void clearCharts(){
+        lineChartFitness.getData().clear();
+        lineChartFitnessOptimized.getData().clear();
+        lineChartMinMax.getData().clear();
+        lineChartCompare.getData().clear();
+        
     }
 
     public void stopOperation() {
@@ -550,5 +552,6 @@ public class MainScreenController implements Initializable {
         this.directory = directory;
         searchDirectory(directory);
     }
+
 
 }

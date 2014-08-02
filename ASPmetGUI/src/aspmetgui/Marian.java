@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,6 +41,8 @@ public class Marian {
     private int problemSize;
     private double mutationPercentage = 2.25;
     private int populationSize;
+
+    
     private Double[] OptimilisationRatios;
 
     private long maxRunTime;
@@ -51,7 +55,10 @@ public class Marian {
     private Population usePopulation = null;
     
     private Process process;
+   
+    private Integer AlgorithmEvaluation;
 
+    
    
 
     /**
@@ -856,6 +863,7 @@ public class Marian {
 
     public Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > getTask(int algoritm){
         System.out.println("Create task, alg: " + algoritm);
+        AlgorithmEvaluation = 0;
         ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
         //final Marian  = this;
         
@@ -870,7 +878,7 @@ public class Marian {
         Task < ArrayList<ObservableList<XYChart.Series<String, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
             @Override
             protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
-                System.out.println("Start task, alg: " + algoritm);
+                 System.out.println("Start task, alg: " + algoritm);
                 XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
@@ -896,24 +904,55 @@ public class Marian {
                 Population pop;
 
                 if(usePopulation == null){
-                    System.out.println("Generatate new pop");
                     pop = generatePopulationBetter(populationSize);
                 }else{
-                    System.out.println("Select pop");
                     pop = usePopulation;
                 }
+
                 stopCondition.Start();
                 
                 while(!stopCondition.isStop(generations)){
-                    System.out.println("start loop      algorm: "+ algoritm + "      generation:" + generations);
+//                    System.out.println("start loop      algorm: "+ algoritm + "      generation:" + generations);
                     if (Thread.currentThread().isInterrupted()) {
 
                         updateProgress(1, 1);
-                        System.out.println("Stop task");
+//                        System.out.println("Stop task");
                         return  partialResults;
                     }
                     
-        //            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
+       
+                    
+                    if (stopCondition.isEnableStopTime()) {
+                        process.setProcess( ((System.currentTimeMillis() - stopCondition.getStartTime())/1000) );
+                        
+                        updateProgress(((System.currentTimeMillis() - stopCondition.getStartTime())/1000), (stopCondition.getRunTime()/1000));
+                    }else if(stopCondition.isEnableStopGenerations()){
+                        process.setProcess( generations );
+                        updateProgress(generations, stopCondition.getNrOfGenerations());
+                    }
+                     pop = crossOver(pop);
+//                    System.out.println("after check      algorm: "+ algoritm + "      generation:" + generations);
+
+
+                    switch(algoritm){
+                        case MarianOrignal:
+                            pop = getSelectionMarian(pop, populationSize);
+                            break;
+                        case MarianOptimised:
+                            pop = getSelectionPandG(pop, populationSize);
+                            break;
+                        default:
+                            try {
+                                throw new AlgorithmNotSet();
+                            } catch (AlgorithmNotSet ex) {
+                                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                    }
+//                    System.out.println("after select      algorm: "+ algoritm + "     generation:" + generations);
+
+                    pop = pseudoMutation(pop); 
+                    
+                     //            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
                     double max = pop.getMax().getFitness();
                     double minCosts = pop.getMin().getCosts();
                     double maxCosts = pop.getMax().getCosts();
@@ -941,38 +980,14 @@ public class Marian {
                         }
                     });
                     
-                    if (stopCondition.isEnableStopTime()) {
-                        process.setProcess( ((System.currentTimeMillis() - stopCondition.getStartTime())/1000) );
-                        
-                        updateProgress(((System.currentTimeMillis() - stopCondition.getStartTime())/1000), (stopCondition.getRunTime()/1000));
-                    }else if(stopCondition.isEnableStopGenerations()){
-                        process.setProcess( generations );
-                        updateProgress(generations, stopCondition.getNrOfGenerations());
-                    }
-                     pop = crossOver(pop);
-                    System.out.println("after check      algorm: "+ algoritm + "      generation:" + generations);
-
-
-                    switch(algoritm){
-                        case MarianOrignal:
-                            pop = getSelectionMarian(pop, populationSize);
-                            break;
-                        case MarianOptimised:
-                            pop = getSelectionPandG(pop, populationSize);
-                            break;
-                        default:
-                            throw new AlgorithmNotSet();
-                    }
-                    System.out.println("after select      algorm: "+ algoritm + "     generation:" + generations);
-
-                    pop = pseudoMutation(pop); 
-                        
+                    
+                    AlgorithmEvaluation += pop.getMin().getCosts();
                     generations++;
                 }
                 return partialResults;
             }
         };
-                
+         System.out.println("Marian task ended");     
          return marianTask;
     }
     
@@ -1086,9 +1101,17 @@ public class Marian {
     }
       
     public Process getProcess() {
-          return process;
-      }
-      
+        return process;
+     }
+    
+    public Integer getAlgorithmEvaluation() {
+        return AlgorithmEvaluation;
+    }
+    
+    public int getPopulationSize() {
+        return populationSize;
+    }
+          
     class Process{
         private double process;
 
