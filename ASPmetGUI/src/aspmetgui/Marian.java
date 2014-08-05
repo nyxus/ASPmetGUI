@@ -40,6 +40,8 @@ public class Marian {
 
     private int problemSize;
     private double mutationPercentage = 2.25;
+
+    
     private int populationSize;
 
     
@@ -1110,6 +1112,9 @@ public class Marian {
     
     public int getPopulationSize() {
         return populationSize;
+    }
+    public double getMutationPercentage() {
+        return mutationPercentage;
     }
           
     class Process{
