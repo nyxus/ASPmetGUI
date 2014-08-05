@@ -61,25 +61,6 @@ public class TaskManager extends Task<TaskUpdate> {
 
     }
     
-    private ObservableList<XYChart.Series<String, Double>> getChartData() {
-      double aValue = 1.56;
-      double cValue = 1.06;
-      ObservableList<XYChart.Series<String, Double>> answer = FXCollections.observableArrayList();
-      Series<String, Double> aSeries = new Series<String, Double>();
-      Series<String, Double> cSeries = new Series<String, Double>();
-      aSeries.setName("a");
-      cSeries.setName("C");
-      
-      for (int i = 2011; i < 2021; i++) {
-          aSeries.getData().add(new XYChart.Data(Integer.toString(i), aValue));
-          aValue = aValue + Math.random() - .5;
-          cSeries.getData().add(new XYChart.Data(Integer.toString(i), cValue));
-          cValue = cValue + Math.random() - .5;
-      }
-      answer.addAll(aSeries, cSeries);
-      return answer;
-    }
-
     public Thread startMarian(int algorithm) {
         Task marianTask = marian.getTask(algorithm);
         marianTask.valueProperty().addListener(new ChangeListener< ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
@@ -143,8 +124,9 @@ public class TaskManager extends Task<TaskUpdate> {
         XYChart.Series<String, Integer> runOptimised = new XYChart.Series<String, Integer>();
         
         DecimalFormat dfFitness = new DecimalFormat("0000");
-        runOriginal.setName("Marian original");
-        runOptimised.setName("Marian optimised"); 
+        
+        runOriginal.setName("Marian original: " + marian.getPopulationSize() + ", " + String.format("%.2f", marian.getMutationPercentage()) );
+        runOptimised.setName("Marian optimised: " + marian.getPopulationSize() + ", " + String.format("%.2f", marian.getMutationPercentage())); 
         obListCompare.addAll(runOriginal, runOptimised);
         
         Thread currentTask;
