@@ -56,8 +56,6 @@ public class TaskManager extends Task<TaskUpdate> {
         this.controller = controller;
 
         this.cycles = cycles;
-        
-       
 
     }
     
@@ -103,7 +101,6 @@ public class TaskManager extends Task<TaskUpdate> {
         myThread.setName("Marian calculaton");
         myThread.start();
         Marian.Process marianProcess = marian.getProcess();
-        System.out.println("            in task for wait: " + algorithm);
         while (myThread.isAlive()) {
             if (marianProcess != null) {
                 updateProgress(marianProcess.getProcess(), marianProcess.getTotalWork());
@@ -119,7 +116,6 @@ public class TaskManager extends Task<TaskUpdate> {
     @Override
     protected TaskUpdate call() throws InterruptedException {
         ObservableList<XYChart.Series<String, Integer>> obListCompare = FXCollections.observableArrayList(new ArrayList());
-        
         XYChart.Series<String, Integer> runOriginal = new XYChart.Series<String, Integer>();
         XYChart.Series<String, Integer> runOptimised = new XYChart.Series<String, Integer>();
         
@@ -130,16 +126,13 @@ public class TaskManager extends Task<TaskUpdate> {
         obListCompare.addAll(runOriginal, runOptimised);
         
         Thread currentTask;
-        System.out.println("Get Chart data");
   
-        System.out.println("Start run Task manager, cycles: " + cycles + " alg count: " + Arrays.toString(Algorithms.toArray()));
-                TaskUpdate update = new TaskUpdate(TaskUpdate.TaskNotInialised);
+        TaskUpdate update = new TaskUpdate(TaskUpdate.TaskNotInialised);
         for (int i = 0; i < cycles; i++) {
-            System.out.println("    Start cycle: " + i);
-            for (Integer Algorithm : Algorithms) {
-                System.out.println("        alg voor run: " + Algorithm);
+          for (Integer Algorithm : Algorithms) {
                 switch (Algorithm) {
                     case Marian.MarianOrignal:
+                        updateMessage("Cycle " + i + " Marian original");
                         currentTask = startMarian(Marian.MarianOrignal); 
                         currentTask.join();
                         XYChart.Data<String, Integer> nodeCompareOrignal = new XYChart.Data(Integer.toString(i),  marian.getAlgorithmEvaluation());
@@ -148,6 +141,7 @@ public class TaskManager extends Task<TaskUpdate> {
                         update.setType(Marian.MarianOrignal);
                         break;
                     case Marian.MarianOptimised:
+                        updateMessage("Cycle " + i + " Marian optimised");
                         currentTask = startMarian(Marian.MarianOptimised);
                         currentTask.join();
                         XYChart.Data<String, Integer> nodeCompareOptimised = new XYChart.Data(Integer.toString(i),  marian.getAlgorithmEvaluation());
@@ -166,10 +160,10 @@ public class TaskManager extends Task<TaskUpdate> {
             }
             if (Thread.currentThread().isInterrupted()) {
                 update.setList(obListCompare);
+                updateProgress(1, 1);
                 return new TaskUpdate(TaskUpdate.TaskEnd, obListCompare);
             }
             marian.setUsePopulation(marian.generatePopulationBetter(marian.getPopulationSize()));
-        System.out.println("--------------------------------------------------------------------");
         }
         update.setList(obListCompare);
         return new TaskUpdate(TaskUpdate.TaskEnd, obListCompare);

@@ -39,6 +39,8 @@ public class Marian {
     private Chromosome firstMin;
 
     private int problemSize;
+
+   
     private double mutationPercentage = 2.25;
 
     
@@ -77,7 +79,6 @@ public class Marian {
 
         this.stopCondition = stopCondition;
         this.OptimilisationRatios = OptimilisationRatios;
-        System.out.println("ProblemSize = " + problemSize);
 
         floor = new Block(0, 0, problemSize, 0, 0);
         floor.setBuildNumber(0);
@@ -864,7 +865,6 @@ public class Marian {
     }
 
     public Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > getTask(int algoritm){
-        System.out.println("Create task, alg: " + algoritm);
         AlgorithmEvaluation = 0;
         ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
         //final Marian  = this;
@@ -880,7 +880,6 @@ public class Marian {
         Task < ArrayList<ObservableList<XYChart.Series<String, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
             @Override
             protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
-                 System.out.println("Start task, alg: " + algoritm);
                 XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
@@ -914,26 +913,22 @@ public class Marian {
                 stopCondition.Start();
                 
                 while(!stopCondition.isStop(generations)){
-//                    System.out.println("start loop      algorm: "+ algoritm + "      generation:" + generations);
                     if (Thread.currentThread().isInterrupted()) {
 
                         updateProgress(1, 1);
-//                        System.out.println("Stop task");
                         return  partialResults;
                     }
                     
        
                     
                     if (stopCondition.isEnableStopTime()) {
-                        process.setProcess( ((System.currentTimeMillis() - stopCondition.getStartTime())/1000) );
-                        
+                        process.setProcess( ((System.currentTimeMillis() - stopCondition.getStartTime())/1000) );   
                         updateProgress(((System.currentTimeMillis() - stopCondition.getStartTime())/1000), (stopCondition.getRunTime()/1000));
                     }else if(stopCondition.isEnableStopGenerations()){
                         process.setProcess( generations );
-                        updateProgress(generations, stopCondition.getNrOfGenerations());
+                        updateProgress(generations+1, stopCondition.getNrOfGenerations());
                     }
                      pop = crossOver(pop);
-//                    System.out.println("after check      algorm: "+ algoritm + "      generation:" + generations);
 
 
                     switch(algoritm){
@@ -950,11 +945,9 @@ public class Marian {
                                 Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                     }
-//                    System.out.println("after select      algorm: "+ algoritm + "     generation:" + generations);
 
                     pop = pseudoMutation(pop); 
                     
-                     //            System.out.println("Min:" + ((double)firstMin.getCosts()/(double)pop.getMin().getCosts()) );
                     double max = pop.getMax().getFitness();
                     double minCosts = pop.getMin().getCosts();
                     double maxCosts = pop.getMax().getCosts();
@@ -989,7 +982,6 @@ public class Marian {
                 return partialResults;
             }
         };
-         System.out.println("Marian task ended");     
          return marianTask;
     }
     
@@ -1115,6 +1107,10 @@ public class Marian {
     }
     public double getMutationPercentage() {
         return mutationPercentage;
+    }
+    
+     public int getProblemSize() {
+        return problemSize;
     }
           
     class Process{

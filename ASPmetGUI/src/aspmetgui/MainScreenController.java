@@ -303,6 +303,8 @@ public class MainScreenController implements Initializable {
 
         Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
         Population newPop = marian.generatePopulationBetter(populationSize);
+        
+        
         marian.setUsePopulation(newPop);
 
         lineChartFitness.getData().clear();
@@ -313,14 +315,11 @@ public class MainScreenController implements Initializable {
         ArrayList<Integer> Algorithms = new ArrayList<>();
 
         if(this.checkboxMarian.isSelected()){
-            System.out.println("    MarianOrignal selected");
             Algorithms.add(Marian.MarianOrignal);
         }
         if(this.checkboxMarianWithOptimization.isSelected()){
-            System.out.println("    MarianOptimised selected");
             Algorithms.add(Marian.MarianOptimised);
         }
-        
         
         
         TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness, lineChartCompare);
@@ -328,7 +327,6 @@ public class MainScreenController implements Initializable {
         taskManager.valueProperty().addListener(new ChangeListener<TaskManager.TaskUpdate>() {
             @Override
             public void changed(ObservableValue<? extends TaskManager.TaskUpdate> observable, TaskManager.TaskUpdate oldValue, TaskManager.TaskUpdate newValue) {
-                System.out.println("RESIVE UPDATE");
                 switch(newValue.getUpdateType()){
                     case TaskManager.TaskUpdate.TaskNotInialised:
                         break;
@@ -342,12 +340,45 @@ public class MainScreenController implements Initializable {
             }
         });
         
-        progressBar.progressProperty().unbind();
-        progressBar.progressProperty().bind(taskManager.progressProperty());
+        taskManager.messageProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                a(newValue);
+            }
+        });
+        
+        
+        
+         String startMessage = "";
+        
+        if(Algorithms.size() > 0){
+            startMessage = "Start algorithm(s): ";
+            for (Integer Algorithm : Algorithms) {
+                switch (Algorithm) {
+                    case Marian.MarianOrignal:
+                         startMessage += "marian orignal, "; 
+                        break;
+                    case Marian.MarianOptimised:
+                        startMessage += "marian optimised, "; 
+                        break;
+ 
+                } 
+            }
+            startMessage += "problem size: " + marian.getProblemSize() + " settings: " + marian.getPopulationSize() + ", " + marian.getMutationPercentage();
+            startMessage += " cycles: " + cycles;
+            a(startMessage);
+            
+            progressBar.progressProperty().unbind();
+            progressBar.progressProperty().bind(taskManager.progressProperty());
+            
+            taskManagerThread = new Thread(taskManager);
+            taskManagerThread.setDaemon(true);
+            taskManagerThread.start();
+            
+        }else{
+            a("Program can not start, please select an algorithm");
+        }
 
-        taskManagerThread = new Thread(taskManager);
-        taskManagerThread.setDaemon(true);
-        taskManagerThread.start();
+        
 
         Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
@@ -355,7 +386,6 @@ public class MainScreenController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Canvas> observable, Canvas oldValue, Canvas newValue) {
                 gridPaneProblem.add(newValue, 0, 2);
-                System.out.println("Drawing problem");
             }
         });
 
@@ -387,16 +417,17 @@ public class MainScreenController implements Initializable {
     }
     
     public void clearCharts(){
+        stopOperation();
         lineChartFitness.getData().clear();
         lineChartFitnessOptimized.getData().clear();
         lineChartMinMax.getData().clear();
         lineChartCompare.getData().clear();
+        a("Clear graphs");
         
     }
 
     public void stopOperation() {
         taskManagerThread.interrupt();
-
         a("Application stopped.");
     }
 
