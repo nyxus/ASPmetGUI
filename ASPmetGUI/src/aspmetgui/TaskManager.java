@@ -165,7 +165,7 @@ public class TaskManager extends Task<TaskUpdate> {
         Thread currentTask;
         TaskUpdate update = new TaskUpdate(TaskUpdate.TaskNotInialised);
         // Run amount of cycels
-        for (int i = 0; i < cycles; i++) {
+        for (int i = 1; i <= cycles; i++) {
           // foread cycle run amount of algorithms to solve the problem
           for (Integer Algorithm : Algorithms) {
                 switch (Algorithm) {

@@ -86,6 +86,7 @@ public class MainScreenController implements Initializable {
     private ObservableList<XYChart.Series<String, Integer>> runList;
     private Series<String, Integer> runOriginal;
     private Series<String, Integer> runOptimised;
+    private boolean running = false;
 
     @FXML
     Parent root;
@@ -304,118 +305,124 @@ public class MainScreenController implements Initializable {
 
  
     public void runMarian() {
-        
-        populationSize = (int) sliderPopulationSize.getValue();
-        int nrOfGenerations = (int) Math.round(sliderStopNrGenerations.getValue());
-        long runTime = Math.round(sliderStopTime.getValue()) * 1000;
-        System.out.println("time:" + runTime);
-        mutationPercentage = (double) sliderMutationPercentage.getValue();
-        System.out.println("populationSize: " + populationSize);
-        System.out.println("mutationPercentage: " + mutationPercentage);
-
-        a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
-        String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
-
-
-        StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
-
-        Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
-        Population newPop = marian.generatePopulation(populationSize);
-        
-        
-        marian.setUsePopulation(newPop);
-
-        lineChartFitness.getData().clear();
-//        lineChartFitnessOptimized.getData().clear();
-        lineChartMinMax.getData().clear();
-        //lineChartCompare.getData().clear();
-                        
-        ArrayList<Integer> Algorithms = new ArrayList<>();
-
-        if(this.checkboxMarian.isSelected()){
-            Algorithms.add(Marian.MarianOrignal);
-        }
-        if(this.checkboxMarianWithOptimization.isSelected()){
-            Algorithms.add(Marian.MarianOptimised);
-        }
-        
-        
-        TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness);
-        
-        taskManager.valueProperty().addListener(new ChangeListener<TaskManager.TaskUpdate>() {
-            @Override
-            public void changed(ObservableValue<? extends TaskManager.TaskUpdate> observable, TaskManager.TaskUpdate oldValue, TaskManager.TaskUpdate newValue) {
-                switch(newValue.getUpdateType()){
-                    case TaskManager.TaskUpdate.TaskNotInialised:
-                        break;
-                    case Marian.MarianOrignal:
-                    case Marian.MarianOptimised:
-                    case TaskManager.TaskUpdate.TaskEnd:
-                        ObservableList compare = lineChartCompare.getData();
-                        compare.addAll(newValue.getList().get(0), newValue.getList().get(1));
-                        break;
-                }
-            }
-        });
-        
-        taskManager.messageProperty().addListener(new ChangeListener<String>() {
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                a(newValue);
-            }
-        });
-        
-        
-        
-         String startMessage = "";
-        
-        if(Algorithms.size() > 0){
-            startMessage = "Start algorithm(s): ";
-            for (Integer Algorithm : Algorithms) {
-                switch (Algorithm) {
-                    case Marian.MarianOrignal:
-                         startMessage += "marian orignal, "; 
-                        break;
-                    case Marian.MarianOptimised:
-                        startMessage += "marian optimised, "; 
-                        break;
- 
-                } 
-            }
-            startMessage += "problem size: " + marian.getProblemSize() + " settings: " + marian.getPopulationSize() + ", " + marian.getMutationPercentage();
-            startMessage += " cycles: " + cycles;
-            a(startMessage);
-            
-            progressBar.progressProperty().unbind();
-            progressBar.progressProperty().bind(taskManager.progressProperty());
-            
-            taskManagerThread = new Thread(taskManager);
-            taskManagerThread.setDaemon(true);
-            taskManagerThread.start();
-            
+        // check if task already running
+        if (running) {
+            a("Application is aready running");
+        }else if(choiceBoxProblems.getSelectionModel().getSelectedItem() == "No problems found" ){
+            a("No problems problem selected");
         }else{
-            a("Program can not start, please select an algorithm");
+            populationSize = (int) sliderPopulationSize.getValue();
+            int nrOfGenerations = (int) Math.round(sliderStopNrGenerations.getValue());
+            long runTime = Math.round(sliderStopTime.getValue()) * 1000;
+            System.out.println("time:" + runTime);
+            mutationPercentage = (double) sliderMutationPercentage.getValue();
+            System.out.println("populationSize: " + populationSize);
+            System.out.println("mutationPercentage: " + mutationPercentage);
+
+            a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
+            String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
+
+
+            StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
+
+            Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
+            Population newPop = marian.generatePopulation(populationSize);
+
+
+            marian.setUsePopulation(newPop);
+
+            lineChartFitness.getData().clear();
+    //        lineChartFitnessOptimized.getData().clear();
+            lineChartMinMax.getData().clear();
+            //lineChartCompare.getData().clear();
+
+            ArrayList<Integer> Algorithms = new ArrayList<>();
+
+            if(this.checkboxMarian.isSelected()){
+                Algorithms.add(Marian.MarianOrignal);
+            }
+            if(this.checkboxMarianWithOptimization.isSelected()){
+                Algorithms.add(Marian.MarianOptimised);
+            }
+
+
+            TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness);
+
+            taskManager.valueProperty().addListener(new ChangeListener<TaskManager.TaskUpdate>() {
+                @Override
+                public void changed(ObservableValue<? extends TaskManager.TaskUpdate> observable, TaskManager.TaskUpdate oldValue, TaskManager.TaskUpdate newValue) {
+                    switch(newValue.getUpdateType()){
+                        case TaskManager.TaskUpdate.TaskNotInialised:
+                            break;
+                        case Marian.MarianOrignal:
+                        case Marian.MarianOptimised:
+                        case TaskManager.TaskUpdate.TaskEnd:
+                            ObservableList compare = lineChartCompare.getData();
+                            compare.addAll(newValue.getList().get(0), newValue.getList().get(1));
+                            running = false;
+                            break;
+                    }
+                }
+            });
+
+            taskManager.messageProperty().addListener(new ChangeListener<String>() {
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    a(newValue);
+                }
+            });
+
+
+
+             String startMessage = "";
+
+            if(Algorithms.size() > 0){
+                running = true;
+                startMessage = "Start algorithm(s): ";
+                for (Integer Algorithm : Algorithms) {
+                    switch (Algorithm) {
+                        case Marian.MarianOrignal:
+                             startMessage += "marian orignal, "; 
+                            break;
+                        case Marian.MarianOptimised:
+                            startMessage += "marian optimised, "; 
+                            break;
+
+                    } 
+                }
+                startMessage += "problem size: " + marian.getProblemSize() + " settings: " + marian.getPopulationSize() + ", " + marian.getMutationPercentage();
+                startMessage += " cycles: " + cycles;
+                a(startMessage);
+
+                progressBar.progressProperty().unbind();
+                progressBar.progressProperty().bind(taskManager.progressProperty());
+
+                taskManagerThread = new Thread(taskManager);
+                taskManagerThread.setDaemon(true);
+                taskManagerThread.start();
+
+            }else{
+                a("Program can not start, please select an algorithm");
+            }
+            
+            Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
+
+            drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
+                @Override
+                public void changed(ObservableValue<? extends Canvas> observable, Canvas oldValue, Canvas newValue) {
+                    gridPaneProblem.add(newValue, 0, 2);
+                }
+            });
+
+            drawProblem.messageProperty().addListener(new ChangeListener<String>() {
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    a(newValue);
+                }
+            });
+
+            Thread drawTask = new Thread(drawProblem);
+            drawTask.setDaemon(true);
+            drawTask.start();
         }
-
-        
-
-        Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
-
-        drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
-            @Override
-            public void changed(ObservableValue<? extends Canvas> observable, Canvas oldValue, Canvas newValue) {
-                gridPaneProblem.add(newValue, 0, 2);
-            }
-        });
-
-        drawProblem.messageProperty().addListener(new ChangeListener<String>() {
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                a(newValue);
-            }
-        });
-
-        Thread drawTask = new Thread(drawProblem);
-        drawTask.setDaemon(true);
-        drawTask.start();
 
     }
 
