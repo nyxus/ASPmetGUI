@@ -453,6 +453,7 @@ public class MainScreenController implements Initializable {
 
     public void stopOperation() {
         taskManagerThread.interrupt();
+        running = false;
         a("Application stopped.");
     }
 
