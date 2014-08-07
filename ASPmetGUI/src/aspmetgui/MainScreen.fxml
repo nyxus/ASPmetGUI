@@ -71,102 +71,259 @@
             <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane fx:id="gridPaneSettings" onDragDetected="#setLabelMutationPercentage" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 1px;" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
-              <columnConstraints>
-                <ColumnConstraints />
-                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="1.0" minHeight="1.0" prefHeight="1.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
-                <RowConstraints minHeight="20.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="20.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="-Infinity" prefHeight="5.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="ALWAYS" />
-                  <RowConstraints minHeight="20.0" prefHeight="0.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="-Infinity" prefHeight="5.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-              </rowConstraints>
+            <GridPane style="-fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="1.0" prefHeight="1.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Slider fx:id="sliderPopulationSize" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" minorTickCount="4" onDragDropped="#setLabelPopulationSize" onKeyReleased="#setLabelPopulationSize" onMouseDragged="#setLabelPopulationSize" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="15" GridPane.vgrow="NEVER">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" />
-                     </GridPane.margin>
-                  </Slider>
-                  <Label fx:id="labelPopulationSize" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onKeyPressed="#setLabelPopulationSize" styleClass="SubTitle" text="Populationsize ( # )" GridPane.columnIndex="1" GridPane.rowIndex="13" GridPane.vgrow="NEVER">
+                  <ScrollPane focusTraversable="false" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefViewportHeight="581.0" prefViewportWidth="300.0" style="-fx-background-color: white;" vbarPolicy="ALWAYS" GridPane.rowIndex="2">
+                     <content>
+                        <GridPane fx:id="gridPaneSettings" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="690.0" onDragDetected="#setLabelMutationPercentage" style="-fx-background-color: white;" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                          <columnConstraints>
+                            <ColumnConstraints />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="288.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="20.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="20.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="20.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
+                            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="-Infinity" prefHeight="5.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints valignment="TOP" vgrow="NEVER" />
+                          </rowConstraints>
+                           <children>
+                              <Slider fx:id="sliderPopulationSize" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" minorTickCount="4" onDragDropped="#setLabelPopulationSize" onKeyReleased="#setLabelPopulationSize" onMouseDragged="#setLabelPopulationSize" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.vgrow="NEVER">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <Label fx:id="labelPopulationSize" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" onKeyPressed="#setLabelPopulationSize" styleClass="SubTitle" text="Populationsize ( # )" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.vgrow="NEVER">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Here you can select the desired populationsize" />
+                                 </tooltip>
+                              </Label>
+                              <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="13">
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Here you can select the desired mutationpercentage" />
+                                 </tooltip>
+                              </Label>
+                              <Slider fx:id="sliderMutationPercentage" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="4" onKeyReleased="#setLabelMutationPercentage" onMouseDragged="#setLabelMutationPercentage" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="problem" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Here you can select the found problems in the previously selected directory" />
+                                 </tooltip>
+                              </Label>
+                              <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </GridPane.margin>
+                              </ChoiceBox>
+                              <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="16" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Here you can select what the stoppingconditions should be for the algorithm to stop" />
+                                 </tooltip>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <GridPane GridPane.columnIndex="1" GridPane.rowIndex="18" GridPane.vgrow="NEVER">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="40.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                                 <children>
+                                    <CheckBox fx:id="checkboxStopTime" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Time ( sec )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="checkboxStopNrGenerations" mnemonicParsing="false" onAction="#updateCheckBoxes" selected="true" text="Nr of generations ( # )" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Empty Tooltip" />
+                                       </tooltip>
+                                    </CheckBox>
+                                    <CheckBox fx:id="checkboxStopInfinite" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Infinite" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <Slider fx:id="sliderStopTime" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopTime" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
+                                    <Slider fx:id="sliderStopNrGenerations" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopNrGenerations" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Here you can select our implementation of Marian or the optimized Marian algorithm created by us" />
+                                 </tooltip>
+                              </Label>
+                              <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Selection optimization " GridPane.columnIndex="1" GridPane.rowIndex="19" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Because the random function is not very random, we have created a function to fix this" />
+                                 </tooltip>
+                              </Label>
+                              <GridPane GridPane.columnIndex="1" GridPane.rowIndex="21">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Slider fx:id="sliderOptimationNrParts" majorTickUnit="1.0" max="5.0" min="2.0" minorTickCount="0" onMouseDragged="#setLabelOptimationParts" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="3.0" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="5.0" />
+                                       </GridPane.margin>
+                                    </Slider>
+                                    <Label fx:id="labelOptimationParts" text="Nr of parts ( # )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets left="26.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="labelOptimationRemaining" text="Remaining ( # )" GridPane.halignment="LEFT">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets left="26.0" top="15.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                              <Pane maxHeight="1.0" minHeight="1.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="TOP">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Pane>
+                              <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="20" GridPane.valignment="TOP" />
+                              <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="TOP" />
+                              <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.valignment="TOP" />
+                              <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+                              <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
+                                 <children>
+                                    <CheckBox fx:id="checkboxMarian" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" />
+                                       </GridPane.margin>
+                                    </CheckBox>
+                                    <CheckBox fx:id="checkboxMarianWithOptimization" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimization " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                       <font>
+                                          <Font name="BebasNeue" size="14.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Empty Tooltip" />
+                                       </tooltip>
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" />
+                                       </GridPane.margin>
+                                    </CheckBox>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints vgrow="NEVER" />
+                                    <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                              </GridPane>
+                              <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="cycles" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <font>
+                                    <Font name="BebasNeue" size="14.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip text="Here you can select the found problems in the previously selected directory" />
+                                 </tooltip>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <Slider fx:id="sliderCycles" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="32.0" prefWidth="288.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <Separator prefHeight="1.0" prefWidth="288.0" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.valignment="TOP" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets />
+                           </BorderPane.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" />
+                           </padding>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </GridPane>
+                     </content>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Here you can select the desired populationsize" />
-                     </tooltip>
-                  </Label>
-                  <GridPane prefHeight="24.0" prefWidth="288.0" GridPane.columnIndex="1" GridPane.rowIndex="29">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints minWidth="-Infinity" prefWidth="5.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                    </rowConstraints>
-                     <children>
-                        <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearCharts" text="Clear graphs" textAlignment="CENTER" GridPane.valignment="BOTTOM" />
-                        <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#stopOperation" text="Stop" GridPane.columnIndex="2" GridPane.valignment="BOTTOM" />
-                     </children>
-                  </GridPane>
-                  <Label fx:id="labelMutationPercentage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Mutationpercentage ( % )" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="16">
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Here you can select the desired mutationpercentage" />
-                     </tooltip>
-                  </Label>
-                  <Slider fx:id="sliderMutationPercentage" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="4" onKeyReleased="#setLabelMutationPercentage" onMouseDragged="#setLabelMutationPercentage" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="18">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" />
-                     </GridPane.margin>
-                  </Slider>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="problem" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Here you can select the found problems in the previously selected directory" />
-                     </tooltip>
-                  </Label>
-                  <ChoiceBox fx:id="choiceBoxProblems" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" />
-                     </GridPane.margin>
-                  </ChoiceBox>
-                  <Label styleClass="Title" text="SETTINGS" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                  </ScrollPane>
+                  <Label styleClass="Title" text="SETTINGS" GridPane.halignment="CENTER">
                      <font>
                         <Font name="BebasNeue" size="22.0" />
                      </font>
@@ -174,159 +331,32 @@
                         <Tooltip text="Here you can configure how the selected algorithm should run" />
                      </tooltip>
                   </Label>
-                  <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelMutationPercentage1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Stop conditions" GridPane.columnIndex="1" GridPane.rowIndex="19" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Here you can select what the stoppingconditions should be for the algorithm to stop" />
-                     </tooltip>
-                  </Label>
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="21" GridPane.vgrow="NEVER">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="40.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                     </rowConstraints>
+                  <GridPane prefHeight="24.0" prefWidth="288.0" GridPane.rowIndex="4">
                      <children>
-                        <CheckBox fx:id="checkboxStopTime" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Time ( sec )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                        </CheckBox>
-                        <CheckBox fx:id="checkboxStopNrGenerations" mnemonicParsing="false" onAction="#updateCheckBoxes" selected="true" text="Nr of generations ( # )" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Empty Tooltip" />
-                           </tooltip>
-                        </CheckBox>
-                        <CheckBox fx:id="checkboxStopInfinite" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Infinite" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                        </CheckBox>
-                        <Slider fx:id="sliderStopTime" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopTime" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
-                        <Slider fx:id="sliderStopNrGenerations" majorTickUnit="100.0" max="300.0" minorTickCount="4" onMouseDragged="#setLabelStopNrGenerations" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#clearCharts" prefWidth="90.0" text="Clear graphs" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets right="5.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#stopOperation" prefWidth="90.0" text="Stop" GridPane.columnIndex="2" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets left="5.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Button fx:id="buttonStart1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#runMarian" prefWidth="90.0" text="Start" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.valignment="CENTER" />
                      </children>
-                  </GridPane>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="ALGORITHM" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Here you can select our implementation of Marian or the optimized Marian algorithm created by us" />
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="labelMutationPercentage11" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="Selection optimization " GridPane.columnIndex="1" GridPane.rowIndex="22" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Because the random function is not very random, we have created a function to fix this" />
-                     </tooltip>
-                  </Label>
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="24">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
+                        <ColumnConstraints minWidth="-Infinity" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints minHeight="10.0" vgrow="NEVER" />
-                     </rowConstraints>
-                     <children>
-                        <Slider fx:id="sliderOptimationNrParts" majorTickUnit="1.0" max="5.0" min="2.0" minorTickCount="0" onMouseDragged="#setLabelOptimationParts" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="1" />
-                        <Label fx:id="labelOptimationParts" text="Nr of parts ( # )" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="26.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label fx:id="labelOptimationRemaining" text="Remaining ( # )" GridPane.halignment="LEFT">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="26.0" top="15.0" />
-                           </GridPane.margin>
-                        </Label>
-                     </children>
-                  </GridPane>
-                  <GridPane alignment="BOTTOM_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="25">
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                    </rowConstraints>
-                  </GridPane>
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="20" GridPane.valignment="TOP">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Pane>
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="23" GridPane.valignment="TOP" />
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="TOP" />
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.valignment="TOP" />
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.valignment="TOP" />
-                  <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.valignment="TOP" />
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.vgrow="NEVER">
-                     <children>
-                        <CheckBox fx:id="checkboxMarian" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets bottom="5.0" />
-                           </GridPane.margin>
-                        </CheckBox>
-                        <CheckBox fx:id="checkboxMarianWithOptimization" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian with optimization " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                           <font>
-                              <Font name="BebasNeue" size="14.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Empty Tooltip" />
-                           </tooltip>
-                           <GridPane.margin>
-                              <Insets bottom="5.0" />
-                           </GridPane.margin>
-                        </CheckBox>
-                     </children>
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints vgrow="NEVER" />
-                        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="50.0" vgrow="NEVER" />
                      </rowConstraints>
                   </GridPane>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" maxWidth="1.7976931348623157E308" styleClass="SubTitle" text="cycles" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="BebasNeue" size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Here you can select the found problems in the previously selected directory" />
-                     </tooltip>
-                  </Label>
-                  <Slider fx:id="sliderCycles" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="1" prefHeight="32.0" prefWidth="288.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Separator prefHeight="12.0" prefWidth="288.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Button fx:id="buttonStart1" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#runMarian" prefHeight="45.0" prefWidth="288.0" text="Start" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.rowIndex="30" />
+                  <Pane maxHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.rowIndex="1" />
+                  <Pane maxHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.rowIndex="3" />
                </children>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </padding>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
             </GridPane>
          </children>
       </GridPane>
@@ -381,18 +411,6 @@
                         <Tab fx:id="tabMinMaxMarianOptimized" styleClass="TabTitle" text="Compare algorithms">
                            <content>
                               <LineChart fx:id="lineChartCompare">
-                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis side="LEFT" />
-                                 </yAxis>
-                              </LineChart>
-                           </content>
-                        </Tab>
-                        <Tab fx:id="tabFitnessOptimized" styleClass="TabTitle" text="Fitness optimized">
-                           <content>
-                              <LineChart fx:id="lineChartFitnessOptimized">
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" />
                                  </xAxis>
@@ -472,7 +490,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#stopProgram" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#specifyDirectory" text="Change directory" />
+                  <MenuItem mnemonicParsing="false" onAction="#stopProgram" text="Close" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Screen">

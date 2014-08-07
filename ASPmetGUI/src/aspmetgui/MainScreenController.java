@@ -48,6 +48,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -70,8 +71,8 @@ public class MainScreenController implements Initializable {
     private int populationSize = 150;
     private int stopTime = 120;
     private int stopNrGenerations = 100;
-    private int optimationNrParts = 4;
-    private int cycles = 5;
+    private int optimationNrParts = 3;
+    private int cycles = 2;
 
 
     private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
@@ -211,7 +212,19 @@ public class MainScreenController implements Initializable {
 //         lineChartMinMax = new LineChart[5,50](xAxis, yAxis);
 //        tabMinMaxMarian.setContent(lineChartMinMax);
 
-        setLabelOptimationParts();
+            initializeOptimationParts();
+        }
+    
+    public void specifyDirectory() {
+        DirectoryChooser chooser = new DirectoryChooser();
+
+        chooser.setTitle("Please choose the directory containing the problems");
+        String path = getClass().getResource("").getPath();
+        System.out.print(path.substring(0, path.length()-25));
+        chooser.setInitialDirectory(new File(path.substring(6, path.length()-26)));
+        File file = chooser.showDialog(stage);
+
+        setDirectory(file.getAbsolutePath());
     }
 
     public void initializeCanvas() {
@@ -235,11 +248,16 @@ public class MainScreenController implements Initializable {
         if (children == null) {
             a("Either dir does not exist or is not a directory");
         } else {
+            choiceBoxProblems.getItems().clear();
+            filepaths.clear();
             for (String filename : children) {
                 if (checkIfProblem(directory + "\\" + filename)) {
                     choiceBoxProblems.getItems().add(filename);
                     filepaths.add(directory + "\\" + filename);
                 }
+            }
+            if(choiceBoxProblems.getItems().size() == 0){
+                choiceBoxProblems.getItems().add("No problems found");                
             }
             choiceBoxProblems.getSelectionModel().selectFirst();
         }
@@ -419,7 +437,7 @@ public class MainScreenController implements Initializable {
     public void clearCharts(){
         stopOperation();
         lineChartFitness.getData().clear();
-        lineChartFitnessOptimized.getData().clear();
+//        lineChartFitnessOptimized.getData().clear();
         lineChartMinMax.getData().clear();
         lineChartCompare.getData().clear();
         a("Clear graphs");
@@ -480,11 +498,18 @@ public class MainScreenController implements Initializable {
             checkboxStopInfinite.setDisable(false);
         }
     }
+    
+    public void initializeOptimationParts(){
+        setLabelOptimationParts();
+        arrayListOptimationParts.get(0).setText("0.7");
+        arrayListOptimationParts.get(1).setText("0.2");
+        arrayListOptimationParts.get(2).setText("0.1");
+    }
 
     public void setLabelOptimationParts() {
         gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
         gridPaneOptimationParts = new GridPane();
-        gridPaneSettings.add(gridPaneOptimationParts, 1, 20);
+        gridPaneSettings.add(gridPaneOptimationParts, 1, 22);
 
         gridPaneOptimationParts.setAlignment(Pos.CENTER);
 
@@ -500,7 +525,7 @@ public class MainScreenController implements Initializable {
             tf.setPrefWidth(288);
             tf.setText(df.format(part) + "");
 
-            tf.setAlignment(Pos.CENTER);
+            tf.setAlignment(Pos.TOP_CENTER);
 
             //Setting an action for the Clear button
             tf.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -581,6 +606,7 @@ public class MainScreenController implements Initializable {
 
     public void setDirectory(String directory) {
         this.directory = directory;
+        a("Problem directory set to "+directory);
         searchDirectory(directory);
     }
 
