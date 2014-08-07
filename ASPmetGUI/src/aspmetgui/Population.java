@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- *
  * @author Gerco
- *
+ * The popupation is a collection of Chromosomes. It automaticly finds the best and the worst Chromosome. 
  */
 public class Population {
 
@@ -54,6 +53,9 @@ public class Population {
         }
     }
     
+    /**
+     * Calculate the fitness for each Chromosoom in the list
+     */
     public void calculateFitness(){
         double fitness;
         this.TotalFitness = 0;
@@ -75,7 +77,7 @@ public class Population {
 
     /**
      * @return a string of all Chromosomes in the population list
-     * with an  new line as Saperator
+     * with an  new line as Seperator
      * @author Gerco Versloot
      */
     public String toString() {
