@@ -88,7 +88,6 @@ public class StopConditionsMarian {;
         if(enableStopTime)
             stopTime =  runTime + System.currentTimeMillis();
         startTime = System.currentTimeMillis();
-        nrOfGenerations = 0;
     }
     
     public boolean isStop(int currentGeneration){
