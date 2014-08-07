@@ -8,7 +8,8 @@ package aspmetgui.Exceptions;
 
 /**
  *
- * @author Gerco
+ * @author Gerco Versloot
+ * Exception for if the user did not select an algorithm
  */
 public class AlgorithmNotSet extends Exception {
      

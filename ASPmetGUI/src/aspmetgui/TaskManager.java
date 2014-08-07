@@ -207,7 +207,7 @@ public class TaskManager extends Task<TaskUpdate> {
                 return new TaskUpdate(TaskUpdate.TaskEnd, obListCompare);
             }
             // set new first population for the next cycle
-            marian.setUsePopulation(marian.generatePopulationBetter(marian.getPopulationSize()));
+            marian.setUsePopulation(marian.generatePopulation(marian.getPopulationSize()));
         }
         update.setList(obListCompare);
         return new TaskUpdate(TaskUpdate.TaskEnd, obListCompare);

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package aspmetgui;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,8 +5,9 @@ import java.util.Iterator;
 /**
  *
  * @author Gerco
+ * The Chromosome contains a list of blocks
  */
-public class Chromosome  implements Comparable<Chromosome> {
+public class Chromosome implements Comparable<Chromosome> {
 
     private ArrayList<Block> sequence = new ArrayList<>();
     private int id;
@@ -23,15 +18,29 @@ public class Chromosome  implements Comparable<Chromosome> {
     
     private Block prevBlock;
     
+    /**
+     * Create empty chromosome 
+     * @param ID id of the chromosome 
+     */
     public Chromosome(int ID){
         this.id = ID;
     }
+    
+    /**
+     * Create Chromosome with list
+     * @param ID id of the chromosome
+     * @param blocks arraylist of blocks to create chromosome 
+     */
     public Chromosome(int ID, ArrayList<Block> blocks){
         this.id = ID;
         this.sequence.addAll(blocks);
         CalculateSize();
     }
     
+    /**
+     * Add a block at the end of the chromosome 
+     * @param newBlock The block that will be added
+     */
     public void AddBlockToSequence( Block newBlock){
        if(sequence.isEmpty()){
            prevBlock = newBlock;
@@ -41,7 +50,9 @@ public class Chromosome  implements Comparable<Chromosome> {
        this.sequence.add(newBlock);
        prevBlock = newBlock;
     } 
-    
+    /**
+     * Calculate the size of the chromosome
+     */
     private void CalculateSize(){
         prevBlock = sequence.get(0);
         
@@ -54,6 +65,12 @@ public class Chromosome  implements Comparable<Chromosome> {
         
     }
     
+    /**
+     * Get a section of the chromosome 
+     * @param Min starting index
+     * @param Max last index
+     * @return arraylist of block from Min to Max 
+     */
     public ArrayList<Block> GetSelection(int Min,int Max){
         ArrayList<Block> selection = new ArrayList();
         for (Iterator<Block> it = sequence.listIterator(Min); it.hasNext() && Max - Min  >= 0 ;) {

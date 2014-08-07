@@ -320,7 +320,7 @@ public class MainScreenController implements Initializable {
         StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
 
         Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
-        Population newPop = marian.generatePopulationBetter(populationSize);
+        Population newPop = marian.generatePopulation(populationSize);
         
         
         marian.setUsePopulation(newPop);
@@ -340,7 +340,7 @@ public class MainScreenController implements Initializable {
         }
         
         
-        TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness, lineChartCompare);
+        TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness);
         
         taskManager.valueProperty().addListener(new ChangeListener<TaskManager.TaskUpdate>() {
             @Override
