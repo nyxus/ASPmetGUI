@@ -16,7 +16,8 @@ import javafx.scene.text.Font;
 
 /**
  *
- * @author Gerco
+ * @author Gerco Versloot
+ * A task to calculate and draw a problem onto a canvas
  */
 public class drawProblem extends Task<Canvas> {
     
@@ -24,13 +25,23 @@ public class drawProblem extends Task<Canvas> {
     private Marian marian;
     private boolean toggleBlockNr;
     
+    /**
+     * Constructor to setup the properties of problem
+     * @param canvasProblemGraphical the canvas to draw the problem on to. 
+     * @param marian the problem that has to be drawn 
+     * @param toggleBlockNr enable or disable block numbers
+     */
     public drawProblem(Canvas canvasProblemGraphical, Marian marian, boolean toggleBlockNr){
         this.canvasProblemGraphical = canvasProblemGraphical;
         this.marian = marian;
         this.toggleBlockNr = toggleBlockNr;
     }
  
-    protected Canvas call() throws Exception {
+    /**
+     * Starts the task to calculate and draw the problem
+     * @return the canvas which is the problem drawn on
+     */
+    protected Canvas call() {
         System.out.println("Drawing problem building");
         canvasProblemGraphical = new Canvas(canvasProblemGraphical.getWidth(), canvasProblemGraphical.getHeight());
 
