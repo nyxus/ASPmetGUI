@@ -211,33 +211,10 @@ public class MainScreenController implements Initializable {
         //Initialize textboxes of the optimation algorithm
         initializeOptimationParts();
         
-        
-        NumberAxis xaxis = new NumberAxis("X as", 0, 1000, 10);
-        NumberAxis yaxis = new NumberAxis("Y as", 150, 2000, 10);
-        lineChartMinMax = new LineChart(xaxis,yaxis);
-        tabMinMaxMarian.setContent(lineChartMinMax);
-        lineChartMinMax.setData(getChartData());
+
+
     }
     
-    private ObservableList<XYChart.Series<Number, Double>> getChartData() {
-      double aValue = 200;
-      double cValue = 200;
-      ObservableList<XYChart.Series<Number, Double>> answer = FXCollections.observableArrayList();
-      Series<Number, Double> aSeries = new Series<Number, Double>();
-      Series<Number, Double> cSeries = new Series<Number, Double>();
-      aSeries.setName("a");
-      cSeries.setName("C");
-      
-      for (int i = 0; i < 1000; i++) {
-          aSeries.getData().add(new XYChart.Data(i, aValue));
-          aValue = aValue + Math.random() - .5;
-          cSeries.getData().add(new XYChart.Data(i, cValue));
-          cValue = cValue + Math.random() - .5;
-      }
-      answer.addAll(aSeries, cSeries);
-      return answer;
-    }
-
     /**
      * specifyDirectory shows a directorychooser where the user can select a
      * directory where the problems could be found. Then it will set the
@@ -371,6 +348,18 @@ public class MainScreenController implements Initializable {
             mutationPercentage = (double) sliderMutationPercentage.getValue();
             System.out.println("populationSize: " + populationSize);
             System.out.println("mutationPercentage: " + mutationPercentage);
+            
+            NumberAxis xaxisFit = new NumberAxis("Generations", 0, nrOfGenerations, 10);
+            NumberAxis yaxisFit = new NumberAxis("Fitness", 0.5, 1, 10);
+            lineChartFitness = new LineChart(xaxisFit,yaxisFit);
+            lineChartFitness.autosize();
+            tabFitness.setContent(lineChartFitness);
+
+            NumberAxis xaxis = new NumberAxis("Generations", 0, nrOfGenerations, 10);
+            NumberAxis yaxis = new NumberAxis("Costs", 1300, 2600, 10);
+            lineChartMinMax = new LineChart(xaxis,yaxis);
+            lineChartMinMax.autosize();
+            tabMinMaxMarian.setContent(lineChartMinMax);
 
             a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
             String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());

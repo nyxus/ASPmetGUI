@@ -818,27 +818,48 @@ public class Marian {
                     Platform.runLater(new Runnable() {
                              
                         @Override public void run() {
-                            /*
+                            
                             DecimalFormat dfFitness = new DecimalFormat("0000");
                             DecimalFormat dfCost = new DecimalFormat("0.0000");
+                            /*
                             XYChart.Data<Number, Double> maxNode = new XYChart.Data(gen, max); 
                             XYChart.Data<Number, Double> avgFitnessNode = new XYChart.Data(gen, avg); 
                             XYChart.Data<Number, Double> maxCostNode = new XYChart.Data(gen, maxCosts); 
                             XYChart.Data<Number, Double> minCostNode = new XYChart.Data(gen, minCosts); 
                             XYChart.Data<Number, Double> avgCostNode = new XYChart.Data(gen, avgCosts); 
-                            /*
+                            
                             maxNode.setNode(new HoverNode(gen, dfCost.format(max)));
                             avgFitnessNode.setNode(new HoverNode(gen, dfCost.format(avg)));
                             maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
                             avgCostNode.setNode(new HoverNode(gen, dfFitness.format(avgCosts)));
                             minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
-                            
+                           
                             partialResults.get(0).get(0).getData().add(maxNode);
                             partialResults.get(0).get(1).getData().add(avgFitnessNode);
                             partialResults.get(1).get(0).getData().add(maxCostNode);
                             partialResults.get(1).get(1).getData().add(minCostNode);
                             partialResults.get(1).get(2).getData().add(avgCostNode);
                             */
+                            
+                            
+                            XYChart.Data<Number, Double> maxCostNode = new XYChart.Data(gen, maxCosts); 
+                            XYChart.Data<Number, Double> minCostNode = new XYChart.Data(gen, minCosts); 
+                            XYChart.Data<Number, Double> avgCostNode = new XYChart.Data(gen, avgCosts); 
+                            XYChart.Data<Number, Double> maxNode = new XYChart.Data(gen, max); 
+                            XYChart.Data<Number, Double> avgFitnessNode = new XYChart.Data(gen, avg); 
+                            
+                            maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
+                            minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
+                            avgCostNode.setNode(new HoverNode(gen, dfFitness.format(avgCosts)));
+                            maxNode.setNode(new HoverNode(gen, dfFitness.format(max)));
+                            avgFitnessNode.setNode(new HoverNode(gen, dfFitness.format(avg)));
+                            
+                            partialResults.get(1).get(0).getData().add(maxCostNode);
+                            partialResults.get(1).get(1).getData().add(minCostNode);
+                            partialResults.get(1).get(2).getData().add(avgCostNode);
+                            partialResults.get(0).get(0).getData().add(maxNode);
+                            partialResults.get(0).get(1).getData().add(avgFitnessNode);
+                                                        
                             updateValue(partialResults);
                             
                         }
