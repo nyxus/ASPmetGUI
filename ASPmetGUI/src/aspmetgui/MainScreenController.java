@@ -210,32 +210,31 @@ public class MainScreenController implements Initializable {
 
         //Initialize textboxes of the optimation algorithm
         initializeOptimationParts();
-        
-        
+
         NumberAxis xaxis = new NumberAxis("X as", 0, 1000, 10);
         NumberAxis yaxis = new NumberAxis("Y as", 150, 2000, 10);
-        lineChartMinMax = new LineChart(xaxis,yaxis);
+        lineChartMinMax = new LineChart(xaxis, yaxis);
         tabMinMaxMarian.setContent(lineChartMinMax);
         lineChartMinMax.setData(getChartData());
     }
-    
+
     private ObservableList<XYChart.Series<Number, Double>> getChartData() {
-      double aValue = 200;
-      double cValue = 200;
-      ObservableList<XYChart.Series<Number, Double>> answer = FXCollections.observableArrayList();
-      Series<Number, Double> aSeries = new Series<Number, Double>();
-      Series<Number, Double> cSeries = new Series<Number, Double>();
-      aSeries.setName("a");
-      cSeries.setName("C");
-      
-      for (int i = 0; i < 1000; i++) {
-          aSeries.getData().add(new XYChart.Data(i, aValue));
-          aValue = aValue + Math.random() - .5;
-          cSeries.getData().add(new XYChart.Data(i, cValue));
-          cValue = cValue + Math.random() - .5;
-      }
-      answer.addAll(aSeries, cSeries);
-      return answer;
+        double aValue = 200;
+        double cValue = 200;
+        ObservableList<XYChart.Series<Number, Double>> answer = FXCollections.observableArrayList();
+        Series<Number, Double> aSeries = new Series<Number, Double>();
+        Series<Number, Double> cSeries = new Series<Number, Double>();
+        aSeries.setName("a");
+        cSeries.setName("C");
+
+        for (int i = 0; i < 1000; i++) {
+            aSeries.getData().add(new XYChart.Data(i, aValue));
+            aValue = aValue + Math.random() - .5;
+            cSeries.getData().add(new XYChart.Data(i, cValue));
+            cValue = cValue + Math.random() - .5;
+        }
+        answer.addAll(aSeries, cSeries);
+        return answer;
     }
 
     /**
@@ -276,6 +275,7 @@ public class MainScreenController implements Initializable {
     /**
      * searchDirectory searches the specified directory for problems and adds
      * them to the choicebox in the settings menu.
+     *
      * @param directory a string with a filepath
      * @author Peter Tielbeek.
      */
@@ -305,7 +305,7 @@ public class MainScreenController implements Initializable {
     }
 
     /**
-     * isNumeric checks if a string is numeric. 
+     * isNumeric checks if a string is numeric.
      *
      * @param string a String.
      * @return returns true if a string is numeric.
@@ -349,14 +349,11 @@ public class MainScreenController implements Initializable {
         return isNumeric(strLine);
     }
 
-    public File loadProblem() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Please open a problem");
-        File file = fileChooser.showOpenDialog(stage);
-
-        return file;
-    }
-
+    /**
+     * runMarian starts the Marian algorithm with the given settings.
+     *
+     * @author Peter Tielbeek and Gerco Versloot.
+     */
     public void runMarian() {
         // check if task already running
         if (running) {
@@ -478,14 +475,19 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * getOptimizedSelectionMarian gets the values from the optimized selection
+     * textboxes and returns them.
+     *
+     * @return an array with doubles relative to the textboxes from left to
+     * right.
+     * @author Peter Tielbeek.
+     */
     public Double[] getOptimizedSelectionMarian() {
         Double[] collection = new Double[arrayListOptimationParts.size()];
-        double count = 0;
 
         for (int i = 0; i < arrayListOptimationParts.size(); i++) {
             Double retrievedDouble = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
-
-            count += retrievedDouble;
 
             collection[i] = retrievedDouble;
         }
@@ -493,28 +495,49 @@ public class MainScreenController implements Initializable {
         return collection;
     }
 
+    /**
+     * clearCharts clears the charts and stops the algorithm if it's running.
+     *
+     * @author Gerco Versloot.
+     */
     public void clearCharts() {
         stopOperation();
         lineChartFitness.getData().clear();
-//        lineChartFitnessOptimized.getData().clear();
         lineChartMinMax.getData().clear();
         lineChartCompare.getData().clear();
         a("Clear graphs");
-
     }
 
+    /**
+     * stopOperation stops any threads running.
+     *
+     * @author Gerco Versloot.
+     */
     public void stopOperation() {
         taskManagerThread.interrupt();
         running = false;
         a("Application stopped.");
     }
 
+    /**
+     * a will write the specified string to the console
+     *
+     * @param alert as a string with a message to write to the console
+     * @author Peter Tielbeek.
+     */
     public void a(String alert) {
         console = alert + "\n" + console;
 
         textAreaConsole.setText(console);
     }
 
+    /**
+     * setLabelCycles will retrieve the value from the sliderCycles and sets it
+     * for further use in the algorithm. It will also set the label in the GUI
+     * with the selected value.
+     *
+     * @author Peter Tielbeek.
+     */
     public void setLabelCycles() {
         cycles = (int) sliderCycles.getValue();
         sliderCycles.setValue(cycles);
@@ -522,13 +545,27 @@ public class MainScreenController implements Initializable {
         labelCycles.setText("Nr Of Cycles ( " + cycles + " )");
     }
 
+    /**
+     * setLabelPopulationSize will retrieve the value from the
+     * sliderPopulationSize and sets it for further use in the algorithm. It
+     * will also set the label in the GUI with the selected value.
+     *
+     * @author Peter Tielbeek.
+     */
     public void setLabelPopulationSize() {
         populationSize = (int) sliderPopulationSize.getValue();
         sliderPopulationSize.setValue(populationSize);
-        
+
         labelPopulationSize.setText("Populationsize ( " + populationSize + " )");
     }
 
+    /**
+     * setLabelMutationPercentage will retrieve the value from the
+     * sliderMutationPercentage and sets it for further use in the algorithm. It
+     * will also set the label in the GUI with the selected value.
+     *
+     * @author Peter Tielbeek.
+     */
     public void setLabelMutationPercentage() {
         mutationPercentage = (double) sliderMutationPercentage.getValue();
         DecimalFormat df = new DecimalFormat("0.00");
@@ -536,20 +573,40 @@ public class MainScreenController implements Initializable {
         labelMutationPercentage.setText("Mutationpercentage ( " + df.format(mutationPercentage) + "% )");
     }
 
+    /**
+     * setLabelStopTime will retrieve the value from the sliderStopTime and sets
+     * it for further use in the algorithm. It will also set the label in the
+     * GUI with the selected value.
+     *
+     * @author Peter Tielbeek.
+     */
     public void setLabelStopTime() {
         stopTime = (int) sliderStopTime.getValue();
         sliderStopTime.setValue(stopTime);
-        
+
         checkboxStopTime.setText("TIME ( " + stopTime + "SEC )");
     }
 
+    /**
+     * setLabelStopNrGenerations will retrieve the value from the
+     * sliderStopNrGenerations and sets it for further use in the algorithm. It
+     * will also set the label in the GUI with the selected value.
+     *
+     * @author Peter Tielbeek.
+     */
     public void setLabelStopNrGenerations() {
         stopNrGenerations = (int) sliderStopNrGenerations.getValue();
         sliderStopNrGenerations.setValue(stopNrGenerations);
-        
+
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + stopNrGenerations + " )");
     }
 
+    /**
+     * updateCheckBoxes will update the checkboxes and disables/enables them if
+     * a conflicting checkbox is selected.
+     *
+     * @author Peter Tielbeek.
+     */
     public void updateCheckBoxes() {
         if (checkboxStopInfinite.isSelected()) {
             checkboxStopTime.setDisable(true);
@@ -570,6 +627,12 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * initializeOptimationParts will update the optimation textboxes with a
+     * default value.
+     *
+     * @author Peter Tielbeek.
+     */
     public void initializeOptimationParts() {
         setLabelOptimationParts();
         arrayListOptimationParts.get(0).setText("0.7");
@@ -577,6 +640,13 @@ public class MainScreenController implements Initializable {
         arrayListOptimationParts.get(2).setText("0.1");
     }
 
+    /**
+     * setLabelOptimationParts will get the value from the sliderOptimationParts
+     * and generates textboxes matching the value. It calculates the default
+     * value and adds eventlisteners to the textboxes.
+     *
+     * @author Peter Tielbeek.
+     */
     public void setLabelOptimationParts() {
         gridPaneSettings.getChildren().remove(gridPaneOptimationParts);
         gridPaneOptimationParts = new GridPane();
@@ -607,12 +677,14 @@ public class MainScreenController implements Initializable {
             });
             //Setting an action for the Clear button
             tf.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
                 public void handle(KeyEvent event) {
                     calculateRemaining();
                 }
             });
             //Setting an action for the Clear button
             tf.setOnKeyTyped(new EventHandler<KeyEvent>() {
+                @Override
                 public void handle(KeyEvent event) {
                     calculateRemaining();
                 }
@@ -625,6 +697,11 @@ public class MainScreenController implements Initializable {
         calculateRemaining();
     }
 
+    /**
+     * toggleBlockNr will toggle the blocknumbers in the canvas.
+     *
+     * @author Peter Tielbeek.
+     */
     public void toggleBlockNr() {
         if (toggleBlockNr) {
             toggleBlockNr = false;
@@ -633,10 +710,23 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * toggleFullscreen will toggle the application to fullscreen or windowed
+     * mode.
+     *
+     * @author Peter Tielbeek.
+     */
     public void toggleFullscreen() {
         application.toggleFullscreen();
     }
 
+    /**
+     * isDouble will check if the specified string is a double
+     *
+     * @param str a string
+     * @return returns true if the specified string is a double
+     * @author Peter Tielbeek.
+     */
     boolean isDouble(String str) {
         try {
             Double.parseDouble(str);
@@ -646,19 +736,24 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * calculateRemaining will calculate the remaining value from the optimation
+     * textboxes (has to be 1 (100%)).
+     *
+     * @author Peter Tielbeek.
+     */
     public void calculateRemaining() {
         double remaining = 0;
         double temp;
 
         DecimalFormat df = new DecimalFormat("0.00");
-        for (int i = 0; i < arrayListOptimationParts.size(); i++) {
-            arrayListOptimationParts.get(i).getStyleClass().remove("wrong-textfield");
-            if (isDouble(arrayListOptimationParts.get(i).getText().replace(",", "."))) {
-                temp = Double.parseDouble(arrayListOptimationParts.get(i).getText().replace(",", "."));
-
+        for (TextField arrayListOptimationPart : arrayListOptimationParts) {
+            arrayListOptimationPart.getStyleClass().remove("wrong-textfield");
+            if (isDouble(arrayListOptimationPart.getText().replace(",", "."))) {
+                temp = Double.parseDouble(arrayListOptimationPart.getText().replace(",", "."));
                 remaining += temp;
             } else {
-                arrayListOptimationParts.get(i).getStyleClass().add("wrong-textfield");
+                arrayListOptimationPart.getStyleClass().add("wrong-textfield");
             }
         }
 
@@ -667,18 +762,36 @@ public class MainScreenController implements Initializable {
         labelOptimationRemaining.setText("Remaining ( " + df.format(remaining) + " )");
     }
 
+    /**
+     * stopProgram will stop the program from running.
+     *
+     * @author Peter Tielbeek.
+     */
     public void stopProgram() {
         System.exit(0);
     }
 
+    /**
+     * setApp will be ran from the class ASP so the controller has acces to the
+     * application and it can manipulate it.
+     *
+     * @param application an ASP application
+     * @author Peter Tielbeek.
+     */
     public void setApp(ASP application) {
         this.application = application;
     }
 
+    /**
+     * setDirectory will be ran from the class ASP so the MainScreenController
+     * gets the selected default directory.
+     *
+     * @param directory a string with a directory.
+     * @author Peter Tielbeek.
+     */
     public void setDirectory(String directory) {
         this.directory = directory;
         a("Problem directory set to " + directory);
         searchDirectory(directory);
     }
-
 }
