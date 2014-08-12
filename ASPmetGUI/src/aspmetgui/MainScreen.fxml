@@ -262,7 +262,7 @@
                               <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                               <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
                                  <children>
-                                    <CheckBox fx:id="checkboxMarian" mnemonicParsing="false" onAction="#updateCheckBoxes" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                                    <CheckBox fx:id="checkboxMarian" mnemonicParsing="false" onAction="#updateCheckBoxes" selected="true" text="Marian" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                                        <font>
                                           <Font name="BebasNeue" size="14.0" />
                                        </font>
@@ -386,7 +386,7 @@
                      <tabs>
                         <Tab fx:id="tabMinMaxMarian" styleClass="TabTitle" text="Min / Max Marian">
                            <content>
-                              <LineChart fx:id="lineChartMinMax">
+                              <LineChart fx:id="lineChartMinMax" alternativeColumnFillVisible="true">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
