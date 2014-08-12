@@ -723,9 +723,9 @@ public class Marian {
      * @param algoritm the number of the algorithm to solve the problem
      * @return Task with a correct setting and ready to start
      */
-    public Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > getTask(int algoritm){
+    public Task< ArrayList<ObservableList<XYChart.Series<Number, Double>>> > getTask(int algoritm){
         AlgorithmEvaluation = 0;
-        ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
+        ArrayList< ObservableList<XYChart.Series<Number, Double>> > partialResults = new ArrayList<>();
         //final Marian  = this;
         
         
@@ -736,14 +736,14 @@ public class Marian {
         }
 
         
-        Task < ArrayList<ObservableList<XYChart.Series<String, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
+        Task < ArrayList<ObservableList<XYChart.Series<Number, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<Number, Double>>>>() {
             @Override
-            protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
-                XYChart.Series<String, Double> minCostSeries = new XYChart.Series<>();
-                XYChart.Series<String, Double> avgCostSeries = new XYChart.Series<>();
-                XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<>();
-                XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<>();
-                XYChart.Series<String, Double> AvgFitnessSeries = new XYChart.Series<>();
+            protected ArrayList<ObservableList<XYChart.Series<Number, Double>>> call() throws Exception {
+                XYChart.Series<Number, Double> minCostSeries = new XYChart.Series<>();
+                XYChart.Series<Number, Double> avgCostSeries = new XYChart.Series<>();
+                XYChart.Series<Number, Double> maxCostSeries = new XYChart.Series<>();
+                XYChart.Series<Number, Double> maxFitnessSeries = new XYChart.Series<>();
+                XYChart.Series<Number, Double> AvgFitnessSeries = new XYChart.Series<>();
                 
                 String lineNameAdditon = "";
                 if(algoritm == Marian.MarianOptimised){
