@@ -740,6 +740,7 @@ public class Marian {
             @Override
             protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
                 XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
+                XYChart.Series<String, Double> avgCostSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
                 XYChart.Series<String, Double> AvgFitnessSeries = new XYChart.Series<String, Double>();
@@ -748,6 +749,7 @@ public class Marian {
                     lineNameAdditon += ", Optimised";
                 }
                 minCostSeries.setName("Min Costs"+ lineNameAdditon);
+                avgCostSeries.setName("Avg Costs"+ lineNameAdditon);
                 maxCostSeries.setName("Max Costs"+ lineNameAdditon);
                 maxFitnessSeries.setName("Max Fitness"+ lineNameAdditon);
                 AvgFitnessSeries.setName("Average Fitness"+ lineNameAdditon); 
@@ -757,7 +759,7 @@ public class Marian {
                 partialResults.get(0).addAll(maxFitnessSeries, AvgFitnessSeries);
                 
                 partialResults.add(1 ,FXCollections.observableArrayList(new ArrayList()));
-                partialResults.get(1).addAll(maxCostSeries, minCostSeries);
+                partialResults.get(1).addAll(maxCostSeries, minCostSeries, avgCostSeries);
                 setOptimizedSelectionRatio(OptimilisationRatios);
                 int generations = 0;
             
@@ -809,6 +811,7 @@ public class Marian {
                     double max = pop.getMax().getFitness();
                     double minCosts = pop.getMin().getCosts();
                     double maxCosts = pop.getMax().getCosts();
+                    double avgCosts = (pop.getMin().getCosts() + pop.getMax().getCosts()) / 2;
                     double avg =  pop.getAverageFittness();
                     int gen = generations;
                                         
@@ -821,14 +824,17 @@ public class Marian {
                             XYChart.Data<String, Double> avgFitnessNode = new XYChart.Data(Integer.toString(gen), avg); 
                             XYChart.Data<String, Double> maxCostNode = new XYChart.Data(Integer.toString(gen), maxCosts); 
                             XYChart.Data<String, Double> minCostNode = new XYChart.Data(Integer.toString(gen), minCosts); 
+                            XYChart.Data<String, Double> avgCostNode = new XYChart.Data(Integer.toString(gen), avgCosts); 
                             maxNode.setNode(new HoverNode(gen, dfCost.format(max)));
                             avgFitnessNode.setNode(new HoverNode(gen, dfCost.format(avg)));
                             maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
+                            avgCostNode.setNode(new HoverNode(gen, dfFitness.format(avgCosts)));
                             minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
                             partialResults.get(0).get(0).getData().add(maxNode);
                             partialResults.get(0).get(1).getData().add(avgFitnessNode);
                             partialResults.get(1).get(0).getData().add(maxCostNode);
                             partialResults.get(1).get(1).getData().add(minCostNode);
+                            partialResults.get(1).get(2).getData().add(avgCostNode);
                             updateValue(partialResults);
                         }
                     });
