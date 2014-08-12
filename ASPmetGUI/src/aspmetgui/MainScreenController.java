@@ -39,6 +39,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -144,6 +145,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private LineChart lineChartMinMax;
+    private LineChart newlineChartMinMax;
 
     @FXML
     private LineChart lineChartCompare;
@@ -208,6 +210,12 @@ public class MainScreenController implements Initializable {
 
         //Initialize textboxes of the optimation algorithm
         initializeOptimationParts();
+        
+        
+        NumberAxis xaxis = new NumberAxis("X as", 0, 1000, 10);
+        NumberAxis yaxis = new NumberAxis("Y as", 500, 2000, 10);
+        lineChartMinMax = new LineChart(xaxis,yaxis);
+        tabMinMaxMarian.setContent(lineChartMinMax);
     }
 
     /**
@@ -378,7 +386,7 @@ public class MainScreenController implements Initializable {
                             break;
                         case TaskManager.TaskUpdate.TaskNextCycle:
                             lineChartFitness.getData().clear();
-                            lineChartMinMax.getData().clear();
+//                            lineChartMinMax.getData().clear();
                             break;
                         case Marian.MarianOrignal:
                         case Marian.MarianOptimised:
