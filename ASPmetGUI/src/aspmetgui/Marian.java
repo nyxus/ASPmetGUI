@@ -723,9 +723,9 @@ public class Marian {
      * @param algoritm the number of the algorithm to solve the problem
      * @return Task with a correct setting and ready to start
      */
-    public Task< ArrayList<ObservableList<XYChart.Series<String, Double>>> > getTask(int algoritm){
+    public Task< ArrayList<ObservableList<XYChart.Series<Number, Double>>> > getTask(int algoritm){
         AlgorithmEvaluation = 0;
-        ArrayList< ObservableList<XYChart.Series<String, Double>> > partialResults = new ArrayList<>();
+        ArrayList< ObservableList<XYChart.Series<Number, Double>> > partialResults = new ArrayList<>();
         //final Marian  = this;
         
         
@@ -736,14 +736,14 @@ public class Marian {
         }
 
         
-        Task < ArrayList<ObservableList<XYChart.Series<String, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<String, Double>>>>() {
+        Task < ArrayList<ObservableList<XYChart.Series<Number, Double>>> > marianTask = new Task<ArrayList<ObservableList<XYChart.Series<Number, Double>>>>() {
             @Override
-            protected ArrayList<ObservableList<XYChart.Series<String, Double>>> call() throws Exception {
-                XYChart.Series<String, Double> minCostSeries = new XYChart.Series<String, Double>();
-                XYChart.Series<String, Double> avgCostSeries = new XYChart.Series<String, Double>();
-                XYChart.Series<String, Double> maxCostSeries = new XYChart.Series<String, Double>();
-                XYChart.Series<String, Double> maxFitnessSeries = new XYChart.Series<String, Double>();
-                XYChart.Series<String, Double> AvgFitnessSeries = new XYChart.Series<String, Double>();
+            protected ArrayList<ObservableList<XYChart.Series<Number, Double>>> call() throws Exception {
+                XYChart.Series<Number, Double> minCostSeries = new XYChart.Series<Number, Double>();
+                XYChart.Series<Number, Double> avgCostSeries = new XYChart.Series<Number, Double>();
+                XYChart.Series<Number, Double> maxCostSeries = new XYChart.Series<Number, Double>();
+                XYChart.Series<Number, Double> maxFitnessSeries = new XYChart.Series<Number, Double>();
+                XYChart.Series<Number, Double> AvgFitnessSeries = new XYChart.Series<Number, Double>();
                 String lineNameAdditon = "";
                 if(algoritm == Marian.MarianOptimised){
                     lineNameAdditon += ", Optimised";
@@ -818,24 +818,29 @@ public class Marian {
                     Platform.runLater(new Runnable() {
                              
                         @Override public void run() {
+                            /*
                             DecimalFormat dfFitness = new DecimalFormat("0000");
                             DecimalFormat dfCost = new DecimalFormat("0.0000");
-                            XYChart.Data<String, Double> maxNode = new XYChart.Data(Integer.toString(gen), max); 
-                            XYChart.Data<String, Double> avgFitnessNode = new XYChart.Data(Integer.toString(gen), avg); 
-                            XYChart.Data<String, Double> maxCostNode = new XYChart.Data(Integer.toString(gen), maxCosts); 
-                            XYChart.Data<String, Double> minCostNode = new XYChart.Data(Integer.toString(gen), minCosts); 
-                            XYChart.Data<String, Double> avgCostNode = new XYChart.Data(Integer.toString(gen), avgCosts); 
+                            XYChart.Data<Number, Double> maxNode = new XYChart.Data(gen, max); 
+                            XYChart.Data<Number, Double> avgFitnessNode = new XYChart.Data(gen, avg); 
+                            XYChart.Data<Number, Double> maxCostNode = new XYChart.Data(gen, maxCosts); 
+                            XYChart.Data<Number, Double> minCostNode = new XYChart.Data(gen, minCosts); 
+                            XYChart.Data<Number, Double> avgCostNode = new XYChart.Data(gen, avgCosts); 
+                            /*
                             maxNode.setNode(new HoverNode(gen, dfCost.format(max)));
                             avgFitnessNode.setNode(new HoverNode(gen, dfCost.format(avg)));
                             maxCostNode.setNode(new HoverNode(gen, dfFitness.format(maxCosts)));
                             avgCostNode.setNode(new HoverNode(gen, dfFitness.format(avgCosts)));
                             minCostNode.setNode(new HoverNode(gen, dfFitness.format(minCosts)));
+                            
                             partialResults.get(0).get(0).getData().add(maxNode);
                             partialResults.get(0).get(1).getData().add(avgFitnessNode);
                             partialResults.get(1).get(0).getData().add(maxCostNode);
                             partialResults.get(1).get(1).getData().add(minCostNode);
                             partialResults.get(1).get(2).getData().add(avgCostNode);
+                            */
                             updateValue(partialResults);
+                            
                         }
                     });
                     
