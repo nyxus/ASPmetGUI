@@ -152,8 +152,8 @@ public class TaskManager extends Task<TaskUpdate> {
         
         // Obserable list and series for the compare lineChart
         ObservableList<XYChart.Series<String, Integer>> obListCompare = FXCollections.observableArrayList(new ArrayList());
-        XYChart.Series<String, Integer> runOriginal = new XYChart.Series<>();
-        XYChart.Series<String, Integer> runOptimised = new XYChart.Series<>();
+        XYChart.Series<String, Integer> runOriginal = new XYChart.Series<String, Integer>();
+        XYChart.Series<String, Integer> runOptimised = new XYChart.Series<String, Integer>();
         
         DecimalFormat dfFitness = new DecimalFormat("0000");
         
