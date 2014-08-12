@@ -83,18 +83,17 @@ public class TaskManager extends Task<TaskUpdate> {
                 // Check what kind of output the Marian task provides
                 switch (algorithm) {
                     case Marian.MarianOrignal:
-                        lineChartFitness.setData(newValue.get(0));
-                        lineChartMinMax.setData(newValue.get(1));
-                        
-                        break;
                     case Marian.MarianOptimised:
+                        
                         ObservableList fitness = lineChartFitness.getData();
                         ObservableList minMax = lineChartMinMax.getData();
-                        fitness.addAll(newValue.get(0).get(0), newValue.get(0).get(1));
-                        minMax.addAll(newValue.get(1).get(0), newValue.get(1).get(1));
+
+                        fitness.addAll(newValue.get(0));
+                        minMax.addAll(newValue.get(1));
 
                         lineChartFitness.setData(fitness);
                         lineChartMinMax.setData(minMax);
+                        
                         break;
                     default:
                         try {
@@ -205,6 +204,9 @@ public class TaskManager extends Task<TaskUpdate> {
                 update.setList(obListCompare);
                 updateProgress(1, 1);
                 return new TaskUpdate(TaskUpdate.TaskEnd, obListCompare);
+            }
+            if(i < cycles){
+                updateValue(new TaskUpdate(TaskUpdate.TaskNextCycle));
             }
             // set new first population for the next cycle
             marian.setUsePopulation(marian.generatePopulation(marian.getPopulationSize()));

@@ -376,6 +376,10 @@ public class MainScreenController implements Initializable {
                     switch (newValue.getUpdateType()) {
                         case TaskManager.TaskUpdate.TaskNotInialised:
                             break;
+                        case TaskManager.TaskUpdate.TaskNextCycle:
+                            lineChartFitness.getData().clear();
+                            lineChartMinMax.getData().clear();
+                            break;
                         case Marian.MarianOrignal:
                         case Marian.MarianOptimised:
                         case TaskManager.TaskUpdate.TaskEnd:
