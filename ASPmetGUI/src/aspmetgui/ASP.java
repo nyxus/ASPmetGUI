@@ -29,7 +29,7 @@ public class ASP extends Application {
     private Stage stage;
     private Boolean fullscreen = false;
     
-    
+        
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;

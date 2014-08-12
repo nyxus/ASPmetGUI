@@ -37,7 +37,10 @@ public class StartScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
-    
+    /**
+     * Constructor to set the stop conditions of a running Marian task to enable and set the stop conditions by: max generations, running time or Infinit 
+     * @param runTime Set amount of time past before stopping 
+     */
     public void extractFileAndRun(){
 
         try {

@@ -74,7 +74,6 @@ public class MainScreenController implements Initializable {
     private int optimationNrParts = 3;
     private int cycles = 2;
 
-
     private ArrayList<TextField> arrayListOptimationParts = new ArrayList<>();
     private ArrayList<String> filepaths = new ArrayList<>();
 
@@ -97,6 +96,8 @@ public class MainScreenController implements Initializable {
     private Label labelMutationPercentage;
     @FXML
     private Label labelOptimationParts;
+    @FXML
+    private Label labelCycles;
     @FXML
     private Label labelOptimationRemaining;
 
@@ -143,13 +144,13 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private LineChart lineChartMinMax;
-    
+
     @FXML
     private LineChart lineChartCompare;
-    
+
     @FXML
     private LineChart lineChartFitness;
-    
+
     @FXML
     private LineChart lineChartFitnessOptimized;
 
@@ -177,10 +178,14 @@ public class MainScreenController implements Initializable {
     }
 
     /**
-     * Initializes the controller class.
+     * initialize Initializes all the javafx components before the components
+     * are shown
+     *
+     * @author Peter Tielbeek.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Initialize sliders to default value
         sliderPopulationSize.setValue(populationSize);
         sliderMutationPercentage.setValue(mutationPercentage);
         sliderStopTime.setValue(stopTime);
@@ -188,46 +193,47 @@ public class MainScreenController implements Initializable {
         sliderOptimationNrParts.setValue(optimationNrParts);
         sliderCycles.setValue(cycles);
 
+        //Initialize labels to default value
         labelPopulationSize.setText("Populationsize ( " + populationSize + " )");
         labelMutationPercentage.setText("Mutationpercentage ( " + mutationPercentage + "% )");
+        labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
+        labelCycles.setText("Nr Of Cycles ( " + cycles + " )");
+
+        //Initialize checkboxes to default value
         checkboxStopTime.setText("Time ( " + stopTime + "SEC )");
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + mutationPercentage + " )");
-        labelOptimationParts.setText("Nr Of Parts ( " + optimationNrParts + " )");
-        
-        /*
-        this.runList = lineChartCompare.getData();
-        this.runOriginal = new Series<>();
-        this.runOptimised = new Series<>();
-        this.runOriginal.setName("Marian original");
-        this.runOptimised.setName("Marian optimised"); 
-        this.runList.addAll(runOriginal, runOptimised);
-        this.lineChartCompare.setData(runList);
-        */
+
+        //Initialize canvas
         initializeCanvas();
-        
 
-//        final NumberAxis xAxis = new NumberAxis();
-//        final NumberAxis yAxis = new NumberAxis(-1000,1000,10);
-//        xAxis.setAutoRanging(false);
-//        yAxis.setAutoRanging(false);
-//         lineChartMinMax = new LineChart[5,50](xAxis, yAxis);
-//        tabMinMaxMarian.setContent(lineChartMinMax);
+        //Initialize textboxes of the optimation algorithm
+        initializeOptimationParts();
+    }
 
-            initializeOptimationParts();
-        }
-    
+    /**
+     * specifyDirectory shows a directorychooser where the user can select a
+     * directory where the problems could be found. Then it will set the
+     * directory as the default directory in the application.
+     *
+     * @author Peter Tielbeek.
+     */
     public void specifyDirectory() {
         DirectoryChooser chooser = new DirectoryChooser();
 
         chooser.setTitle("Please choose the directory containing the problems");
         String path = getClass().getResource("").getPath();
-        System.out.print(path.substring(0, path.length()-25));
-        chooser.setInitialDirectory(new File(path.substring(6, path.length()-26)));
+        System.out.print(path.substring(0, path.length() - 25));
+        chooser.setInitialDirectory(new File(path.substring(6, path.length() - 26)));
         File file = chooser.showDialog(stage);
 
         setDirectory(file.getAbsolutePath());
     }
 
+    /**
+     * initializeCanvas initializes the canvas for first use.
+     *
+     * @author Peter Tielbeek.
+     */
     public void initializeCanvas() {
         GraphicsContext gc = canvasProblemGraphical.getGraphicsContext2D();
         double canvasWidth = gc.getCanvas().getWidth();
@@ -239,6 +245,12 @@ public class MainScreenController implements Initializable {
         gc.fillText("Please run a problem first", canvasWidth / 2 - ((defaultText.length() / 2) * characterWidth), canvasHeight / 2);
     }
 
+    /**
+     * searchDirectory searches the specified directory for problems and adds
+     * them to the choicebox in the settings menu.
+     * @param directory a string with a filepath
+     * @author Peter Tielbeek.
+     */
     public void searchDirectory(String directory) {
         ArrayList<String> filenames = new ArrayList<>();
 
@@ -252,28 +264,42 @@ public class MainScreenController implements Initializable {
             choiceBoxProblems.getItems().clear();
             filepaths.clear();
             for (String filename : children) {
-                if (checkIfProblem(directory + "\\" + filename)) {
+                if (isProblem(directory + "\\" + filename)) {
                     choiceBoxProblems.getItems().add(filename);
                     filepaths.add(directory + "\\" + filename);
                 }
             }
-            if(choiceBoxProblems.getItems().size() == 0){
-                choiceBoxProblems.getItems().add("No problems found");                
+            if (choiceBoxProblems.getItems().size() == 0) {
+                choiceBoxProblems.getItems().add("No problems found");
             }
             choiceBoxProblems.getSelectionModel().selectFirst();
         }
     }
 
-    public boolean isNumeric(String str) {
+    /**
+     * isNumeric checks if a string is numeric. 
+     *
+     * @param string a String.
+     * @return returns true if a string is numeric.
+     * @author Peter Tielbeek.
+     */
+    public boolean isNumeric(String string) {
         try {
-            double d = Double.parseDouble(str);
+            double d = Double.parseDouble(string);
         } catch (NumberFormatException nfe) {
             return false;
         }
         return true;
     }
 
-    public boolean checkIfProblem(String filepath) {
+    /**
+     * isProblem
+     *
+     * @param string a String.
+     * @return returns true if a string is numeric.
+     * @author Peter Tielbeek.
+     */
+    public boolean isProblem(String filepath) {
         String strLine = "";
 
         try {
@@ -303,14 +329,13 @@ public class MainScreenController implements Initializable {
         return file;
     }
 
- 
     public void runMarian() {
         // check if task already running
         if (running) {
             a("Application is aready running");
-        }else if(choiceBoxProblems.getSelectionModel().getSelectedItem() == "No problems found" ){
+        } else if (choiceBoxProblems.getSelectionModel().getSelectedItem() == "No problems found") {
             a("No problems problem selected");
-        }else{
+        } else {
             populationSize = (int) sliderPopulationSize.getValue();
             int nrOfGenerations = (int) Math.round(sliderStopNrGenerations.getValue());
             long runTime = Math.round(sliderStopTime.getValue()) * 1000;
@@ -322,36 +347,33 @@ public class MainScreenController implements Initializable {
             a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
             String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
 
-
             StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
 
             Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
             Population newPop = marian.generatePopulation(populationSize);
 
-
             marian.setUsePopulation(newPop);
 
             lineChartFitness.getData().clear();
-    //        lineChartFitnessOptimized.getData().clear();
+            //        lineChartFitnessOptimized.getData().clear();
             lineChartMinMax.getData().clear();
             //lineChartCompare.getData().clear();
 
             ArrayList<Integer> Algorithms = new ArrayList<>();
 
-            if(this.checkboxMarian.isSelected()){
+            if (this.checkboxMarian.isSelected()) {
                 Algorithms.add(Marian.MarianOrignal);
             }
-            if(this.checkboxMarianWithOptimization.isSelected()){
+            if (this.checkboxMarianWithOptimization.isSelected()) {
                 Algorithms.add(Marian.MarianOptimised);
             }
 
-
-            TaskManager taskManager = new TaskManager(marian,  this, (int)Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness);
+            TaskManager taskManager = new TaskManager(marian, this, (int) Math.round(sliderCycles.getValue()), Algorithms, lineChartMinMax, lineChartFitness);
 
             taskManager.valueProperty().addListener(new ChangeListener<TaskManager.TaskUpdate>() {
                 @Override
                 public void changed(ObservableValue<? extends TaskManager.TaskUpdate> observable, TaskManager.TaskUpdate oldValue, TaskManager.TaskUpdate newValue) {
-                    switch(newValue.getUpdateType()){
+                    switch (newValue.getUpdateType()) {
                         case TaskManager.TaskUpdate.TaskNotInialised:
                             break;
                         case Marian.MarianOrignal:
@@ -371,23 +393,21 @@ public class MainScreenController implements Initializable {
                 }
             });
 
+            String startMessage = "";
 
-
-             String startMessage = "";
-
-            if(Algorithms.size() > 0){
+            if (Algorithms.size() > 0) {
                 running = true;
                 startMessage = "Start algorithm(s): ";
                 for (Integer Algorithm : Algorithms) {
                     switch (Algorithm) {
                         case Marian.MarianOrignal:
-                             startMessage += "marian orignal, "; 
+                            startMessage += "marian orignal, ";
                             break;
                         case Marian.MarianOptimised:
-                            startMessage += "marian optimised, "; 
+                            startMessage += "marian optimised, ";
                             break;
 
-                    } 
+                    }
                 }
                 startMessage += "problem size: " + marian.getProblemSize() + " settings: " + marian.getPopulationSize() + ", " + marian.getMutationPercentage();
                 startMessage += " cycles: " + cycles;
@@ -400,10 +420,10 @@ public class MainScreenController implements Initializable {
                 taskManagerThread.setDaemon(true);
                 taskManagerThread.start();
 
-            }else{
+            } else {
                 a("Program can not start, please select an algorithm");
             }
-            
+
             Task<Canvas> drawProblem = new drawProblem(canvasProblemGraphical, marian, toggleBlockNr);
 
             drawProblem.valueProperty().addListener(new ChangeListener<Canvas>() {
@@ -440,15 +460,15 @@ public class MainScreenController implements Initializable {
 
         return collection;
     }
-    
-    public void clearCharts(){
+
+    public void clearCharts() {
         stopOperation();
         lineChartFitness.getData().clear();
 //        lineChartFitnessOptimized.getData().clear();
         lineChartMinMax.getData().clear();
         lineChartCompare.getData().clear();
         a("Clear graphs");
-        
+
     }
 
     public void stopOperation() {
@@ -463,9 +483,17 @@ public class MainScreenController implements Initializable {
         textAreaConsole.setText(console);
     }
 
+    public void setLabelCycles() {
+        cycles = (int) sliderCycles.getValue();
+        sliderCycles.setValue(cycles);
+
+        labelCycles.setText("Nr Of Cycles ( " + cycles + " )");
+    }
+
     public void setLabelPopulationSize() {
         populationSize = (int) sliderPopulationSize.getValue();
-
+        sliderPopulationSize.setValue(populationSize);
+        
         labelPopulationSize.setText("Populationsize ( " + populationSize + " )");
     }
 
@@ -478,12 +506,15 @@ public class MainScreenController implements Initializable {
 
     public void setLabelStopTime() {
         stopTime = (int) sliderStopTime.getValue();
+        sliderStopTime.setValue(stopTime);
+        
         checkboxStopTime.setText("TIME ( " + stopTime + "SEC )");
     }
 
     public void setLabelStopNrGenerations() {
         stopNrGenerations = (int) sliderStopNrGenerations.getValue();
-
+        sliderStopNrGenerations.setValue(stopNrGenerations);
+        
         checkboxStopNrGenerations.setText("Nr Of Generations ( " + stopNrGenerations + " )");
     }
 
@@ -506,8 +537,8 @@ public class MainScreenController implements Initializable {
             checkboxStopInfinite.setDisable(false);
         }
     }
-    
-    public void initializeOptimationParts(){
+
+    public void initializeOptimationParts() {
         setLabelOptimationParts();
         arrayListOptimationParts.get(0).setText("0.7");
         arrayListOptimationParts.get(1).setText("0.2");
@@ -614,9 +645,8 @@ public class MainScreenController implements Initializable {
 
     public void setDirectory(String directory) {
         this.directory = directory;
-        a("Problem directory set to "+directory);
+        a("Problem directory set to " + directory);
         searchDirectory(directory);
     }
-
 
 }

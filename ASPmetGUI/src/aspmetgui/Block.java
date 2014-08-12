@@ -66,8 +66,6 @@ public class Block {
         this.MaxY = MaxY;
         this.Parents = Parents;
         this.Siblings = Siblings;
-        
-        
     }
       
     public void AddParents(ArrayList<Block> block){
