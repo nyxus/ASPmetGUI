@@ -8,10 +8,10 @@ package aspmetgui;
 
 /**
  *
- * @author Gerco
  * The stop conditions/watch for a running Marian task.
  * Use the Start() method before starting the running the algorithm in a Marian task
  * Use isStop() to check if the task must stop
+ * @author Gerco
  */
 public class StopConditionsMarian {;
     
@@ -53,7 +53,7 @@ public class StopConditionsMarian {;
     
     /**
      * Constructor to set the stop conditions of a running Marian task to set the stop condition by a max of running time 
-     * @param runTime 
+     * @param runTime amount of time past before stopping 
      */
     public StopConditionsMarian(long runTime){
         this.enableStopTime = true;
@@ -62,8 +62,8 @@ public class StopConditionsMarian {;
     
     /**
      * Constructor to set the stop conditions of a running Marian task to set the stop condition by max of generations and max running time
-     * @param nrOfGenerations
-     * @param runTime 
+     * @param nrOfGenerations Set number of generations before stopping
+     * @param runTime amount of time past before stopping 
      */
     public StopConditionsMarian(int nrOfGenerations, long runTime){
         this.enableStopGenerations = true;

@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 /**
  *
+ * The Chromosome contains a sequence of blocks
  * @author Gerco
- * The Chromosome contains a list of blocks
  */
 public class Chromosome implements Comparable<Chromosome> {
 
@@ -15,6 +15,7 @@ public class Chromosome implements Comparable<Chromosome> {
     
     private double fitness; 
     private int Costs = 0;
+    private boolean last = false;
     
     private Block prevBlock;
     
@@ -57,11 +58,10 @@ public class Chromosome implements Comparable<Chromosome> {
         prevBlock = sequence.get(0);
         
         for(Block currentBlock : sequence) {
-            
             Costs += Math.abs(currentBlock.getID() - prevBlock.getID());
-            prevBlock = currentBlock;
-            
+            prevBlock = currentBlock;   
         }
+        
         
     }
     
@@ -140,6 +140,10 @@ public class Chromosome implements Comparable<Chromosome> {
      * @return the Size
      */
     public int getCosts() {
+        /*if(!sequence.isEmpty() && !last) {
+            Costs += sequence.get(sequence.size()-1).getID();
+            last = true;
+        }*/
         return Costs;
     }
     

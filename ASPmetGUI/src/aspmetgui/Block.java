@@ -9,7 +9,7 @@ package aspmetgui;
 import java.util.ArrayList;
 
 /**
- *
+ * The block with all the information about the block in a problem
  * @author Gerco en Peter
  */
 public class Block {
@@ -30,6 +30,14 @@ public class Block {
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     
+    /**
+     * Constructor for a new block, without parents, Childs or Siblings  
+     * @param ID id of the block
+     * @param MinX Minimal X position 
+     * @param MaxX Maximal X position
+     * @param MinY Minimal Y position
+     * @param MaxY Maximal Y position
+     */
     public Block(int ID, int MinX, int MaxX, int MinY, int MaxY) {
         this.ID = ID;
         this.MinX = MinX;
@@ -58,6 +66,16 @@ public class Block {
         Siblings = new Block[2] ;
     }
     
+    /**
+     * Constructor for a new block, with parents and Siblings
+     * @param ID id of the block
+     * @param MinX Minimal X position 
+     * @param MaxX Maximal X position
+     * @param MinY Minimal Y position
+     * @param MaxY Maximal Y position
+     * @param Parents The parents of this block (Blocks that are need before this block can be placed)
+     * @param Siblings The left [0], and the right [1] sibling 
+     */
     public Block(int ID, int MinX, int MaxX, int MinY, int MaxY, ArrayList<Block> Parents, Block[] Siblings) {
         this.ID = ID;
         this.MinX = MinX;
@@ -67,27 +85,47 @@ public class Block {
         this.Parents = Parents;
         this.Siblings = Siblings;
     }
-      
-    public void AddParents(ArrayList<Block> block){
-        for (Block block1 : block) {
+    
+    /**
+     * Add a parents, Blocks that are need before this block can be placed
+     * @param blocks Arraylist of blocks that are parents of this block
+     */
+    public void AddParents(ArrayList<Block> blocks){
+        for (Block block1 : blocks) {
             this.Parents.add(block1);
         }
     }    
-      
     
-      
+    /**
+     * Add one parent, a block that is needed before this block can be placed 
+     * @param block the parents
+     */
     public void AddParent(Block block){
         this.Parents.add(block);
     }    
     
-      public void addChild(Block child){
+    /**
+     * Add a child, a block that can be placed after this block is placed
+     * @param child the block that is the child
+     */
+    public void addChild(Block child){
         this.Childs.add(child);
     }
     
+    /**
+     * Output this block to the console
+     * @param separator the divider of the information
+     */
     public void PrintBlock(String separator){
-        System.out.println(ID + separator + MinX + separator + MaxX + separator + MinY + separator + MaxY + separator + Parents.toString() + separator + Siblings.toString());
+        System.out.println(toString(separator));
     }
-    public String ToString(String separator){
+    
+    /**
+     * Creates a string with all the information about this block
+     * @param separator the divider of the information
+     * @return the sting with all the information
+     */
+    public String toString(String separator){
        String returnString = new String();
        
        returnString  = ID + ": ";

@@ -17,10 +17,8 @@ import javafx.scene.paint.Color;
 
 /**
  *
+ * A node which displays a value on hover, but is otherwise empty
  * @author LAPTOPPT
- */
-/**
- * a node which displays a value on hover, but is otherwise empty
  */
 public class HoverNode extends StackPane {
 

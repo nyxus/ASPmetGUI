@@ -301,7 +301,7 @@ public class MainScreenController implements Initializable {
     /**
      * isProblem
      *
-     * @param string a String.
+     * @param filepath a String.
      * @return returns true if a string is numeric.
      * @author Peter Tielbeek.
      */
@@ -349,25 +349,29 @@ public class MainScreenController implements Initializable {
             
             NumberAxis xaxisFit = new NumberAxis("Generations", 0, nrOfGenerations, 10);
             NumberAxis yaxisFit = new NumberAxis("Fitness", 0.5, 1, 10);
+            xaxisFit.autoRangingProperty().set(true);
+            yaxisFit.autoRangingProperty().set(true);
             lineChartFitness = new LineChart(xaxisFit,yaxisFit);
             lineChartFitness.autosize();
             tabFitness.setContent(lineChartFitness);
 
             NumberAxis xaxis = new NumberAxis("Generations", 0, nrOfGenerations, 10);
-            NumberAxis yaxis = new NumberAxis("Costs", 1300, 2600, 10);
+            xaxis.autoRangingProperty().set(true);
+            NumberAxis yaxis = new NumberAxis("Costs", 0, 100, 10);
+            yaxis.autoRangingProperty().set(true);
             lineChartMinMax = new LineChart(xaxis,yaxis);
             lineChartMinMax.autosize();
             tabMinMaxMarian.setContent(lineChartMinMax);
-
+            
             a(filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex()));
             String filename = filepaths.get(choiceBoxProblems.getSelectionModel().getSelectedIndex());
 
             StopConditionsMarian stopConditions = new StopConditionsMarian(checkboxStopNrGenerations.isSelected(), checkboxStopTime.isSelected(), checkboxStopInfinite.isSelected(), nrOfGenerations, runTime);
 
-            Marian marian = new Marian(filename, populationSize, mutationPercentage, 5, stopConditions, getOptimizedSelectionMarian());
+            Marian marian = new Marian(filename, populationSize, mutationPercentage, stopConditions, getOptimizedSelectionMarian());
             Population newPop = marian.generatePopulation(populationSize);
 
-            marian.setUsePopulation(newPop);
+            marian.setStartPopulation(newPop);
 
             lineChartFitness.getData().clear();
             //        lineChartFitnessOptimized.getData().clear();
@@ -392,8 +396,8 @@ public class MainScreenController implements Initializable {
                         case TaskManager.TaskUpdate.TaskNotInialised:
                             break;
                         case TaskManager.TaskUpdate.TaskNextCycle:
-                            lineChartFitness.getData().clear();
-//                            lineChartMinMax.getData().clear();
+                           lineChartFitness.getData().clear();
+                           lineChartMinMax.getData().clear();
                             break;
                         case Marian.MarianOrignal:
                         case Marian.MarianOptimised:

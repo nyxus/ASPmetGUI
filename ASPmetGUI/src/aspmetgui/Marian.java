@@ -22,10 +22,9 @@ import javafx.concurrent.Task;
 import javafx.scene.chart.XYChart;
 
 /**
- * 
- * @author Gerco & Peter
  * The Marian contains a problem. This problem is solvable by multiple algorithms.
  * The method getTask() returns a task that can solve the problem in a thread. 
+ * @author Gerco and Peter
  */
 public class Marian {
 
@@ -42,26 +41,24 @@ public class Marian {
     private Block[][] fysicalMatrix;
 
     private Chromosome firstMin;
+    private Chromosome bestChomosome;
+
+    
 
     private int problemSize;
-
    
     private double mutationPercentage = 2.25;
 
-    
     private int populationSize;
 
-    
     private Double[] OptimilisationRatios;
-
-    private long maxRunTime;
 
     
     public final static int MarianOptimised = 0; 
     public final static int MarianOrignal = 1; 
     private StopConditionsMarian stopCondition;
     
-    private Population usePopulation = null;
+    private Population StartPopulation = null;
     
     private Process process;
    
@@ -77,7 +74,16 @@ public class Marian {
      * id minX maxX minY maxY
      * @param populationSize the size of a population
      */
-    public Marian(String filename, int populationSize, double mutation, int setAlgoritm, StopConditionsMarian stopCondition, Double[] OptimilisationRatios) {
+    
+    /**
+     *  Create a problem to solve with the algorithm of Marian
+     * @param filename string of the path of the file with a problem
+     * @param populationSize The size of the populations
+     * @param mutation the mutation percentage  
+     * @param stopCondition the stop conditions of running task 
+     * @param OptimilisationRatios  the ratios for using the optimisation algorithm 
+     */
+    public Marian(String filename, int populationSize, double mutation, StopConditionsMarian stopCondition, Double[] OptimilisationRatios) {
         problemSize = getProblemSize(filename);
         this.populationSize = populationSize;
         this.mutationPercentage = mutation;
@@ -333,7 +339,7 @@ public class Marian {
     public String ToStringBlockCollection() {
         String returnString = new String();
         for (Block block : blockCollection) {
-            returnString += block.ToString(", ") + "\n";
+            returnString += block.toString(", ") + "\n";
         }
         return returnString;
     }
@@ -678,7 +684,6 @@ public class Marian {
             
             //Create a new chromosome
             Chromosome newChromosome = guidedSearch(population.getChromosome(selection).getId());
-            
             //set the newly created chromosome at the randomly selected index
             population.setChromosome(selection, newChromosome);
         }    
@@ -766,12 +771,12 @@ public class Marian {
             
                 Population pop;
 
-                if(usePopulation == null){
+                if(StartPopulation == null){
                     pop = generatePopulation(populationSize);
                 }else{
-                    pop = usePopulation;
+                    pop = StartPopulation;
                 }
-
+                bestChomosome = pop.getMin();
                 stopCondition.Start();
                 while(!stopCondition.isStop(generations)){
                     if (Thread.currentThread().isInterrupted()) {
@@ -858,17 +863,19 @@ public class Marian {
                             partialResults.get(1).get(0).getData().add(maxCostNode);
                             partialResults.get(1).get(1).getData().add(minCostNode);
                             partialResults.get(1).get(2).getData().add(avgCostNode);
+                            
                             partialResults.get(0).get(0).getData().add(maxNode);
                             partialResults.get(0).get(1).getData().add(avgFitnessNode);
                                                         
-                            updateValue(partialResults);
-                            
                             updateValue(partialResults);
                         }
                     });
                     
                     
                     AlgorithmEvaluation += pop.getMin().getCosts();
+                    if(pop.getMin().getCosts() < bestChomosome.getCosts()){
+                        bestChomosome = pop.getMin();
+                    }
                     generations++;
                 }
                 return partialResults;
@@ -958,20 +965,12 @@ public class Marian {
         return fysicalMatrix[0].length;
     }
     
-    public Population getUsePopulation() {
-        return usePopulation;
+    public Population getStartPopulation() {
+        return StartPopulation;
     }
 
-    public void setUsePopulation(Population usePopulation) {
-        this.usePopulation = usePopulation;
-    }
-
-    public long getMaxRunTime() {
-        return maxRunTime;
-    }
-
-    public void setMaxRunTime(long maxRunTime) {
-        this.maxRunTime = maxRunTime;
+    public void setStartPopulation(Population StartPopulation) {
+        this.StartPopulation = StartPopulation;
     }
     
     public Double[] getOptimilisationRatios() {
@@ -1003,6 +1002,10 @@ public class Marian {
     
      public int getProblemSize() {
         return problemSize;
+    }
+    
+    public Chromosome getBestChomosome() {
+        return bestChomosome;
     }
     
      /**

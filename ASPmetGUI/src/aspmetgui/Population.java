@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * The population is a collection of Chromosomes. It automaticly finds the best and the worst Chromosome. 
  * @author Gerco
- * The popupation is a collection of Chromosomes. It automaticly finds the best and the worst Chromosome. 
  */
 public class Population {
 

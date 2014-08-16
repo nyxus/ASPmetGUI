@@ -27,11 +27,10 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ProgressBar;
 
 /**
- * 
- * @author Gerco Versloot
  * Acts like a worker to start/stop multiple Marian tasks cycles. 
  * This class is a task so it runs in a different thread.
  * The Marian tasks are started in different threads. 
+ * @author Gerco
  */
 public class TaskManager extends Task<TaskUpdate> {
 
@@ -145,8 +144,9 @@ public class TaskManager extends Task<TaskUpdate> {
     /**
      * Start the cycles of solving Marian problems
      * @return Update(s) of the result of all the cycles and the status of this task
-     * @throws InterruptedException
+     * @throws InterruptedException return interupt exeption
      */
+    
     @Override
     protected TaskUpdate call() throws InterruptedException {
         
@@ -155,8 +155,8 @@ public class TaskManager extends Task<TaskUpdate> {
         XYChart.Series<String, Integer> runOriginal = new XYChart.Series<String, Integer>();
         XYChart.Series<String, Integer> runOptimised = new XYChart.Series<String, Integer>();
         
-        DecimalFormat dfFitness = new DecimalFormat("0000");
-        
+        DecimalFormat dfFitness = new DecimalFormat("0");
+        Chromosome bestChomosome = null;
         // set names for the series
         runOriginal.setName("Marian original: " + marian.getPopulationSize() + ", " + String.format("%.2f", marian.getMutationPercentage()) );
         runOptimised.setName("Marian optimised: " + marian.getPopulationSize() + ", " + String.format("%.2f", marian.getMutationPercentage())); 
@@ -172,8 +172,7 @@ public class TaskManager extends Task<TaskUpdate> {
                     case Marian.MarianOrignal:
                         updateMessage("Cycle " + i + " Marian original");
                         currentTask = startMarian(Marian.MarianOrignal); 
-                        currentTask.join(); // Wait till the Marian task is finished
-                        
+                        currentTask.join(); // Wait till the Marian task is finished                       
                         // add the results to the comare observable list
                         XYChart.Data<String, Integer> nodeCompareOrignal = new XYChart.Data(Integer.toString(i),  marian.getAlgorithmEvaluation());
                         nodeCompareOrignal.setNode(new HoverNode(i, dfFitness.format(marian.getAlgorithmEvaluation())));
@@ -184,7 +183,6 @@ public class TaskManager extends Task<TaskUpdate> {
                         updateMessage("Cycle " + i + " Marian optimised");
                         currentTask = startMarian(Marian.MarianOptimised);
                         currentTask.join();// Wait till the Marian task is finished
-                        
                         // add the results to the comare observable list
                         XYChart.Data<String, Integer> nodeCompareOptimised = new XYChart.Data(Integer.toString(i),  marian.getAlgorithmEvaluation());
                         nodeCompareOptimised.setNode(new HoverNode(i, dfFitness.format(marian.getAlgorithmEvaluation())));
@@ -198,7 +196,12 @@ public class TaskManager extends Task<TaskUpdate> {
                         } catch (AlgorithmNotSet ex) {
                             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                }   
+                }
+                if(bestChomosome == null){
+                    bestChomosome = marian.getBestChomosome(); 
+                }else if(marian.getBestChomosome().getCosts() < bestChomosome.getCosts()){
+                    bestChomosome = marian.getBestChomosome(); 
+                }
             }
             // check if the user stoped the current calcuations 
             if (Thread.currentThread().isInterrupted()) {
@@ -210,8 +213,9 @@ public class TaskManager extends Task<TaskUpdate> {
                 updateValue(new TaskUpdate(TaskUpdate.TaskNextCycle));
             }
             // set new first population for the next cycle
-            marian.setUsePopulation(marian.generatePopulation(marian.getPopulationSize()));
+            marian.setStartPopulation(marian.generatePopulation(marian.getPopulationSize()));
         }
+        updateMessage("Best Chromosome: " + bestChomosome.ToString());
         update.setList(obListCompare);
         return new TaskUpdate(TaskUpdate.TaskEnd, obListCompare);
     }

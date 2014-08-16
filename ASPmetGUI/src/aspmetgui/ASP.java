@@ -6,7 +6,11 @@
 
 package aspmetgui;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -96,13 +100,41 @@ public class ASP extends Application {
         
         return (Initializable) loader.getController();
     }
+    
+    private static void createFixedProblem(int problemSize) throws IOException {
+        
+        Path path = Paths.get("./"+problemSize+" Fixed");
 
+	 //creates a file
+        Files.createFile(path);
+                  
+                  
+        String msg = "";
+        int block_counter = 1;
+        for (int line = 0; line < problemSize; line++) {
+            for (int collum = 0; collum < problemSize; collum++) {
+                msg += block_counter++ + " " + collum + " " + collum + " " + line + " " + line + "\n" ;  
+            }
+        }
+        
+        Files.write(path, msg.getBytes());
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+//        try {
+//            createFixedProblem(2);
+//            createFixedProblem(3);
+//            createFixedProblem(4);
+//            createFixedProblem(6);
+//            createFixedProblem(7);
+//            createFixedProblem(10);
+//        } catch (IOException ex) {
+//            Logger.getLogger(ASP.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+            launch(args);
     }
     
 }
